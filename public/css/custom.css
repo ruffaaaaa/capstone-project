@@ -1,0 +1,192 @@
+ /* Custom scrollbar styles */
+ ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar transitions */
+#sidebar {
+    transition: width 0.3s ease-in-out;
+}
+
+main {
+    transition: margin-left 0.3s ease-in-out;
+}
+
+#sidebar.collapsed {
+    width: 100px; /* Set the collapsed width */
+    overflow: hidden;
+}
+
+#sidebar.collapsed .text {
+    display: none;
+}
+
+#sidebar.collapsed #toggleSidebar {
+    left: 10px; 
+}
+
+/* Center the icons */
+#sidebar .icon {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin-left: -9px; /* Add some right margin to the icons */
+}
+
+/* Add styles for the main content when sidebar is collapsed */
+main.collapsed {
+    margin-left: 100px; /* Adjust based on the collapsed sidebar width */
+}
+
+.image-container {
+    position: relative;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.7); /* Adjust the overlay background color and opacity as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border-radius: 20px;
+
+}
+
+/* Hover effect */
+.image-container:hover .overlay {
+    opacity: 1;
+}
+
+.swiper-container {
+    overflow-x: hidden;
+}
+
+
+.left-title {
+    position: relative;
+    height: 150px;
+    width:30%;
+    background: linear-gradient(125deg, rgba(166, 225, 163, 0.8) 75%, rgba(166, 225, 163, 0.8) 75%, rgba(58, 201, 26, 0.7) 80%, transparent 75%);
+  }
+  
+  .left-title:after {
+    position: absolute;
+    content: '';
+    width: 333%;
+    height: 100%;
+    background: url('/images/form2.png'); 
+    background-size: cover; 
+    z-index: -1;
+  }
+
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    
+}
+
+.step span {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #087830;
+    background-color: #A7EBC2;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000000;
+    
+}
+
+.step-active span {
+    border-color: #087830;
+    background-color: #087830;
+    color: white;
+}
+
+.line {
+    margin-top: -30px;
+    width: 200px;
+    border: 2px solid #087830;
+}
+
+.checkmark {
+    margin-left: 8px;
+}
+
+.step label {
+    margin-top: 10px;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .step label {
+        display: none; 
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 60%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.calendar {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+
