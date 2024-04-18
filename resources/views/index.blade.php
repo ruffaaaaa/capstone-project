@@ -40,7 +40,7 @@
 
         <div class=" lg:hidden md:hidden bg-center h-96 rounded-2xl relative bg-no-repeat bg-cover relative fixed" style="background-image: url('/images/bg-default.png');margin-left: 20px;margin-right:20px;">
             <div class="md:absolute md:inset-0 flex flex-col items-center ">
-                    <img src="images/lsu-logotype-white.png" class="mt-4" style="height: 80px;">
+                    <img src="images/lsu-logotype-white.png" class="mt-4 " style="height: 80px;">
                     <span class="text-4xl md:text-7xl text-white mt-5" style="font-family: 'Cardo', serif;">La Salle University</span>
                     <span class="text-xl md:text-2xl mt-3 text-white" style="font-family: 'Cardo', serif;">Facilities Reservation System</span>
                 <div>
@@ -98,7 +98,6 @@
                 </span>
             </div>
 
-         <!-- Desktop View -->
          <div class="hidden md:flex flex-col items-stretch w-full ml-5 max-md:w-full max-md:ml-0">
                 <div class="justify-center grow px-16 py-11 max-md:max-w-full max-md:px-5">
                     <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
@@ -118,7 +117,6 @@
                 </div>
             </div>
 
-            <!-- Mobile View -->
             <div class="md:hidden flex flex-col items-stretch w-full ml-5 max-md:w-full max-md:ml-0">
                 <div class="justify-center grow px-16 py-11 max-md:max-w-full max-md:px-5">
                     <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
@@ -136,7 +134,6 @@
                         @endforeach
                     </div>
                 </div>
-          
         </div>
 
         

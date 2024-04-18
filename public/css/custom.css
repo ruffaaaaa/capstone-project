@@ -189,4 +189,18 @@ main.collapsed {
     gap: 5px;
 }
 
+@keyframes lineAnimation {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 10%;
+    }
+}
+
+hr {
+    animation: lineAnimation 1s ease-out; /* Apply the animation */
+}
+
+
 

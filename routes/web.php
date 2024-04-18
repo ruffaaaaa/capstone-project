@@ -30,8 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin-dashboard', [AuthenticationController::class, 'index1'])->name('index1');
     Route::post('', [AuthenticationController::class, 'login']);
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
-
-
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -42,6 +40,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/facilities/save', [FacilitiesController::class, 'create'])->name('facility.save');
     Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'update'])->name('facilities.update');
     Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'destroy'])->name('facilities.destroy');
+});
+
+Route::get('make-reservation', function () {
+    $facilities = Facilities::all();
+    return view('make-reservation', compact('facilities'));
 });
 
 Route::get('/login', [AuthenticationController::class, 'DisplayLoginForm'])->name('login');

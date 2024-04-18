@@ -21,7 +21,6 @@
                     <div class="px-4 py-6 text-center border-b">
                         <img src="/images/lsu-logo 2.png" alt="Logo" class="mx-auto h-10 mb-1">
                         <h1 class=" text-l font-bold leading-none text-green-600 text">
-                            <!-- Display this text when not collapsed -->
                             <span class="collapsed:hidden">FACILITIES RESERVATION SYSTEM</span>
                         </h1>
                     </div>
@@ -31,8 +30,6 @@
                             <a href="/admin-dashboard" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-black py-2 px-4">
 
                                 <span class="icon">
-                                    <!-- Replace the SVG code with your desired icon -->
-
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                         <path d="M2 4.25A2.25 2.25 0 014.25 2h2.5A2.25 2.25 0 019 4.25v2.5A2.25 2.25 0 016.75 9h-2.5A2.25 2.25 0 012 6.75v-2.5zM2 13.25A2.25 2.25 0 014.25 11h2.5A2.25 2.25 0 019 13.25v2.5A2.25 2.25 0 016.75 18h-2.5A2.25 2.25 0 012 15.75v-2.5zM11 4.25A2.25 2.25 0 0113.25 2h2.5A2.25 2.25 0 0118 4.25v2.5A2.25 2.25 0 0115.75 9h-2.5A2.25 2.25 0 0111 6.75v-2.5zM15.25 11.75a.75.75 0 00-1.5 0v2h-2a.75.75 0 000 1.5h2v2a.75.75 0 001.5 0v-2h2a.75.75 0 000-1.5h-2v-2z" />
                                     </svg>      
@@ -186,8 +183,8 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">{{ $facility->facilityID }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">{{ $facility->facilityName }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">
-                                        <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image"  class="h-8 w-15">
+                                    <td class="flex px-6 py-4 whitespace-nowrap text-center">
+                                        <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-8 w-15 mx-auto">
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">{{ $facility->facilityStatus }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
