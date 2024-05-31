@@ -179,9 +179,12 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                            @php
+                                $counter = 1; // Initialize counter variable
+                            @endphp
                             @foreach ($facilities as $facility)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $facility->facilityID }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $counter++ }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">{{ $facility->facilityName }}</td>
                                     <td class="flex px-6 py-4 whitespace-nowrap text-center">
                                         <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-8 w-15 mx-auto">

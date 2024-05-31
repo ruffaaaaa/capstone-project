@@ -69,21 +69,29 @@
     
         <div class="hidden md:block container mx-auto h-full md:relative md:mt-10">
             <div class="md:absolute md:inset-0 flex flex-col justify-end">
-                <div class="bg-white p-3 md:p-5 rounded-full md:w-96 md:m-auto md:mt-4 shadow-lg">
-                    <div class="flex flex-col md:flex-row md:space-x-4 justify-center">
-                        <a href="make-reservation" class="bg-white-500 hover:bg-green-600 text-black hover:text-white font-semibold py-2 px-3 md:py-2 md:px-4 rounded-full transition duration-300 ease-in-out mt-2 md:mt-0">RESERVE NOW</a>
-                        <button id="checkStatusBtn" class="bg-white-500 hover:bg-green-600 text-black hover:text-white font-semibold py-2 px-3 md:py-2 md:px-4 rounded-full transition duration-300 ease-in-out mt-2 md:mt-0">CHECK STATUS</button>
+                <div class="bg-white p-3 md:p-6 rounded-full md:w-96 md:m-auto md:mt-4 shadow-lg">
+                    <div class="flex flex-col md:flex-row justify-center items-center">
+                        <a href="make-reservation" class="bg-white-500 hover:bg-green-600 text-black hover:text-white font-semibold py-2 px-3 md:py-2 md:px-4 rounded-full transition duration-300 ease-in-out mt-2 md:mt-0">
+                            RESERVE NOW
+                        </a>
+                        <span class="hidden md:inline-block border-l border-gray-300 h-6 mx-4"></span>
+                        <button id="checkStatusBtn" class="bg-white-500 hover:bg-green-600 text-black hover:text-white font-semibold py-2 px-3 md:py-2 md:px-4 rounded-full transition duration-300 ease-in-out mt-2 md:mt-0">
+                            CHECK STATUS
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
     </section>
 
     <section class="mt-2">
+    <span class="justify-center items-center self-stretch z-[1] flex mt-0 w-full flex-col px-20 py-12 max-md:max-w-full max-md:px-5">
+
         <div class="w-full">
             <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0 ">
                 <div class="flex flex-col items-stretch w-[27%] max-md:w-full max-md:ml-0">
-                <span class="items-stretch flex flex-col my-auto ml-12 pl-2 max-md:mt-10">
+                <span class="items-stretch flex flex-col my-auto  pl-2 max-md:mt-10">
                     <div class="text-black text-4xl font-bold leading-10 whitespace-nowrap">
                     Featured Facilities
                     </div>
@@ -98,48 +106,49 @@
                 </span>
             </div>
 
-         <div class="hidden md:flex flex-col items-stretch w-full ml-5 max-md:w-full max-md:ml-0">
-                <div class="justify-center grow px-16 py-11 max-md:max-w-full max-md:px-5">
-                    <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-                        @foreach ($facilities->random(3) as $facility)
-                        <div class="flex flex-col items-stretch w-[33%] max-md:w-full max-md:ml-0">
-                            <span class="items-stretch border flex grow flex-col w-full pb-3 rounded-md border-solid border-black border-opacity-10 max-md:mt-10">
-                                <div class="bg-zinc-300 bg-opacity-50 flex flex-col justify-center items-center aspect-square">
-                                    <div class="flex-col overflow-hidden relative flex aspect-[1.0083333333333333] w-full items-stretch pb-12">
-                                        <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="absolute h-full w-full object-cover object-center inset-0" />
-                                    </div>
+         <div class="hidden md:flex flex-col items-stretch w-full ml-10 max-md:w-full max-md:ml-0">
+            <div class="justify-center grow  py-11 max-md:max-w-full ">
+                <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+                    @foreach ($facilities->random(3) as $facility)
+                    <div class="flex flex-col items-stretch w-[33%] max-md:w-full max-md:ml-0">
+                        <span class="items-stretch border flex grow flex-col w-full pb-3 rounded-md border-solid border-black border-opacity-10 max-md:mt-10">
+                            <div class="bg-zinc-300 bg-opacity-50 flex flex-col justify-center items-center aspect-square">
+                                <div class="flex-col overflow-hidden relative flex aspect-[1.0083333333333333] w-full items-stretch pb-12">
+                                    <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="absolute h-full w-full object-cover object-center inset-0" />
                                 </div>
-                                <div class="text-black text-base leading-6 whitespace-nowrap mt-3">{{ $facility->facilityName }}</div>
-                            </span>
-                        </div>
-                        @endforeach
+                            </div>
+                            <div class="text-black text-base leading-6 whitespace-nowrap mt-3">{{ $facility->facilityName }}</div>
+                        </span>
                     </div>
+                    @endforeach
                 </div>
             </div>
-
-            <div class="md:hidden flex flex-col items-stretch w-full ml-5 max-md:w-full max-md:ml-0">
-                <div class="justify-center grow px-16 py-11 max-md:max-w-full max-md:px-5">
-                    <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-                        @foreach ($facilities->random(1) as $facility)
-                        <div class="flex flex-col items-stretch w-full max-md:w-full max-md:ml-0">
-                            <span class="items-stretch border flex grow flex-col w-full pb-3 rounded-md border-solid border-black border-opacity-10 max-md:mt-10">
-                                <div class="bg-zinc-300 bg-opacity-50 flex flex-col justify-center items-center aspect-square">
-                                    <div class="flex-col overflow-hidden relative flex aspect-[1.0083333333333333] w-full items-stretch pb-12">
-                                        <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="absolute h-full w-full object-cover object-center inset-0" />
-                                    </div>
-                                </div>
-                                <div class="text-black text-base leading-6 whitespace-nowrap mt-3">{{ $facility->facilityName }}</div>
-                            </span>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
+</span>
         </div>
 
-        
+        <div class="md:hidden flex flex-col items-stretch w-full ml-5 max-md:w-full max-md:ml-0">
+            <div class="justify-center grow px-16 py-11 max-md:max-w-full max-md:px-5">
+                <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+                    @foreach ($facilities->random(1) as $facility)
+                    <div class="flex flex-col items-stretch w-full max-md:w-full max-md:ml-0">
+                        <span class="items-stretch border flex grow flex-col w-full pb-3 rounded-md border-solid border-black border-opacity-10 max-md:mt-10">
+                            <div class="bg-zinc-300 bg-opacity-50 flex flex-col justify-center items-center aspect-square">
+                                <div class="flex-col overflow-hidden relative flex aspect-[1.0083333333333333] w-full items-stretch pb-12">
+                                    <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="absolute h-full w-full object-cover object-center inset-0" />
+                                </div>
+                            </div>
+                            <div class="text-black text-base leading-6 whitespace-nowrap mt-3">{{ $facility->facilityName }}</div>
+                        </span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
     </section>
 
-    <section>
+    
+    <section class="-mt-10">
         <span class="justify-center items-center self-stretch z-[1] flex mt-0 w-full flex-col px-20 py-12 max-md:max-w-full max-md:px-5">
             <div class="text-black text-center text-4xl font-bold leading-10 mt-2.5 max-md:max-w-full">
                 How to Reserve a Facility

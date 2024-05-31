@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\FacilitiesController;
+use App\Http\Controllers\ReservationController;
 use App\Models\Facilities;
 
 
@@ -42,10 +43,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'destroy'])->name('facilities.destroy');
 });
 
-Route::get('make-reservation', function () {
-    $facilities = Facilities::all();
-    return view('make-reservation', compact('facilities'));
-});
+Route::get('/make-reservation', [ReservationController::class, 'showReservationForm'])->name('make-reservation');
+
+
+Route::post('', [ReservationController::class, 'store'])->name('reservation.store');
+
+
 
 Route::get('/login', [AuthenticationController::class, 'DisplayLoginForm'])->name('login');
 

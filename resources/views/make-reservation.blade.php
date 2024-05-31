@@ -37,54 +37,85 @@
       </div>
     </div>
     <div class="flex justify-center items-center px-16 pt-8 pb-12 w-full bg-green-800 max-md:px-5 max-md:max-w-full">
-    <div class="flex flex-col items-center px-14 py-12 mb-10 w-full bg-white max-w-[1018px] rounded-[30px] max-md:px-5 max-md:mb-10 max-md:max-w-full">
-        <form id="facilitiesForm" class="max-w-md mx-auto flex flex-col items-center justify-center"> <!-- Added flex, items-center, and justify-center classes -->
-            <div class="mb-6 flex justify-center items-center"> <!-- Added flex, justify-center, and items-center classes -->
+    <div class="flex flex-col items-center px-12 py-12 mb-10 w-full bg-white max-w-[850px] rounded-[30px] max-md:px-5 max-md:mb-10 max-md:max-w-full background">
+    <form id="storeReservationForm" action="{{ route('reservation.store') }}" method="POST">
+    @csrf
+
+        <div id="facilitiesForm" class="mx-auto flex flex-col items-center justify-center">
+            <div class="mb-6 flex justify-center items-center"> 
                 <span class="text-2xl font-bold">FACILITIES</span>
             </div>
-            <div class="mb-6 flex justify-center items-center relative"> <!-- Added relative class for positioning -->
-                <hr class="w-12 border-green-900 border-2 absolute animate-line"><!-- Added absolute positioning for the line and animation class -->
+            <div class="mb-6 flex justify-center items-center relative"> 
+                <hr class="w-12 border-green-900 border-2 absolute animate-line">
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 justify-center"> <!-- Added justify-center class to center the grid items -->
-                <input type="hidden" name="reservedetailsID" id="reservationcode">
+           
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-5">
                 @foreach ($facilities as $facility)
-                    <div class="mb-2 flex justify-center"> <!-- Added flex and justify-center to center the label -->
-                        <label class="items-center space-x-2">
+                    <div class="mb-2 sm:col-span-1 md:col-span-1">
+                        <label class="flex items-center space-x-2">
                             <input type="checkbox" name="facility_checkbox[{{ $facility->facilityID }}]" class="form-checkbox equipment-checkbox">
                             <span class="text-l font-bold">{{ $facility->facilityName }}</span>
                         </label>
                     </div>
                 @endforeach
             </div>
-        </form>
-        <form id="reservationDetailsForm" class="hidden">
-            <div class="mb-6 flex justify-center items-center"> <!-- Added flex, justify-center, and items-center classes -->
-                <span class="text-2xl font-bold">RESERVATION</span>
-            </div>
-            <div class="mb-6 flex justify-center items-center relative"> <!-- Added relative class for positioning -->
-                <hr class="w-12 border-green-900 border-2 absolute animate-line"><!-- Added absolute positioning for the line and animation class -->
-            </div>
-
-                       
-            <input type="date" id="reservationDate" name="reservationDate">
-        </form>
-        <form id="customerDetailsForm" class="hidden">
-            <div class="mb-6 flex justify-center items-center"> <!-- Added flex, justify-center, and items-center classes -->
-                <span class="text-2xl font-bold">RESERVEE DETAILS</span>
-            </div>
-            <div class="mb-6 flex justify-center items-center relative"> <!-- Added relative class for positioning -->
-                <hr class="w-12 border-green-900 border-2 absolute animate-line"><!-- Added absolute positioning for the line and animation class -->
-            </div>
-            <input type="text" id="customerName" name="customerName">
-        </form>
-        <div id="completionMessage" class="hidden">
         </div>
+        <div id="reservationDetailsForm" class="hidden mx-full flex flex-col items-center justify-center">
+            <div class="mb-6 flex justify-center items-center"> 
+                <span class="text-2xl font-bold">RESERVATION DETAILS</span>
+            </div>
+            <div class="mb-6 flex justify-center items-center relative"> 
+                <hr class="w-14 border-green-900 border-2 absolute animate-line">
+            </div>
+            <div class = "w-100">
+                <div class="bg-[#5CC273] p-2 ">
+                    <span class="text-l font-bold text-white pl-4">EVENT DETAILS</span>
+                </div>
+
+                <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                    <label class="w-32 text-gray-700 text-sm font-bold">Name of Event:</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nameofevent" name="nameofevent" type="text" required>
+                </div>
+                <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                    <label class=" w-32 text-gray-700 text-sm font-bold mb-2" for="start-date">Maximum Expected Number of Attendees:</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max-attendees" name="max-attendees" type="text" required>
+                </div>
+                
+                <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Requested By:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="reserveeName" name="reserveeName" type="text" required>
+                                
+                </div>
+                <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                    <label class="w-32 text-gray-700 text-sm font-bold">Person-in-Charge of Event:</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="person_in_charge_event" name="person_in_charge_event" type="text" required>
+                </div>
+               
+            </div>
+        </div>
+       
+        
         <div class="flex justify-center  w-full mb-4 max-md:mb-0" id="progressCircles">
             <div class="w-3 h-3 m-2 bg-green-950 rounded-full"></div>
             <div class="w-3 h-3 m-2 bg-gray-300 rounded-full"></div>
             <div class="w-3 h-3 m-2 bg-gray-300 rounded-full"></div>
         </div>
+
+        <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden">
+            <div class="modal-container bg-green-700 w-100px mt-48 md:max-w-md mx-auto rounded shadow-xxl z-50 overflow-y-auto">
+                <div class="mt-5 mb-5 flex flex-col items-center justify-center">
+                    <a href="/" class="m-4">
+                        <img src="/images/lsu-logo 2.png" class="mx-auto w-16 h-30" />
+                    </a>
+                    <span class="font-bold text-2xl text-white text-center">YOUR RESERVATION REQUEST IS SUBMITTED.</span>
+                    <span id="reservation-code" class="text-center text-white mt-2">Reservation Code: </span> 
+                    <a href="/" class="border border-white px-4 py-2 mt-5 text-white rounded-xl mb-5">Home</a>
+                </div>
+
+            </div>
+        </div>
+
+
         <div class="flex justify-center w-full mb-4 max-md:mb-0" id="buttonContainer">
             <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 max-md:px-5" id="prevButton">
                 Previous
@@ -92,123 +123,19 @@
             <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 max-md:px-5" id="nextButton">
                 Next
             </button>
+            <button id="submitButton" class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 max-md:px-5 hidden">
+                Submit
+            </button>
         </div>
+    </form>
     </div>
+    
 </div>
 
 
 </body>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const progressCircles = document.getElementById('progressCircles').children;
-        const nextButton = document.getElementById('nextButton');
-        const prevButton = document.getElementById('prevButton');
-        const facilitiesForm = document.getElementById('facilitiesForm');
-        const reservationDetailsForm = document.getElementById('reservationDetailsForm');
-        const customerDetailsForm = document.getElementById('customerDetailsForm');
-        const buttonContainer = document.getElementById('buttonContainer');
-        let currentStep = 1;
+<script src="/js/reservationmodal.js"></script>
 
-        // Display facilities form initially
-        facilitiesForm.style.display = 'block';
-
-        nextButton.addEventListener('click', function() {
-            navigateNext();
-        });
-
-        prevButton.addEventListener('click', function() {
-            navigatePrevious();
-        });
-
-        function navigateNext() {
-            // Go to next step
-            currentStep++;
-
-            // Update progress circles
-            updateProgressCircles();
-
-            // Show previous button
-            togglePreviousButton();
-
-            // Perform actions for each step
-            switch (currentStep) {
-                case 2:
-                    facilitiesForm.style.display = 'none';
-                    reservationDetailsForm.style.display = 'block';
-                    break;
-                case 3:
-                    reservationDetailsForm.style.display = 'none';
-                    customerDetailsForm.style.display = 'block';
-                    break;
-                default:
-                    // Hide all forms, show completion message
-                    customerDetailsForm.style.display = 'none';
-                    document.getElementById('completionMessage').style.display = 'block';
-                    nextButton.style.display = 'none'; // Hide the "Next" button
-                    break;
-            }
-        }
-
-        function navigatePrevious() {
-            if (currentStep === 1) {
-                // Navigate to homepage
-                window.location.href = 'index';
-            } else {
-                // Go to previous step
-                currentStep--;
-
-                // Update progress circles
-                updateProgressCircles();
-
-                // Show previous button
-                togglePreviousButton();
-
-                // Perform actions for each step
-                switch (currentStep) {
-                    case 1:
-                        // Show facilities form, hide other forms
-                        facilitiesForm.style.display = 'block';
-                        reservationDetailsForm.style.display = 'none';
-                        customerDetailsForm.style.display = 'none';
-                        break;
-                    case 2:
-                        // Show reservation details form, hide other forms
-                        facilitiesForm.style.display = 'none';
-                        reservationDetailsForm.style.display = 'block';
-                        customerDetailsForm.style.display = 'none';
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        function updateProgressCircles() {
-            // Update progress circles
-            for (let i = 0; i < progressCircles.length; i++) {
-                if (i < currentStep - 1) {
-                    progressCircles[i].classList.remove('bg-gray-300');
-                    progressCircles[i].classList.add('bg-green-950');
-                } else {
-                    progressCircles[i].classList.remove('bg-green-950');
-                    progressCircles[i].classList.add('bg-gray-300');
-                }
-            }
-        }
-
-        // Function to toggle previous button visibility
-        function togglePreviousButton() {
-            if (currentStep === 1) {
-                prevButton.style.display = 'none';
-            } else {
-                prevButton.style.display = 'block';
-            }
-        }
-
-        // Initially hide previous button
-        togglePreviousButton();
-    });
-</script>
 
 </html>
