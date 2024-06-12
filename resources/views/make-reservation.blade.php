@@ -14,11 +14,11 @@
     <link href="/css/custom.css" rel="stylesheet">
 </head>
 
-<body class="bg-[#E5EFE8]">
-    <nav class="w-full">
-        <div class="flex items-center ml-10 py-4 px-6">
-            <a class="flex items-center" href="/">
-                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-8 mr-2" >
+<body class=" bg-green-800">
+    <nav class="w-full  bg-[#E5EFE8]">
+        <div class="flex items-center justify-between lg:justify-start ml-10 lg:ml-10 py-4 px-6">
+            <a class="flex items-center mx-auto lg:mx-0" href="/">
+                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-8 lg:mr-2 mr-10">
                 <span class="text-green-900 lg:block hidden text-2xl" style="font-family: 'Cardo', serif;">La Salle University</span>
             </a>
         </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-center items-center px-16 pt-8 pb-12 w-full bg-green-800 max-md:px-5 max-md:max-w-full">
+    <div class="flex justify-center items-center px-16 pb-12 w-full bg-green-800 max-md:px-5 max-md:max-w-full">
     <div class="flex flex-col items-center px-12 py-12 mb-10 w-full bg-white max-w-[850px] rounded-[30px] max-md:px-5 max-md:mb-10 max-md:max-w-full background">
     <form id="storeReservationForm" action="{{ route('reservation.store') }}" method="POST">
     @csrf
@@ -81,18 +81,221 @@
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max-attendees" name="max-attendees" type="text" required>
                 </div>
                 
-                <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date">Start and End Date-Time of the Event Proper</label>
+                <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
+                    <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
+                        <label class="text-gray-700 text-sm font-bold mb-10  md:hidden" id="event-start-date" name="event-start-date" for="start-date">Start Date and Time of Event:</label>
+
+                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-start-date" name="event-start-date" type="datetime-local" required>
+                    </div>
+
+                    <div class="hidden md:block mr-4 ml-4">
+                        <h1>-</h1>
+                    </div>
+                    
+                    <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
+                        <label class="text-gray-700 text-sm font-bold mb-10  md:hidden" id="event-end-date" name="event-end-date" for="end-date">End Date and Time of Event:</label>
+                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-end-date" name="event-end-date" type="datetime-local" required>
+                    </div>
+                </div>
+
+                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date"> Start and End Date-Time for Event Preparation</label>
+                <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
+                    <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
+                        <label class="text-gray-700 text-sm font-bold mb-4  md:hidden"  for="start-date">Start Date-Time for Event Preparation:</label>
+
+                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local" required>
+                    </div>
+
+                    <div class="hidden md:block mr-4 ml-4">
+                        <h1>-</h1>
+                    </div>
+                    
+                    <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
+                        <label class="text-gray-700 text-sm font-bold mb-2  md:hidden"  id="preparation-end-date" name="preparation-end-date" for="end-date">End Date-Time for Event Preparation:</label>
+                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local" required>
+                    </div>
+                </div>
+
+                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date"> Start and End Date-Time for Cleanup</label>
+                <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
+                    <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
+                        <label class="text-gray-700 text-sm font-bold mb-4  md:hidden" for="start-date">Start Date-Time of Cleanup:</label>
+
+                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local" required>
+                    </div>
+
+                    <div class="hidden md:block mr-4 ml-4">
+                        <h1>-</h1>
+                    </div>
+                    
+                    <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
+                        <label class="text-gray-700 text-sm font-bold mb-2  md:hidden" for="end-date">End Date-Time of Cleanup:</label>
+                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date"  type="datetime-local" required>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row">
+                    <div class="w-full lg:w-1/2 pt-2 pl-2 pr-2 ">
+                    <div class="bg-[#5CC273] p-2">
+                        <span class="text-l font-bold text-white pl-4">FACILITIES & EQUIPMENT</span>
+                    </div>
+                    <div>
+                        <div class="mb-2 mt-2 flex items-center space-x-2">
+                            <input type="checkbox" class="form-checkbox equipment-checkbox">
+                            <div class="flex justify-between w-full items-center">
+                                <span>Chair</span>
+                                <input type="text" class="px-2 py-1 border rounded equipment-input input-size" name="equipment_no" placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mb-2 flex items-center space-x-2">
+                            <input type="checkbox" class="form-checkbox equipment-checkbox">
+                            <div class="flex justify-between w-full items-center">
+                                <span>Table</span>
+                                <input type="text" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no" placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mb-2 flex items-center space-x-2">
+                            <input type="checkbox" class="form-checkbox equipment-checkbox">
+                            <div class="flex justify-between w-full items-center">
+                                <span>Sound System</span>
+                                <input type="text" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no" placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mb-2 flex items-center space-x-2">
+                            <input type="checkbox" class="form-checkbox equipment-checkbox">
+                            <div class="flex justify-between w-full items-center">
+                                <span>Microphone</span>
+                                <input type="text" class="px-2 py-2 border rounded equipment-input input-size" name="equipment_no" placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mb-2 flex items-center space-x-2">
+                            <input type="checkbox" class="form-checkbox equipment-checkbox">
+                            <div class="flex justify-between w-full items-center">
+                                <span>Plants</span>
+                                <input type="text" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no" placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mb-2 flex items-center space-x-2">
+                            <input type="checkbox" class="form-checkbox equipment-checkbox">
+                            <div class="flex justify-between w-full items-center">
+                                <span>Comfort Rooms</span>
+                                <input type="text" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no" placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mb-2 flex items-center space-x-2">
+                            <input type="checkbox" class="form-checkbox equipment-checkbox">
+                            <div class="flex justify-between w-full items-center">
+                                <span>Internet Access</span>
+                                <input type="text" class="px-2 py-2 border rounded equipment-input input-size" name="equipment_no"  placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mb-2 items-center">
+                            <input type="checkbox" id="other-equipment" class="form-checkbox">
+                            <span>Other, please specify</span>
+                            <input type="text" id="other-equipment-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="name_other_personnel" placeholder="Name" style="display: none;">
+                            <input type="text" id="other-equipment-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="w-full lg:w-1/2 pt-2 pl-2 pr-2 ">
+                        <div class="bg-[#5CC273] p-2">
+                            <span class="text-l font-bold text-white pl-4">SUPPORT PERSONNEL</span>
+                        </div>
+                        <div>
+                            <div class="mb-2 mt-2 flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <div class="flex justify-between w-full items-center">
+                                    <span>Maintenance Crew (Regular)</span>
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no"  placeholder="No. Required" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="mb-2 flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <div class="flex justify-between w-full items-center">
+                                    <span>Maintenance Crew (Overtime)</span>
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="mb-2 flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <div class="flex justify-between w-full items-center">
+                                    <span>Sound/Light Technician</span>
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="mb-2 flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <div class="flex justify-between w-full items-center">
+                                    <span>Nurse/First Aider</span>
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="mb-2 flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <div class="flex justify-between w-full items-center">
+                                    <span>Security Guards</span>
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="mb-2 items-center">
+                                <input type="checkbox" id="other-personnel" class="form-checkbox">
+                                <span>Other, please specify</span>
+                                <input type="text" id="other-personnel-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="name_other_personnel" placeholder="Name" style="display: none;">
+                                <input type="text" id="other-personnel-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="customerDetailsForm" class="hidden">
+            <div class="mb-6 flex justify-center items-center"> 
+                <span class="text-2xl font-bold">RESERVEE DETAILS</span>
+            </div>
+            <div class="mb-6 flex justify-center items-center relative">
+                <hr class="w-12 border-green-900 border-2 absolute animate-line">
+            </div>
+            <div class="bg-[#5CC273] p-2 hidden">
+                <span class="text-l font-bold text-white pl-4">EVENT DETAILS</span>
+            </div>
+
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Requested By:</label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="reserveeName" name="reserveeName" type="text" required>
                                 
+            </div>
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Person-in-Charge of Event:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="person_in_charge_event" name="person_in_charge_event" type="text" required>
+            </div>
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Email:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" type="email" required>
+            </div>
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Contact Number:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contact_details" name="contact_details" type="text" required>
+            </div>
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Unit/Department/Company:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="unit_department_company" name="unit_department_company" type="text" required>
+            </div>
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Date of Filing:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date_of_filing" name="date_of_filing" type="date" required>
+            </div>
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
+                <div class="flex items-center">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" type="text" required>
+                    <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment" type="file">
                 </div>
-                <div class="items-center mb-5 mt-5 ml-4 mr-4">
-                    <label class="w-32 text-gray-700 text-sm font-bold">Person-in-Charge of Event:</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="person_in_charge_event" name="person_in_charge_event" type="text" required>
-                </div>
-               
             </div>
         </div>
+
        
         
         <div class="flex justify-center  w-full mb-4 max-md:mb-0" id="progressCircles">
@@ -102,7 +305,7 @@
         </div>
 
         <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden">
-            <div class="modal-container bg-green-700 w-100px mt-48 md:max-w-md mx-auto rounded shadow-xxl z-50 overflow-y-auto">
+            <div class="modal-container bg-green-700 w-100px mt-48 md:max-w-md mx-auto rounded shadow-3xl z-50 overflow-y-auto">
                 <div class="mt-5 mb-5 flex flex-col items-center justify-center">
                     <a href="/" class="m-4">
                         <img src="/images/lsu-logo 2.png" class="mx-auto w-16 h-30" />
@@ -111,19 +314,19 @@
                     <span id="reservation-code" class="text-center text-white mt-2">Reservation Code: </span> 
                     <a href="/" class="border border-white px-4 py-2 mt-5 text-white rounded-xl mb-5">Home</a>
                 </div>
-
             </div>
         </div>
 
 
+
         <div class="flex justify-center w-full mb-4 max-md:mb-0" id="buttonContainer">
-            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 max-md:px-5" id="prevButton">
+            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 hover:bg-green-900 max-md:px-5 hover:border-white" id="prevButton">
                 Previous
             </button>
-            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 max-md:px-5" id="nextButton">
+            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 hover:bg-green-900 max-md:px-5 hover:border-white" id="nextButton">
                 Next
             </button>
-            <button id="submitButton" class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 max-md:px-5 hidden">
+            <button id="submitButton" class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 hover:bg-green-900 hover:border-white max-md:px-5 hidden">
                 Submit
             </button>
         </div>

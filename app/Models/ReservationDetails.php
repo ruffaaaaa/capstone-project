@@ -18,7 +18,7 @@ class ReservationDetails extends Model
         'preparation_start_date', 
         'preparation_end_date_time', 
         'cleanup_start_date_time',
-        'clean_end_date_time', 
+        'cleanup_end_date_time', 
     ];
 
     public function facilities()

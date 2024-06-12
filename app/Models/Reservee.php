@@ -16,10 +16,12 @@ class Reservee extends Model
         'reserveeName',
         'reservedetailsID',
         'person_in_charge_event',
+        'email',
         'contact_details',
         'unit_department_company',
         'date_of_filing',
         'endorsed_by',
+        'attachment',
         'status',
     ];
 

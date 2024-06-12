@@ -16,16 +16,16 @@
 
 </head>
 
-<body class="bg-[#E5EFE8] ">
+<body class="bg-[#E5EFE8]  " style="overflow-x: hidden;">
     <nav class="w-full">
-        <div class="flex items-center ml-10 py-4 px-6">
-            <a class="flex items-center" href="#">
-                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-8 mr-2" >
+        <div class="flex items-center justify-between lg:justify-start ml-10 lg:ml-10 py-4 px-6">
+            <a class="flex items-center mx-auto lg:mx-0" href="#">
+                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-8 lg:mr-2 mr-10">
                 <span class="text-green-900 lg:block hidden text-2xl" style="font-family: 'Cardo', serif;">La Salle University</span>
             </a>
         </div>
     </nav>
-    
+
     <section class="overflow-x">
         <div class="hidden md:block bg-center h-96 rounded-2xl relative bg-no-repeat bg-cover relative md:ml-12 md:mr-12" style="background-image: url('/images/bg-default.png');">
             <div>
