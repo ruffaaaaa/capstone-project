@@ -74,14 +74,14 @@
 
                 <div class="items-center mb-5 mt-5 ml-4 mr-4">
                     <label class="w-32 text-gray-700 text-sm font-bold">Name of Event:</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nameofevent" name="nameofevent" type="text" required>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nameofevent" autocomplete="new-nameofevent" name="nameofevent" type="text" required >
                 </div>
                 <div class="items-center mb-5 mt-5 ml-4 mr-4">
                     <label class=" w-32 text-gray-700 text-sm font-bold mb-2" for="start-date">Maximum Expected Number of Attendees:</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max-attendees" name="max-attendees" type="text" required>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max-attendees" name="max-attendees" autocomplete="new-max-attendees"type="text" required>
                 </div>
                 
-                <!-- <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date">Start and End Date-Time of the Event Proper</label>
+                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date">Start and End Date-Time of the Event Proper</label>
                 <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
                     <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
                         <label class="text-gray-700 text-sm font-bold mb-10  md:hidden" id="event-start-date" name="event-start-date" for="start-date">Start Date and Time of Event:</label>
@@ -132,29 +132,27 @@
                     <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
                         <label class="text-gray-700 text-sm font-bold mb-2  md:hidden" for="end-date">End Date-Time of Cleanup:</label>
                         <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date"  type="datetime-local" required>
-                    </div> -->
-                <!-- </div> -->
+                    </div>
+                </div>
 
                 <div class="flex flex-col lg:flex-row">
                     <div class="w-full lg:w-1/2 pt-2 pl-2 pr-2 ">
                     <div class="bg-[#5CC273] p-2">
                         <span class="text-l font-bold text-white pl-4">EQUIPMENT</span>
-                        
                     </div>
                     <div>
-                
                         <div class="mb-2 mt-2 flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox equipment-checkbox" value="Chair" name="equipment[Chair]">
                             <div class="flex justify-between w-full items-center">
                                 <span>Chair</span>
-                                <input type="number" class="px-2 py-1 border rounded equipment-input input-size" name="equipment_no[Chair]" placeholder="No. Required" style="display: none;">
+                                <input type="number" class="px-2 py-1 border rounded equipment-input input-size" name="equipment_no[Chair]" autocomplete="new-equipment_no[Chair]" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                         <div class="mb-2 flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox equipment-checkbox" value="Table" name="equipment[Table]">
                             <div class="flex justify-between w-full items-center">
                                 <span>Table</span>
-                                <input type="number" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no[Table]" placeholder="No. Required" style="display: none;">
+                                <input type="number" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no[Table]" autocomplete="new-equipment_no[Table]" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
 
@@ -162,42 +160,42 @@
                             <input type="checkbox" class="form-checkbox equipment-checkbox" value="Sound System" name="equipment[Sound System]">
                             <div class="flex justify-between w-full items-center">
                                 <span>Sound System</span>
-                                <input type="number" class="px-2 py-1 border rounded equipment-input input-size" name="equipment_no[Sound System]" placeholder="No. Required" style="display: none;">
+                                <input type="number" class="px-2 py-1 border rounded equipment-input input-size" name="equipment_no[Sound System]" autocomplete="new-equipment_no[Sound System]" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                         <div class="mb-2 flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox equipment-checkbox" value="Microphone" name="equipment[Microphone]">
                             <div class="flex justify-between w-full items-center">
                                 <span>Microphone</span>
-                                <input type="number" class="px-2 py-2 border rounded equipment-input input-size" name="equipment_no[Microphone]" placeholder="No. Required" style="display: none;">
+                                <input type="number" class="px-2 py-2 border rounded equipment-input input-size" name="equipment_no[Microphone]" autcomplete="new-equipment_no[Microphone]" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                         <div class="mb-2 flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox equipment-checkbox" value="Plants" name="equipment[Plants]">
                             <div class="flex justify-between w-full items-center">
                                 <span>Plants</span>
-                                <input type="number" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no[Plants]" placeholder="No. Required" style="display: none;">
+                                <input type="number" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no[Plants]" autocomplete="new-equipment_no[Plants]" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                         <div class="mb-2 flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox equipment-checkbox" value="Comfort Rooms" name="equipment[Comfort Rooms]">
                             <div class="flex justify-between w-full items-center">
                                 <span>Comfort Rooms</span>
-                                <input type="number" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no[Comfort Rooms]" placeholder="No. Required" style="display: none;">
+                                <input type="number" class="px-3 py-2 border rounded equipment-input input-size" name="equipment_no[Comfort Rooms]" autocomplete="new-equipment_no[Comfort Rooms]" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                         <div class="mb-2 flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox equipment-checkbox" value="Internet Access" name="equipment[Internet Access]">
                             <div class="flex justify-between w-full items-center">
                                 <span>Internet Access</span>
-                                <input type="number" class="px-2 py-2 border rounded equipment-input input-size" name="equipment_no[Internet Access]"  placeholder="No. Required" style="display: none;">
+                                <input type="number" class="px-2 py-2 border rounded equipment-input input-size" name="equipment_no[Internet Access]" autocomplete="new-equipment_no[Internet Access]"  placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                         <div class="mb-2 items-center">
                             <input type="checkbox" id="other-equipment" class="form-checkbox">
                             <span>Other, please specify</span>
-                            <input type="text" id="other-equipment-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="other_equipment_name" placeholder="Name" style="display: none;">
-                            <input type="number" id="other-equipment-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="other_equipment_no" placeholder="No. Required" style="display: none;">
+                            <input type="text" id="other-equipment-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="other_equipment_name" autocomplete="new-other_equipment_name" placeholder="Name" style="display: none;">
+                            <input type="number" id="other-equipment-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="other_equipment_no" autocomplete="new-other_equipment_no" placeholder="No. Required" style="display: none;">
                         </div>
                     </div>
                     </div>
@@ -207,50 +205,65 @@
                         </div>
                         <div>
                             <div class="mb-2 mt-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Maintenance Crew (Regular)" name="personnel[Maintenance Crew (Regular)]">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Maintenance Crew (Regular)</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no"  placeholder="No. Required" style="display: none;">
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Maintenance Crew (Regular)]"  placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
-                            <div class="mb-2 flex items-center space-x-2">
+                            <div class="mb-2 flex items-center space-x-2" value="Maintenance Crew (Overtime)" name="personnel[Maintenance Crew (Overtime)]">
                                 <input type="checkbox" class="form-checkbox personnel-checkbox">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Maintenance Crew (Overtime)</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Maintenance Crew (Overtime)]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Sound/Light Technician" name="personnel[Sound/Light Technician]">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Sound/Light Technician</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Sound/Light Technician]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Nurse/First Aider" name="personnel[Nurse/First Aider]">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Nurse/First Aider</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Nurse/First Aider]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Security Guards" name="personnel[Security Guards]">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Security Guards</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Security Guards]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 items-center">
                                 <input type="checkbox" id="other-personnel" class="form-checkbox">
                                 <span>Other, please specify</span>
-                                <input type="text" id="other-personnel-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="name_other_personnel" placeholder="Name" style="display: none;">
-                                <input type="text" id="other-personnel-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="personel_no" placeholder="No. Required" style="display: none;">
+                                <input type="text" id="other-personnel-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="other_personnel_name" placeholder="Name" style="display: none;">
+                                <input type="text" id="other-personnel-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="other_personnel_no" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="mt-5">
+                    <div class="bg-[#5CC273] p-2">
+                        <span class="text-l font-bold text-white pl-4">B5. ATTACHMENTS</span>
+                    </div>
+                    <div class="flex pt-5">
+                        <input type="file" id="attachments" name="attachments[]" multiple class="hidden" onchange="displayFiles()">
+                        <label for="attachments" class="inline-block bg-green-100 text-green-700 rounded-full w-10 h-10 text-center cursor-pointer m-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 m-auto mt-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                            </svg>
+                        </label>
+                        <div id="fileList" class="text-black" style="margin: 15px;"></div>
+                    </div>
+                </div>
             </div>
+           
         </div>
 
         <div id="customerDetailsForm" class="hidden">
@@ -269,7 +282,7 @@
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="reserveeName" name="reserveeName" type="text" required>
                                 
             </div>
-            <!-- <div class="items-center mb-5 mt-5 ml-4 mr-4">
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Person-in-Charge of Event:</label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="person_in_charge_event" name="person_in_charge_event" type="text" required>
             </div>
@@ -295,7 +308,7 @@
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" type="text" required>
                     <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment" type="file">
                 </div>
-            </div> -->
+            </div>
         </div>
 
        

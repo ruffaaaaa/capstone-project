@@ -194,3 +194,16 @@ document.getElementById('other-personnel').addEventListener('change', function()
         numberInput.style.display = 'none';
     }
 });
+
+function displayFiles() {
+    const input = document.getElementById('attachments');
+    const fileList = document.getElementById('fileList');
+    fileList.innerHTML = ''; // Clear the previous file list
+    
+    for (let i = 0; i < input.files.length; i++) {
+        const file = input.files[i];
+        const listItem = document.createElement('div');
+        listItem.textContent = file.name;
+        fileList.appendChild(listItem);
+    }
+}

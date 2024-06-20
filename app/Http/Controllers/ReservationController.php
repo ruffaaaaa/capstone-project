@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ReservationDetails;
 use App\Models\SelectedFacilities;
+use App\Models\SupportPersonnels;
+use App\Models\Attachment;
 use App\Models\Facilities;
 use App\Models\Reservee;
 use App\Models\Equipment;
@@ -103,7 +105,43 @@ class ReservationController extends Controller
 
           
         ]);
+        
 
+        //personnel
+        $personnelData = [];
+        if ($request->has('personnel')) {
+            $personnelNames = $request->input('personnel', []);
+            $personnelQuantities = $request->input('personnel_no', []);
+
+            foreach ($personnelNames as $index => $pname) {
+                if (!empty($pname) && !empty($personnelQuantities[$index])) {
+                    $personnelData[] = [
+                        'reservedetailsID' => $nextNumericPart,
+                        'name' => $pname,
+                        'total_no' => $personnelQuantities[$index],
+                    ];
+                }
+            }
+        }
+
+        if ($request->has('other_personnel_name') && $request->has('other_personnel_no')) {
+            $potherName = $request->input('other_personnel_name');
+            $potherQuantity = $request->input('other_personnel_no');
+
+            if (!empty($potherName) && !empty($potherQuantity)) {
+                $personnelData[] = [
+                    'reservedetailsID' => $nextNumericPart,
+                    'name' => $potherName,
+                    'total_no' => $potherQuantity,
+                ];
+            }
+        }
+
+        if (!empty($personnelData)) {
+            SupportPersonnels::insert($personnelData);
+        }
+
+        //checkbox equipment
         $equipmentData = [];
         if ($request->has('equipment')) {
             $equipmentNames = $request->input('equipment', []);
@@ -112,6 +150,7 @@ class ReservationController extends Controller
             foreach ($equipmentNames as $index => $name) {
                 if (!empty($name) && !empty($equipmentQuantities[$index])) {
                     $equipmentData[] = [
+                        'reservedetailsID' => $nextNumericPart,
                         'name' => $name,
                         'total_no' => $equipmentQuantities[$index],
                     ];
@@ -126,6 +165,7 @@ class ReservationController extends Controller
 
             if (!empty($otherName) && !empty($otherQuantity)) {
                 $equipmentData[] = [
+                    'reservedetailsID' => $nextNumericPart,
                     'name' => $otherName,
                     'total_no' => $otherQuantity,
                 ];
@@ -137,6 +177,7 @@ class ReservationController extends Controller
             Equipment::insert($equipmentData);
         }
 
+
         // Save selected facilities
         if ($request->has('facility_checkbox')) {
             foreach ($request->input('facility_checkbox') as $facilityID => $checked) {
@@ -146,6 +187,28 @@ class ReservationController extends Controller
                 ]);
             }
         }
+
+        $attachmentFilenames = [];
+
+        if ($request->hasFile('attachments')) {
+            $attachments = $request->file('attachments');
+
+            foreach ($attachments as $attachment) {
+                $originalFilename = $attachment->getClientOriginalName();
+                $originalFilename = str_replace([' ', ','], ['_', ''], $originalFilename);
+                $originalPath = '' . $originalFilename;
+                $attachment->move(public_path('uploads/attachments'), $originalFilename);
+                $attachmentFilenames[] = $originalPath;
+            }
+        }
+
+        $attachmentFilenameString = implode(', ', $attachmentFilenames);
+
+        Attachment::create([
+            'reservedetailsID' => $nextNumericPart,
+            'file' => $attachmentFilenameString,
+        ]);
+
 
   
 
@@ -163,6 +226,9 @@ class ReservationController extends Controller
             // 'attachment' => $validatedData['endorsement_attachment'],
             // 'status' => 'Pending',
         ]);
+
+
+        
 
         return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
     }
