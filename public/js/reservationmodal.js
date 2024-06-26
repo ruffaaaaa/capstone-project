@@ -3,11 +3,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const prevButton = document.getElementById('prevButton');
     const facilitiesForm = document.getElementById('facilitiesForm');
     const reservationDetailsForm = document.getElementById('reservationDetailsForm');
+    const customerDetailsForm = document.getElementById('customerDetailsForm');
     const progressCircles = document.querySelectorAll('#progressCircles div');
     const storeReservationForm = document.getElementById('storeReservationForm');
     const submitButton = document.getElementById('submitButton');
-    const checkbox = document.querySelector('.equipment-checkbox');
-    const inputField = document.querySelector('.equipment-input');
 
     let currentStep = 1;
 
@@ -20,7 +19,8 @@ document.addEventListener("DOMContentLoaded", function() {
         navigateNext();
     });
 
-    prevButton.addEventListener('click', function() {
+    prevButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default form submission
         navigatePrevious();
     });
 

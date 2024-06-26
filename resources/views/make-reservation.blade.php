@@ -78,7 +78,7 @@
                 </div>
                 <div class="items-center mb-5 mt-5 ml-4 mr-4">
                     <label class=" w-32 text-gray-700 text-sm font-bold mb-2" for="start-date">Maximum Expected Number of Attendees:</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max-attendees" name="max-attendees" autocomplete="new-max-attendees"type="text" required>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max-attendees" name="max-attendees" autocomplete="new-max-attendees"type="number" required>
                 </div>
                 
                 <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date">Start and End Date-Time of the Event Proper</label>
@@ -205,45 +205,45 @@
                         </div>
                         <div>
                             <div class="mb-2 mt-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Maintenance Crew (Regular)" name="personnel[Maintenance Crew (Regular)]">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Maintenance Crew (Regular)" name="personnel[Maintenance Crew (Regular)]" autocomplete="new-personnel[Maintenance Crew (Regular)]">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Maintenance Crew (Regular)</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Maintenance Crew (Regular)]"  placeholder="No. Required" style="display: none;">
+                                    <input type="number" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Maintenance Crew (Regular)]" autocomplete="new-personnel[Maintenance Crew (Regular)]"  placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
-                            <div class="mb-2 flex items-center space-x-2" value="Maintenance Crew (Overtime)" name="personnel[Maintenance Crew (Overtime)]">
+                            <div class="mb-2 flex items-center space-x-2" value="Maintenance Crew (Overtime)" name="personnel[Maintenance Crew (Overtime)]" autocomplete="new-personnel[Maintenance Crew (Overtime)]">
                                 <input type="checkbox" class="form-checkbox personnel-checkbox">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Maintenance Crew (Overtime)</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Maintenance Crew (Overtime)]" placeholder="No. Required" style="display: none;">
+                                    <input type="number" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Maintenance Crew (Overtime)]" autocomplete="new-personnel[Maintenance Crew (Overtime)]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Sound/Light Technician" name="personnel[Sound/Light Technician]">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Sound/Light Technician" name="personnel[Sound/Light Technician]" autocomplete="new-personnel[Sound/Light Technician]">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Sound/Light Technician</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Sound/Light Technician]" placeholder="No. Required" style="display: none;">
+                                    <input type="number" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Sound/Light Technician]" autocomplete="new-personnel[Sound/Light Technician]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Nurse/First Aider" name="personnel[Nurse/First Aider]">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Nurse/First Aider" name="personnel[Nurse/First Aider]" autocomplete="new-personnel[Nurse/First Aider]" >
                                 <div class="flex justify-between w-full items-center">
                                     <span>Nurse/First Aider</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Nurse/First Aider]" placeholder="No. Required" style="display: none;">
+                                    <input type="number" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Nurse/First Aider]" autocomplete="new-personnel[Nurse/First Aider]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 flex items-center space-x-2">
-                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Security Guards" name="personnel[Security Guards]">
+                                <input type="checkbox" class="form-checkbox personnel-checkbox" value="Security Guards" name="personnel[Security Guards]" autocomplete="new-personnel[Nurse/First Aider]">
                                 <div class="flex justify-between w-full items-center">
                                     <span>Security Guards</span>
-                                    <input type="text" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Security Guards]" placeholder="No. Required" style="display: none;">
+                                    <input type="number" class="px-3 py-2 border rounded personnel-input input-size" name="personnel_no[Security Guards]" autocomplete="new-personnel[Nurse/First Aider]" placeholder="No. Required" style="display: none;">
                                 </div>
                             </div>
                             <div class="mb-2 items-center">
                                 <input type="checkbox" id="other-personnel" class="form-checkbox">
                                 <span>Other, please specify</span>
-                                <input type="text" id="other-personnel-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="other_personnel_name" placeholder="Name" style="display: none;">
-                                <input type="text" id="other-personnel-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="other_personnel_no" placeholder="No. Required" style="display: none;">
+                                <input type="text" id="other-personnel-name" class="mt-2 w-full px-2 py-2 border rounded name-size" name="other_personnel_name" autocomplete="new-other_personnel_name" placeholder="Name" style="display: none;">
+                                <input type="number" id="other-personnel-number" class="mt-2 w-full px-3 py-2 border rounded name-size" name="other_personnel_no" autocomplete="new-other_personnel_no" placeholder="No. Required" style="display: none;">
                             </div>
                         </div>
                     </div>
@@ -279,34 +279,34 @@
 
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Requested By:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="reserveeName" name="reserveeName" type="text" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="reserveeName" name="reserveeName" autocomplete="new-reserveeName" type="text" required>
                                 
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Person-in-Charge of Event:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="person_in_charge_event" name="person_in_charge_event" type="text" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="person_in_charge_event" name="person_in_charge_event" autocomplete="new-person_in_charge_event" type="text" required>
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Email:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" type="email" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" autocomplete="new-email" type="email" required>
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Contact Number:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contact_details" name="contact_details" type="text" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contact_details" name="contact_details" autocomplete="new-contact_details" type="text" required>
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Unit/Department/Company:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="unit_department_company" name="unit_department_company" type="text" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="unit_department_company" name="unit_department_company" autocomplete="new-unit_department_company" type="text" required>
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Date of Filing:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date_of_filing" name="date_of_filing" type="date" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date_of_filing" name="date_of_filing" autocomplet="new-date_of_filing" type="date" required>
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
                 <div class="flex items-center">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" type="text" required>
-                    <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment" type="file">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" autocomplete="new-endorsed_by" type="text" required>
+                    <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment" autocomplete="new-endorsement_attachment"type="file">
                 </div>
             </div>
         </div>
