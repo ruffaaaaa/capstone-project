@@ -319,6 +319,10 @@
             <div class="w-3 h-3 m-2 bg-gray-300 rounded-full"></div>
         </div>
 
+        <div id="loadingSpinner" class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 bg-black hidden">
+            <div class="loader"></div>
+        </div>
+
         <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden">
             <div class="modal-container bg-green-700 w-100px mt-48 md:max-w-md mx-auto rounded shadow-3xl z-50 overflow-y-auto">
                 <div class="mt-5 mb-5 flex flex-col items-center justify-center">
@@ -326,7 +330,7 @@
                         <img src="/images/lsu-logo 2.png" class="mx-auto w-16 h-30" />
                     </a>
                     <span class="font-bold text-2xl text-white text-center">YOUR RESERVATION REQUEST IS SUBMITTED.</span>
-                    <span id="reservation-code" class="text-center text-white mt-2">Reservation Code: </span> 
+                    <span id="reservation-code" class="text-center text-white mt-2 hidden">Reservation Code: </span> 
                     <a href="/" class="border border-white px-4 py-2 mt-5 text-white rounded-xl mb-5">Home</a>
                 </div>
             </div>

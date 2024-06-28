@@ -9,8 +9,5 @@ export default {
     extend: {},
   },
   plugins: [],
-  screens: {
-    sm: {max: '600px'},
-    xs: {max: '425px'},
-  },
+  
 }

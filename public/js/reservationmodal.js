@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const progressCircles = document.querySelectorAll('#progressCircles div');
     const storeReservationForm = document.getElementById('storeReservationForm');
     const submitButton = document.getElementById('submitButton');
-
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    
     let currentStep = 1;
 
     facilitiesForm.style.display = 'block';
@@ -15,18 +16,18 @@ document.addEventListener("DOMContentLoaded", function() {
     updateButtonText();
     updateProgressCircles();
 
-    nextButton.addEventListener('click', function() {
-        event.preventDefault(); // Prevent default form submission
+    nextButton.addEventListener('click', function(event) {
+        event.preventDefault();
         navigateNext();
     });
 
     prevButton.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
         navigatePrevious();
     });
 
     submitButton.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
         handleSubmit();
     });
 
@@ -82,13 +83,13 @@ document.addEventListener("DOMContentLoaded", function() {
             prevButton.textContent = 'Back';
             nextButton.textContent = 'Next';
         } else if (currentStep === 3) {
-            nextButton.style.display = 'none'; // Hide next button
-            submitButton.style.display = 'inline-block'; // Show submit button
+            nextButton.style.display = 'none'; 
+            submitButton.style.display = 'inline-block'; 
         } else {
             prevButton.textContent = 'Previous';
             nextButton.textContent = 'Next';
-            nextButton.style.display = 'inline-block'; // Show next button
-            submitButton.style.display = 'none'; // Hide submit button
+            nextButton.style.display = 'inline-block';
+            submitButton.style.display = 'none';
         }
     }
 
@@ -107,6 +108,8 @@ document.addEventListener("DOMContentLoaded", function() {
     function handleSubmit() {
         const formData = new FormData(storeReservationForm);
 
+        loadingSpinner.classList.remove('hidden'); // Show spinner
+
         fetch(storeReservationForm.action, {
             method: 'POST',
             headers: {
@@ -117,11 +120,13 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
+            loadingSpinner.classList.add('hidden'); // Hide spinner
             if (data.message === 'Reservation saved successfully') {
                 showModal(data.reservationCode);
             }
         })
         .catch(error => {
+            loadingSpinner.classList.add('hidden'); // Hide spinner
             console.error('Error:', error);
         });
     }
@@ -130,14 +135,17 @@ document.addEventListener("DOMContentLoaded", function() {
         var modal = document.getElementById('myModal');
         var reservationCodeSpan = document.getElementById('reservation-code');
         reservationCodeSpan.textContent = 'Reservation Code: ' + reservationCode;
+        reservationCodeSpan.classList.remove('hidden');
         modal.style.display = 'block';
     }
 
     var closeBtn = document.querySelector('.close');
-    closeBtn.addEventListener('click', function() {
-        var modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        });
+    }
 
     window.onclick = function(event) {
         var modal = document.getElementById('myModal');

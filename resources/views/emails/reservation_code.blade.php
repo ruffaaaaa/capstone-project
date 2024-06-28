@@ -1,58 +1,55 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Facilities Reservation System</title>
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/styles.css">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <link href="/css/custom.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Template</title>
 </head>
-
-<body class="m-0 p-0 font-sans">
-    <table width="100%" class="bg-gray-100">
+<body style="margin: 0; padding: 0; font-family: 'Helvetica', 'Arial', sans-serif;">
+    <table width="100%" cellspacing="0" cellpadding="0" style="background-color: #f3f4f6;">
         <tr>
-            <td class="py-5">
-                <table align="center" class="max-w-2xl w-full bg-white rounded-lg shadow-md">
+            <td style="padding: 20px;">
+                <table align="center" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                     <tr>
-                        <td class="p-5 text-center bg-indigo-700 text-white text-2xl font-bold">
-                            <img src="/images/lsu-header.png">
+                        <td style="text-align: center; padding: 20px;">
+                          <div class="m_-6882499225859232211main-container">
+                            <img src="https://ci3.googleusercontent.com/meips/ADKq_NaQfG-TngAqMOdjBLhiF9mCfQaupdFfkoWw_oz4OjNNfWvRlDJcY2l53PTxr2j_61WXiytBmnAvM5bRvE06hcjfw_7gMmoSuZ7iyjKAjeEUsloSESubUd93OhHx7LZmLUBBvCqqbYeSHy-yM55PZyJx8aN0Ng=s0-d-e1-ft#https://lsu-media-styles.sgp1.digitaloceanspaces.com/lsu-public-images/banners/logo/lsu-b-v.png" width="200" height="auto" class="m_-6882499225859232211logo-center CToWUd" data-bit="iit">
+                            <div class="m_-6882499225859232211text-center" style="color:black;font-size:15px;color:#0a260c">Facilities Reservation</div>
+                          </div>
                         </td>
                     </tr>
                     <tr>
-                        <td class="p-5 text-gray-700 text-lg leading-6">
-                            <p class="m-0">Hello,</p>
-                            <p class="my-4">Thank you for making a reservation with us. Your reservation code is provided below. Please keep this code safe as you will need it to track and confirm your reservation.</p>
-                            <table align="center" class="my-5">
+                        <td style="padding: 20px; font-size: 16px; line-height: 1.5; color: #374151;">
+                            <p style="margin: 0;">Hello,</p>
+                            <p style="margin: 16px 0;">Thank you for making a reservation with us. Your reservation code is provided below. Please keep this code safe as you will need it to track the status of your reservation.</p>
+                            <table align="center" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
                                 <tr>
-                                    <td class="bg-green-900 rounded">
-                                        <span class="inline-block px-6 py-3 text-white font-bold">{{ $reservationCode }}</span>
+                                    <td style=" background-color: #05481C; border-radius: 4px;">
+                                        <span style="display: inline-block; padding: 12px 24px; color: #ffffff; font-weight: bold;">{{ $reservationCode }}</span>
                                     </td>
                                 </tr>
                             </table>
-                            <p class="m-0">If you have any questions or need to make changes to your reservation, feel free to <a href="https://example.com/contact" class="text-indigo-700 no-underline">contact us</a>.</p>
+                            <p style="margin: 0;">If you have any questions or need to make changes to your reservation, feel free to <a href="https://example.com/contact" style="color: #4f46e5; text-decoration: none;">contact us</a>.</p>
                         </td>
                     </tr>
                     <tr>
-                        <td class="p-5 text-center text-sm text-gray-500">
-                            &copy; 2024 Our Company. All rights reserved.
+                        <td style="padding: 20px; text-align: center; font-size: 14px; color: #6b7280;">
+                            <div style="background:#0a260c;padding:20px 5px 5px 5px">
+                                <div class="m_-6882499225859232211footer-content">
+                                <img src="https://ci3.googleusercontent.com/meips/ADKq_NbEQL7HFsy1Ul8qYlJxpX1vZ51jLOeFw-ynG34VeDidgWRJdYRAMLJJDiXibgDRMcT4jfU13HnTok7b1hk2CX8IbuJo0ej9GgkB-vLxPiAIpYHQVXQmsU2nmeXeSET9DZx0RFr0h8GtE5mKOkL_SV-xooZRdg=s0-d-e1-ft#https://lsu-media-styles.sgp1.digitaloceanspaces.com/lsu-public-images/banners/logo/lsu-w-v.png" style="height:50px" class="CToWUd" data-bit="iit">
+                                <div style="margin-bottom:10px;color:white">
+                                    Copyright 2024. All Rights Reserved.
+                                </div>
+                                <div style="color:white;padding:5px 10px 15px 10px;text-align:center;font-size:10px">
+                                    Disregard this email if you are not the abovenamed person or if you are done with the verification process.
+                                </div>
+                                </div>
+                            </div>                        
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
-
-
-
-    <h1>Your Reservation Code</h1>
-    <p>Your reservation code is: </p>
 </body>
 </html>
