@@ -70,24 +70,7 @@
                                 <span class="text ml-3">Facilities</span>
                             </a>
                         </li>
-                            <a href="admin-personnels" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-black py-2 px-4">
-                                <span class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
-                                    </svg>
-                                <span class="text ml-3">Personnels</span>
-                            </a>
-                        </li>
-                        </li>
-                            <a href="admin-equipments" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-black py-2 px-4">
-                                <span class="icon">
-                                    <!-- Replace the SVG code with your desired icon -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 23 31" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path d="M16.1748 0H6.82522C1.85434 0 0 1.77697 0 6.54046V24.4595C0 29.223 1.85434 31 6.82522 31H16.1748C21.1457 31 23 29.223 23 24.4595V6.54046C23 1.77697 21.1457 0 16.1748 0ZM11.5 6.54046C12.7933 6.54046 13.8374 7.54094 13.8374 8.78034C13.8374 10.0197 12.7933 11.0202 11.5 11.0202C10.2066 11.0202 9.16256 10.0197 9.16256 8.78034C9.16256 7.54094 10.2066 6.54046 11.5 6.54046ZM11.5 24.4595C8.91324 24.4595 6.82522 22.4586 6.82522 19.9798C6.82522 17.501 8.91324 15.5 11.5 15.5C14.0867 15.5 16.1748 17.501 16.1748 19.9798C16.1748 22.4586 14.0867 24.4595 11.5 24.4595Z" fill="#292D32"/>
-                                    </svg>
-                                <span class="text ml-3">Equipments</span>
-                            </a>
-                        </li>
+    
                         <li>
                             <div class="relative">
                                 <button onclick="toggleSettings()" class="flex hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4 w-100 focus:outline-none">

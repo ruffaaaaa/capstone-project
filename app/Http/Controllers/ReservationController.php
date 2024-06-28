@@ -11,6 +11,8 @@ use App\Models\Reservee;
 use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationCodeMail;
 
 class ReservationController extends Controller
 {
@@ -22,65 +24,37 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
-        // $validatedData = $request->validate([
-        //     'nameofevent' => 'required',
-        //     'max-attendees' => 'required|numeric',
-        //     'event-start-date' => 'required|date_format:Y-m-d H:i:s',
-        //     'event-end-date' => 'required|date_format:Y-m-d H:i:s',
-            // 'preparation_start_date' => 'required|date_format:Y-m-d H:i:s',
-            // 'preparation_end_date' => 'required|date_format:Y-m-d H:i:s',
-            // 'cleanup_start_date' => 'required|date_format:Y-m-d H:i:s',
-            // 'cleanup_end_date' => 'required|date_format:Y-m-d H:i:s',
-        //     'reserveeName' => 'required',
-        //     'email' => 'required|email',
-        //     'person_in_charge_event' => 'required',
-        //     'contact_details' => 'required',
-        //     'unit_department_company' => 'required',
-        //     'date_of_filing' => 'required|date',
-        //     'endorsed_by' => 'required',
-        //     'endorsement_attachment' => 'required|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
-            
-        // ]);
-
         $validatedData = $request->validate([
             'nameofevent' => 'required',
             'max-attendees' => 'required|numeric',
-            // 'event-start-date' => 'required|date_format:Y-m-d\TH:i',
-            // 'event-end-date' => 'required|date_format:Y-m-d\TH:i',
-            // 'preparation-start-date' => 'required|date_format:Y-m-d\TH:i',
-            // 'preparation-end-date' =>'required|date_format:Y-m-d\TH:i',
-            // 'cleanup-start-date' => 'required|date_format:Y-m-d\TH:i',
-            // 'cleanup-end-date' => 'required|date_format:Y-m-d\TH:i',
+            'event-start-date' => 'required|date_format:Y-m-d\TH:i',
+            'event-end-date' => 'required|date_format:Y-m-d\TH:i',
+            'preparation-start-date' => 'required|date_format:Y-m-d\TH:i',
+            'preparation-end-date' => 'required|date_format:Y-m-d\TH:i',
+            'cleanup-start-date' => 'required|date_format:Y-m-d\TH:i',
+            'cleanup-end-date' => 'required|date_format:Y-m-d\TH:i',
             'reserveeName' => 'required',
-            // 'email' => 'required|email',
-            // 'person_in_charge_event' => 'required',
-            // 'contact_details' => 'required',
-            // 'unit_department_company' => 'required',
-            // 'date_of_filing' => 'required|date',
-            // 'endorsed_by' => 'required',
-            // 'endorsement_attachment' => 'required|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
-            
+            'email' => 'required|email',
+            'person_in_charge_event' => 'required',
+            'contact_details' => 'required',
+            'unit_department_company' => 'required',
+            'date_of_filing' => 'required|date',
+            'endorsed_by' => 'required',
+            'endorsement_attachment' => 'required|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
 
-        
-
-
-        
-        
-        
-        // $eventStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-start-date'])->format('Y-m-d H:i:s');
-        // $eventEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-end-date'])->format('Y-m-d H:i:s');
-        // $prepStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-start-date'])->format('Y-m-d H:i:s');
-        // $prepEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-end-date'])->format('Y-m-d H:i:s');
-        // $cleanStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-start-date'])->format('Y-m-d H:i:s');
-        // $cleanEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-end-date'])->format('Y-m-d H:i:s');
+        $eventStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-start-date'])->format('Y-m-d H:i:s');
+        $eventEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-end-date'])->format('Y-m-d H:i:s');
+        $prepStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-start-date'])->format('Y-m-d H:i:s');
+        $prepEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-end-date'])->format('Y-m-d H:i:s');
+        $cleanStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-start-date'])->format('Y-m-d H:i:s');
+        $cleanEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-end-date'])->format('Y-m-d H:i:s');
 
         $lastReservation = ReservationDetails::latest('reservedetailsID')->first();
         $lastNumericPart = $lastReservation ? (int) $lastReservation->reservedetailsID : 10000;
         $nextNumericPart = $lastNumericPart + 1;
         $reserveeID = 'LSUFRS' . time();
 
-        //handle attachments
         if (!file_exists(public_path('uploads/attachments'))) {
             mkdir(public_path('uploads/attachments'), 0755, true);
         }
@@ -90,24 +64,19 @@ class ReservationController extends Controller
             $filePath = $file->move(public_path('uploads/attachments'), $file->getClientOriginalName());
             $validatedData['endorsement_attachment'] = 'uploads/attachments/' . $file->getClientOriginalName();
         }
-        //end
 
         $reservationDetails = ReservationDetails::create([
             'reservedetailsID' => $nextNumericPart,
             'event_name' => $validatedData['nameofevent'],
             'max_attendees' => $validatedData['max-attendees'],
-            // 'event_start_date' => $eventStartDate,
-            // 'event_end_date' => $eventEndDate,
-            // 'preparation_start_date' => $prepStartDate,
-            // 'preparation_end_date_time' => $prepEndDate,
-            // 'cleanup_start_date_time' => $cleanStartDate,
-            // 'cleanup_end_date_time' => $cleanEndDate,
-
-          
+            'event_start_date' => $eventStartDate,
+            'event_end_date' => $eventEndDate,
+            'preparation_start_date' => $prepStartDate,
+            'preparation_end_date_time' => $prepEndDate,
+            'cleanup_start_date_time' => $cleanStartDate,
+            'cleanup_end_date_time' => $cleanEndDate,
         ]);
-        
 
-        //personnel
         $personnelData = [];
         if ($request->has('personnel')) {
             $personnelNames = $request->input('personnel', []);
@@ -141,7 +110,6 @@ class ReservationController extends Controller
             SupportPersonnels::insert($personnelData);
         }
 
-        //checkbox equipment
         $equipmentData = [];
         if ($request->has('equipment')) {
             $equipmentNames = $request->input('equipment', []);
@@ -158,7 +126,6 @@ class ReservationController extends Controller
             }
         }
 
-        // Process the "Other" equipment input if it is filled
         if ($request->has('other_equipment_name') && $request->has('other_equipment_no')) {
             $otherName = $request->input('other_equipment_name');
             $otherQuantity = $request->input('other_equipment_no');
@@ -172,13 +139,10 @@ class ReservationController extends Controller
             }
         }
 
-        // Insert all equipment data into the database
         if (!empty($equipmentData)) {
             Equipment::insert($equipmentData);
         }
 
-
-        // Save selected facilities
         if ($request->has('facility_checkbox')) {
             foreach ($request->input('facility_checkbox') as $facilityID => $checked) {
                 SelectedFacilities::create([
@@ -209,31 +173,22 @@ class ReservationController extends Controller
             'file' => $attachmentFilenameString,
         ]);
 
-
-  
-
-        // Create reservee
         $reservee = Reservee::create([
             'reserveeID' => $reserveeID,
             'reserveeName' => $validatedData['reserveeName'],
             'reservedetailsID' => $nextNumericPart,
-            // 'person_in_charge_event' => $validatedData['person_in_charge_event'],
-            // 'email' => $validatedData['email'],
-            // 'contact_details' => $validatedData['contact_details'],
-            // 'unit_department_company' => $validatedData['unit_department_company'],
-            // 'date_of_filing' => $validatedData['date_of_filing'],
-            // 'endorsed_by' => $validatedData['endorsed_by'],
-            // 'attachment' => $validatedData['endorsement_attachment'],
-            // 'status' => 'Pending',
+            'person_in_charge_event' => $validatedData['person_in_charge_event'],
+            'email' => $validatedData['email'],
+            'contact_details' => $validatedData['contact_details'],
+            'unit_department_company' => $validatedData['unit_department_company'],
+            'date_of_filing' => $validatedData['date_of_filing'],
+            'endorsed_by' => $validatedData['endorsed_by'],
+            'attachment' => $validatedData['endorsement_attachment'],
+            'status' => 'Pending',
         ]);
 
-
-        
+        Mail::to($validatedData['email'])->send(new ReservationCodeMail($reserveeID));
 
         return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
     }
-
-  
 }
-
-

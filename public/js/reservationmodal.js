@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateProgressCircles();
 
     nextButton.addEventListener('click', function() {
+        event.preventDefault(); // Prevent default form submission
         navigateNext();
     });
 

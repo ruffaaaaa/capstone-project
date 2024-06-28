@@ -14,7 +14,7 @@
     <link href="/css/custom.css" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="relative bg-green-50 overflow-hidden max-h-screen">
+<body class="relative bg-[#E5EFE8]   overflow-hidden max-h-screen">
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
             <div class="flex flex-col justify-between h-full">
                 <div class="flex-grow">
@@ -69,25 +69,6 @@
                                         </svg>
                                     </span>
                                     <span class="text ml-3">Facilities</span>
-                                </a>
-                            </li>
-                                <a href="admin-personnels" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-black py-2 px-4">
-                                    <span class="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
-                                        </svg>
-                                    <span class="text ml-3">Personnels</span>
-                                </a>
-                            </li>
-                            </li>
-                                <a href="admin-equipments" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
-                                    <span class="icon">
-                                        <!-- Replace the SVG code with your desired icon -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" viewBox="0 0 23 31" class="w-5 h-5">
-                                            <path d="M16.1748 0H6.82522C1.85434 0 0 1.77697 0 6.54046V24.4595C0 29.223 1.85434 31 6.82522 31H16.1748C21.1457 31 23 29.223 23 24.4595V6.54046C23 1.77697 21.1457 0 16.1748 0ZM11.5 6.54046C12.7933 6.54046 13.8374 7.54094 13.8374 8.78034C13.8374 10.0197 12.7933 11.0202 11.5 11.0202C10.2066 11.0202 9.16256 10.0197 9.16256 8.78034C9.16256 7.54094 10.2066 6.54046 11.5 6.54046ZM11.5 24.4595C8.91324 24.4595 6.82522 22.4586 6.82522 19.9798C6.82522 17.501 8.91324 15.5 11.5 15.5C14.0867 15.5 16.1748 17.501 16.1748 19.9798C16.1748 22.4586 14.0867 24.4595 11.5 24.4595Z"  fill="#292D32" />
-                                        </svg>
-                                    </span>
-                                    <span class="text ml-3">Equipments</span>
                                 </a>
                             </li>
                             <li>
@@ -216,26 +197,26 @@
                             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
                                     <div class="mt-3 text-center sm:mt-0 w-full">
-                                        <a href="/" class="-mt-5">
+                                        <a href="/" class="">
                                             <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
                                         </a>
                                         <h3 class="text-lg leading-6 font-medium text-gray-900">Add Facility</h3>
-                                        <form id="addForm" action="{{ route('facility.save') }}" method="POST" enctype="multipart/form-data">
+                                        <form id="addForm" action="{{ route('facility.save') }}" method="POST" enctype="multipart/form-data" class="px-3">
                                             @csrf
                                         
                                             <div class="mb-2">
                                                 <label for="facilityName" class="block text-gray-700 font-bold  text-left ">Facility Name</label>
-                                                <input type="text" class="form-input w-full border border-solid border-gray-300" id="facilityName" name="facilityName" required>
+                                                <input type="text" class=" rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="facilityName" name="facilityName" required>
                                             </div>
 
                                             <div class="mb-2">
                                                 <label for="image" class="block text-gray-700 font-bold  text-left ">Image</label>
-                                                <input type="file" class="form-input w-full border border-solid border-gray-300" id="image" name="image" accept="image/*" required>
+                                                <input type="file" class=" rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="image" name="image" accept="image/*" required>
                                             </div>
 
                                             <div class="mb-2">
-                                                <label for="status" class="block text-gray-700 font-bold  text-left ">Status</label>
-                                                <select class="form-select w-full" id="status" name="status" required>
+                                                <label for="status" class=" block text-gray-700 font-bold  text-left ">Status</label>
+                                                <select class="form-select rounded-l  w-full py-2 px-3" id="status" name="status" required>
                                                     <option value="Available">Available</option>
                                                     <option value="Not Available">Not Available</option>
                                                 </select>
@@ -261,7 +242,7 @@
                             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
                                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <div class="sm:flex sm:items-start">
-                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
                                             <a href="/" class="-mt-8">
                                                 <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
                                             </a>
@@ -272,11 +253,11 @@
                                                 <input type="hidden" id="editFacilityID" name="facilityID">
                                                 <div class="mt-2">
                                                     <label for="editFacilityName" class="block text-gray-600 text-left font-bold ">Facility Name</label>
-                                                    <input type="text" id="editFacilityName" name="facilityName" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 h-10">
+                                                    <input type="text" id="editFacilityName" name="facilityName" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300">
                                                 </div>
                                                 <div class="mt-2">
                                                     <label for="editStatus" class="block text-gray-600 text-left font-bold">Status</label>
-                                                    <select id="editStatus" name="status" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 h-10">
+                                                    <select id="editStatus" name="status" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300">
                                                         <option value="Available">Available</option>
                                                         <option value="Unavailable">Unavailable</option>
                                                     </select>

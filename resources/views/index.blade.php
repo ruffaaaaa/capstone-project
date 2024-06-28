@@ -31,8 +31,8 @@
             <div>
                 <div class="md:absolute md:inset-0 flex flex-col items-center mt-12">
                     <img src="images/lsu-logotype-white.png" style="height: 80px;">
-                    <span class="text-4xl md:text-7xl text-white mt-5" style="font-family: 'Cardo', serif;">La Salle University</span>
-                    <span class="text-xl md:text-2xl mt-3 text-white" style="font-family: 'Cardo', serif;">Facilities Reservation System</span>
+                    <span class="text-4xl md:text-7xl text-white mt-10" style="font-family: 'Cardo', serif;">Facilities Reservation System</span>
+                    <span class="text-xl md:text-2xl mt-3 text-white" hidden style="font-family: 'Cardo', serif;"></span>
                 </div>
             </div>
 
