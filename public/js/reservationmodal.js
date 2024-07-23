@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const storeReservationForm = document.getElementById('storeReservationForm');
     const submitButton = document.getElementById('submitButton');
     const loadingSpinner = document.getElementById('loadingSpinner');
+    const facilitiesAlert = document.getElementById('facilitiesAlert');
+    const equipmentAlert = document.getElementById('equipmentAlert');
+    const customerDetailsAlert = document.getElementById('customerDetailsAlert');
     
     let currentStep = 1;
 
@@ -18,7 +21,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     nextButton.addEventListener('click', function(event) {
         event.preventDefault();
-        navigateNext();
+        if (validateForm()) {
+            navigateNext();
+        }
     });
 
     prevButton.addEventListener('click', function(event) {
@@ -28,7 +33,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     submitButton.addEventListener('click', function(event) {
         event.preventDefault();
-        handleSubmit();
+        if (validateForm()) {
+            handleSubmit();
+        }
     });
 
     function navigateNext() {
@@ -131,6 +138,70 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    function validateForm() {
+        let valid = true;
+        let inputs;
+
+        switch (currentStep) {
+            case 1:
+                inputs = facilitiesForm.querySelectorAll('input[required]');
+                if (!validateCheckboxes(facilitiesForm)) {
+                    facilitiesAlert.classList.remove('hidden');
+                    valid = false;
+                } else {
+                    facilitiesAlert.classList.add('hidden');
+                }
+                break;
+            case 2:
+                inputs = reservationDetailsForm.querySelectorAll('input[required]');
+                if (!validateCheckboxes(reservationDetailsForm)) {
+                    equipmentAlert.classList.remove('hidden');
+                    valid = false;
+                } else {
+                    equipmentAlert.classList.add('hidden');
+                }
+                break;
+            case 3:
+                inputs = customerDetailsForm.querySelectorAll('input[required]');
+                if (validateInputs(inputs)) {
+                    customerDetailsAlert.classList.add('hidden');
+                } else {
+                    customerDetailsAlert.classList.remove('hidden');
+                    valid = false;
+                }
+                break;
+            default:
+                inputs = [];
+        }
+
+        return valid;
+    }
+
+    function validateCheckboxes(section) {
+        const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+        let checked = false;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                checked = true;
+            }
+        });
+
+        return checked;
+    }
+
+    function validateInputs(inputs) {
+        let allFilled = true;
+        inputs.forEach(input => {
+            if (!input.value) {
+                input.classList.add('border-red-500');
+                allFilled = false;
+            } else {
+                input.classList.remove('border-red-500');
+            }
+        });
+        return allFilled;
+    }
+
     function showModal(reservationCode) {
         var modal = document.getElementById('myModal');
         var reservationCodeSpan = document.getElementById('reservation-code');
@@ -216,3 +287,4 @@ function displayFiles() {
         fileList.appendChild(listItem);
     }
 }
+

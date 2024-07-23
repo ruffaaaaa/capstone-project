@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\CalendarController;
+
 use App\Models\Facilities;
 
 
@@ -34,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    //facilities
     Route::get('/admin-facilities', function () {
         $facilities = Facilities::all();
         return view('dashboard.admin.facilities', compact('facilities'));
@@ -41,6 +44,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/facilities/save', [FacilitiesController::class, 'create'])->name('facility.save');
     Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'update'])->name('facilities.update');
     Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'destroy'])->name('facilities.destroy');
+    //reservationmgmt
+    Route::get('/admin-reservation', function () {
+        return view('dashboard.admin.reservationmgmt');
+    });
+
+    //calendar-admin
+    Route::get('/reservations', [CalendarController::class, 'getReservations']);
+
+    Route::get('/admin-calendar', [CalendarController::class, 'showCalendar']);
+
+    
 });
 
 Route::get('/make-reservation', [ReservationController::class, 'showReservationForm'])->name('make-reservation');

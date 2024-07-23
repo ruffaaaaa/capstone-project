@@ -15,12 +15,7 @@ class Facilities extends Model
 
     public function reservationDetails()
     {
-        return $this->hasMany(ReservationDetails::class, 'facilityID');
-    }
-
-    public function selectedFacilities()
-    {
-        return $this->hasMany(SelectedFacilities::class, 'facilityID', 'facilityID');
+        return $this->belongsToMany(ReservationDetails::class, 'selected_facilities', 'facilityID', 'reservedetailsID');
     }
     
 }

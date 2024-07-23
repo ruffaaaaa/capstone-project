@@ -23,17 +23,17 @@ class ReservationDetails extends Model
 
     public function facilities()
     {
-        return $this->belongsToMany(Facilities::class, 'selected_facilities', 'reservationdetailsID', 'facilityID');
+        return $this->belongsToMany(Facilities::class, 'selected_facilities', 'reservedetailsID', 'facilityID');
     }
 
     public function noEquipments()
     {
-        return $this->hasOne(NoEquipments::class, 'reservedetailsID', 'reservedetailsID');
+        return $this->hasOne(Equipment::class, 'reservedetailsID', 'reservedetailsID');
     }
 
     public function reservationAttachments()
     {
-        return $this->hasMany(ReservationAttachments::class, 'reservedetailsID', 'reservedetailsID');
+        return $this->hasMany(Attachment::class, 'reservedetailsID', 'reservedetailsID');
     }
     
     public function reservee()

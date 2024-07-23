@@ -59,6 +59,8 @@
                     </div>
                 @endforeach
             </div>
+            <div id="facilitiesAlert" class="text-center hidden text-red-500 mb-4">Please select at least one facility.</div>
+
         </div>
         <div id="reservationDetailsForm" class="hidden mx-full flex flex-col items-center justify-center">
             <div class="mb-6 flex justify-center items-center"> 
@@ -81,57 +83,46 @@
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max-attendees" name="max-attendees" autocomplete="new-max-attendees"type="number" required>
                 </div>
                 
-                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date">Start and End Date-Time of the Event Proper</label>
+                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="event-start-date">Start and End Date-Time of the Event Proper</label>
                 <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
                     <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
-                        <label class="text-gray-700 text-sm font-bold mb-10  md:hidden" id="event-start-date" name="event-start-date" for="start-date">Start Date and Time of Event:</label>
-
+                        <label class="text-gray-700 text-sm font-bold mb-10 md:hidden" id="event-start-date-label" for="event-start-date">Start Date and Time of Event:</label>
                         <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-start-date" name="event-start-date" type="datetime-local" required>
                     </div>
-
                     <div class="hidden md:block mr-4 ml-4">
                         <h1>-</h1>
                     </div>
-                    
                     <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
-                        <label class="text-gray-700 text-sm font-bold mb-10  md:hidden" id="event-end-date" name="event-end-date" for="end-date">End Date and Time of Event:</label>
+                        <label class="text-gray-700 text-sm font-bold mb-10 md:hidden" id="event-end-date-label" for="event-end-date">End Date and Time of Event:</label>
                         <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-end-date" name="event-end-date" type="datetime-local" required>
                     </div>
                 </div>
-
-                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date"> Start and End Date-Time for Event Preparation</label>
+                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="preparation-start-date">Start and End Date-Time for Event Preparation</label>
                 <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
                     <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
-                        <label class="text-gray-700 text-sm font-bold mb-4  md:hidden"  for="start-date">Start Date-Time for Event Preparation:</label>
-
+                        <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="preparation-start-date-label" for="preparation-start-date">Start Date-Time for Event Preparation:</label>
                         <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local" required>
                     </div>
-
                     <div class="hidden md:block mr-4 ml-4">
                         <h1>-</h1>
                     </div>
-                    
-                    <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
-                        <label class="text-gray-700 text-sm font-bold mb-2  md:hidden"  id="preparation-end-date" name="preparation-end-date" for="end-date">End Date-Time for Event Preparation:</label>
+                    <div class="mb-2 md:mb-0 md:ml-2 w-100 md:w-auto">
+                        <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="preparation-end-date-label" for="preparation-end-date">End Date-Time for Event Preparation:</label>
                         <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local" required>
                     </div>
                 </div>
-
-                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="start-date"> Start and End Date-Time for Cleanup</label>
+                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="cleanup-start-date">Start and End Date-Time for Cleanup</label>
                 <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
                     <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
-                        <label class="text-gray-700 text-sm font-bold mb-4  md:hidden" for="start-date">Start Date-Time of Cleanup:</label>
-
+                        <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="cleanup-start-date-label" for="cleanup-start-date">Start Date-Time of Cleanup:</label>
                         <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local" required>
                     </div>
-
                     <div class="hidden md:block mr-4 ml-4">
                         <h1>-</h1>
                     </div>
-                    
                     <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
-                        <label class="text-gray-700 text-sm font-bold mb-2  md:hidden" for="end-date">End Date-Time of Cleanup:</label>
-                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date"  type="datetime-local" required>
+                        <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="cleanup-end-date-label" for="cleanup-end-date">End Date-Time of Cleanup:</label>
+                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date" type="datetime-local" required>
                     </div>
                 </div>
 
@@ -263,7 +254,8 @@
                     </div>
                 </div>
             </div>
-           
+            <div id="equipmentAlert" class="text-center hidden text-red-500 mb-4">Please fill all required fields.</div>
+
         </div>
 
         <div id="customerDetailsForm" class="hidden">
@@ -300,7 +292,7 @@
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Date of Filing:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date_of_filing" name="date_of_filing" autocomplet="new-date_of_filing" type="date" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date_of_filing" name="date_of_filing" autocomplete="new-date_of_filing" type="date" required>
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
@@ -309,6 +301,8 @@
                     <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment" autocomplete="new-endorsement_attachment"type="file">
                 </div>
             </div>
+            <div id="customerDetailsAlert" class="text-center hidden text-red-500 mb-4">Please fill all required fields.</div>
+
         </div>
 
        
@@ -358,6 +352,7 @@
 </body>
 
 <script src="/js/reservationmodal.js"></script>
+<script src="/js/reservation.js"></script>
 
 
 </html>

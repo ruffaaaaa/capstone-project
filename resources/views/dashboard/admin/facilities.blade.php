@@ -165,7 +165,8 @@
                             @endphp
                             @foreach ($facilities as $facility)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $counter++ }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{  $counter++}}</td>
+                                    
                                     <td class="px-6 py-4 whitespace-nowrap text-center">{{ $facility->facilityName }}</td>
                                     <td class="flex px-6 py-4 whitespace-nowrap text-center">
                                         <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-8 w-15 mx-auto">
@@ -184,6 +185,8 @@
                                     </form>                          
                                     </td>
                                 </tr>
+
+                                <p class = "hidden">{{ $facility->facilityID }}</p>
                             @endforeach
                         </tbody>
                     </table>

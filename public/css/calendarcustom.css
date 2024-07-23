@@ -1,0 +1,124 @@
+.fc-prev-button,
+.fc-next-button {
+    width: 30px !important; /* Set a fixed width */
+    height: 30px !important; /* Set a fixed height */
+    display: flex !important; /* Center the icon */
+    justify-content: center !important; /* Center the icon */
+    align-items: center !important; /* Center the icon */
+    font-size: 15px !important; /* Adjust font size */
+    line-height: 1 !important; /* Adjust line height */
+    padding: 0 !important; /* Remove padding */
+    margin: 0 !important; /* Remove margin */
+    box-sizing: border-box !important; /* Ensure width and height include padding and border */
+}
+
+.fc-today-button {
+    margin: 0 !important; /* Remove margin */
+    padding: 0 !important; /* Remove padding */
+    display: flex !important; /* Center content */
+    justify-content: center !important; /* Center content */
+    align-items: center !important; /* Center content */
+    font-size: 15px !important; /* Adjust font size */
+    line-height: 1 !important; /* Adjust line height */
+    width: 60px !important; /* Set a fixed width */
+    height: 30px !important; /* Set a fixed height */
+    box-sizing: border-box !important; /* Ensure width and height include padding and border */
+}
+
+
+.fc-prev-button:hover,
+.fc-next-button:hover {
+    background-color: #087830 !important; /* Change this to your desired hover color */
+    border-color: #087830 !important; /* Change this to your desired hover color */
+    color: white !important; /* Change this to your desired text color */
+}
+
+
+.fc-center h2 {
+    font-size: 24px; /* Change the font size */
+    color: #033013; /* Change the text color */
+    font-family: Arial, sans-serif; /* Change the font family */
+    text-transform: uppercase; /* Uppercase text */
+    font-weight: bold;
+
+}
+
+.fc-day-header.fc-mon {
+    background-color: #1FB053; /* Yellow background for Monday */
+    color: #ffffff; /* Text color */
+    padding: 10px; /* Add padding */
+    border-radius: 10px;
+
+
+}
+
+/* Tuesday */
+.fc-day-header.fc-tue {
+    background-color: #1FB053; /* Blue background for Tuesday */
+    color: #fff; /* Text color */
+    padding: 10px; /* Add padding */
+    border-radius: 10px;
+
+
+}
+
+/* Wednesday */
+.fc-day-header.fc-wed {
+    background-color: #1FB053; /* Green background for Wednesday */
+    color: #ffffff; /* Text color */
+    padding: 10px; /* Add padding */
+    border-radius: 10px;
+
+
+}
+
+/* Thursday */
+.fc-day-header.fc-thu {
+    background-color: #1FB053; /* Pink background for Thursday */
+    color: #fff; /* Text color */
+    padding: 10px; /* Add padding */
+    border-radius: 10px;
+
+
+}
+
+/* Friday */
+.fc-day-header.fc-fri {
+    background-color: #1FB053; /* Purple background for Friday */
+    color: #fff; /* Text color */
+    padding: 10px; /* Add padding */
+    border-radius: 10px;
+
+
+}
+
+/* Saturday */
+.fc-day-header.fc-sat {
+    background-color: #1FB053; /* Orange background for Saturday */
+    color: #fff; /* Text color */
+    padding: 10px; /* Add padding */
+    border-radius: 10px;
+
+}
+
+/* Sunday */
+.fc-day-header.fc-sun {
+    background-color: #1FB053; /* Red background for Sunday */
+    color: #fff; /* Text color */
+    padding: 10px; /* Add padding */
+    border-radius: 10px;
+
+}
+
+.fc-day-grid {
+    border-collapse: separate; /* Separate borders between cells */
+    border-spacing: 10px; /* Adjust spacing between cells */
+}
+
+.fc-day {
+    border: 1px solid #ddd; /* Border around each day cell */
+    background-color: #f5f5f5; /* Background color of each day cell */
+}
+a {
+    text-decoration:none;
+    }

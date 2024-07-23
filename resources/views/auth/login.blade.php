@@ -33,7 +33,7 @@
                     @csrf
                     <div class="mb-4">
                         <label for="login" class="block text-sm font-medium text-gray-700">Email or Username</label>
-                        <input id="login" type="text" name="login" value="{{ old('login') }}" autocomplete="off" required autofocus class="block w-full mt-1 px-3 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-700">
+                        <input id="login" type="text" name="login" value="{{ old('login') }}" autocomplete="current-login" required autofocus class="block w-full mt-1 px-3 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-700">
                         @if ($errors->has('login'))
                             <p class="text-red-500 mt-2">{{ $errors->first('login') }}</p>
                         @endif

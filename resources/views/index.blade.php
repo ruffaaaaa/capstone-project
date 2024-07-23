@@ -99,9 +99,9 @@
                     Check out our popular facilities for your events
                     </div>
                     <div>
-                        <button class=" mt-6 text-white text-base font-medium leading-6 whitespace-nowrap bg-green-900 px-3 py-2 rounded-lg">
+                        <!-- <button class=" mt-6 text-white text-base font-medium leading-6 whitespace-nowrap bg-green-900 px-3 py-2 rounded-lg">
                             View All Facilities
-                        </button>
+                        </button> -->
                     </div>
                 </span>
             </div>
@@ -117,7 +117,8 @@
                                     <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="absolute h-full w-full object-cover object-center inset-0" />
                                 </div>
                             </div>
-                            <div class="text-black text-base leading-6 whitespace-nowrap mt-3">{{ $facility->facilityName }}</div>
+                            <div class="ml-1 text-black text-base leading-6 whitespace-nowrap mt-3 font-bold">{{ $facility->facilityName }}</div>
+                            <div class="ml-1 text-xs text-black text-base leading-6 whitespace-nowrap">{{ $facility->facilityStatus }}</div>
                         </span>
                     </div>
                     @endforeach
