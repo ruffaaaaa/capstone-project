@@ -16,76 +16,61 @@
 
 </head>
 
-<body class="bg-[#E5EFE8]  " style="overflow-x: hidden;">
+<body class="bg-[#E5EFE8]"">
     <nav class="w-full">
-        <div class="flex items-center justify-between lg:justify-start ml-10 lg:ml-10 py-4 px-6">
-            <a class="flex items-center mx-auto lg:mx-0" href="#">
-                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-8 lg:mr-2 mr-10">
-                <span class="text-green-900 lg:block hidden text-2xl" style="font-family: 'Cardo', serif;">La Salle University</span>
+        <div class="flex items-center justify-between lg:justify-center py-4 px-6">
+            <a class="flex items-center mx-auto lg:mx-0" href="/">
+                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-12">
             </a>
         </div>
     </nav>
 
-    <section class="overflow-x">
-        <div class="hidden md:block bg-center h-96 rounded-2xl relative bg-no-repeat bg-cover relative md:ml-12 md:mr-12" style="background-image: url('/images/bg-default.png');">
-            <div>
-                <div class="md:absolute md:inset-0 flex flex-col items-center mt-12">
-                    <img src="images/lsu-logotype-white.png" style="height: 80px;">
-                    <span class="text-4xl md:text-7xl text-white mt-10" style="font-family: 'Cardo', serif;">Facilities Reservation System</span>
-                    <span class="text-xl md:text-2xl mt-3 text-white" hidden style="font-family: 'Cardo', serif;"></span>
+    <section class="">
+        <div class="flex relative flex-col items-start px-20 py-16 min-h-[440px] rounded-[100px] max-md:px-5 max-md:mx-4 md:ml-12 md:mr-12">
+            <img
+                loading="lazy"
+                srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
+                class="object-cover absolute inset-0 size-full rounded-3xl"/>
+                <div class="relative pt-8 mt-12 text-6xl font-bold tracking-wider text-white leading-[50px] max-md:max-w-full max-md:text-4xl max-md:leading-10 ">
+                    RESERVE
+                    <span class="font-thin">YOUR</span> SPACE
+                    <span class="font-thin"><br/>WITH</span> EASE
                 </div>
-            </div>
 
-        </div>
+            <div class="flex relative gap-1.5 justify-center items-center py-3 mt-2 ">
+                <a href="make-reservation" class="flex flex-col justify-center self-stretch text-base font-medium text-black rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105">
+                    <div class="p-3 bg-white rounded-lg max-md:px-5">RESERVE NOW</div>
+                </a>
 
-        <div class=" lg:hidden md:hidden bg-center h-96 rounded-2xl relative bg-no-repeat bg-cover relative fixed" style="background-image: url('/images/bg-default.png');margin-left: 20px;margin-right:20px;">
-            <div class="md:absolute md:inset-0 flex flex-col items-center ">
-                    <img src="images/lsu-logotype-white.png" class="mt-4 " style="height: 80px;">
-                    <span class="text-4xl md:text-7xl text-white mt-5" style="font-family: 'Cardo', serif;">La Salle University</span>
-                    <span class="text-xl md:text-2xl mt-3 text-white" style="font-family: 'Cardo', serif;">Facilities Reservation System</span>
-                <div>
-                    <div class=" bottom-0 left-0 right-0 p-4 flex flex-col items-center">
-                    <a href="make-reservation" class="bg-white text-green font-semibold py-2 px-4 rounded-full hover:bg-green-600 hover:text-white transition duration-300 ease-in-out w-full mb-2 sm:block">RESERVE NOW</a>
-                    <button class="bg-white text-green font-semibold py-2 px-4 rounded-full hover:bg-green-600 hover:text-white transition duration-300 ease-in-out w-full openBtn mb-2">CHECK STATUS</button>
-                    <button id="" class= "bg-white text-green font-semibold py-2 px-4 rounded-full hover:bg-green-600 hover:text-white transition duration-300 ease-in-out w-full uppercase">Calendar</button>
+                <div class="group flex flex-col justify-center self-stretch my-auto rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative">
+                    <div class="flex flex-col justify-center items-center px-3 rounded-md bg-white bg-opacity-90 h-[43px] w-[43px]">
+                        <img
+                            loading="lazy"
+                            srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
+                            class="object-contain w-full aspect-[0.94]"
+                        />
+                    </div>
+                    <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded-md">
+                        Status
                     </div>
                 </div>
-            </div>   
-        </div>
 
-        <div class="fixed top-0 left-20 md:ml-80 md:mr-10 md:relative md:mt-3 hidden md:block">
-            <div class="md:absolute md:inset-0 flex flex-col justify-end items-center ">
-                <div class="bg-white rounded-full md:m-auto md:mt-4 shadow-lg">
-                    <div class="flex flex-col md:flex-row md:space-x-4 justify-center">
-                        <button id="calendarButton" class="bg-white-500 hover:bg-green-600 text-black hover:text-white font-semibold py-2 px-3 md:py-2 md:px-4 rounded-full transition duration-300 ease-in-out mt-2 md:mt-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                            </svg>
-                        </button>     
+                <a href="" class="group flex flex-col justify-center self-stretch my-auto rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative">
+                    <div class="flex justify-center items-center px-3 rounded-md bg-white bg-opacity-90 h-[43px] w-[43px]">
+                        <img
+                            loading="lazy"
+                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/7b09d27cab37db47103086580c25867c01cbce72eb51be0b55484a7437aae598?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
+                            class="border-2 aspect-square w-[18px]"/>
                     </div>
-                </div>
+                    <div class=" text-[10px] absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded-md">
+                        Calendar
+                    </div>
+                </a>
             </div>
         </div>
-    
-        <div class="hidden md:block container mx-auto h-full md:relative md:mt-10">
-            <div class="md:absolute md:inset-0 flex flex-col justify-end">
-                <div class="bg-white p-3 md:p-6 rounded-full md:w-96 md:m-auto md:mt-4 shadow-lg">
-                    <div class="flex flex-col md:flex-row justify-center items-center">
-                        <a href="make-reservation" class="bg-white-500 hover:bg-green-600 text-black hover:text-white font-semibold py-2 px-3 md:py-2 md:px-4 rounded-full transition duration-300 ease-in-out mt-2 md:mt-0">
-                            RESERVE NOW
-                        </a>
-                        <span class="hidden md:inline-block border-l border-gray-300 h-6 mx-4"></span>
-                        <button id="checkStatusBtn" class="bg-white-500 hover:bg-green-600 text-black hover:text-white font-semibold py-2 px-3 md:py-2 md:px-4 rounded-full transition duration-300 ease-in-out mt-2 md:mt-0">
-                            CHECK STATUS
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </section>
 
-    <section class="mt-2">
+    <section class="-mt-2">
     <span class="justify-center items-center self-stretch z-[1] flex mt-0 w-full flex-col px-20 py-12 max-md:max-w-full max-md:px-5">
 
         <div class="w-full">
@@ -99,9 +84,9 @@
                     Check out our popular facilities for your events
                     </div>
                     <div>
-                        <!-- <button class=" mt-6 text-white text-base font-medium leading-6 whitespace-nowrap bg-green-900 px-3 py-2 rounded-lg">
+                        <button class=" mt-6 text-white text-base font-medium leading-6 whitespace-nowrap bg-green-900 px-3 py-2 rounded-lg">
                             View All Facilities
-                        </button> -->
+                        </button>
                     </div>
                 </span>
             </div>
@@ -124,7 +109,6 @@
                     @endforeach
                 </div>
             </div>
-</span>
         </div>
 
         <div class="md:hidden flex flex-col items-stretch w-full ml-5 max-md:w-full max-md:ml-0">
@@ -149,7 +133,7 @@
     </section>
 
     
-    <section class="-mt-10">
+    <section class="-mt-20">
         <span class="justify-center items-center self-stretch z-[1] flex mt-0 w-full flex-col px-20 py-12 max-md:max-w-full max-md:px-5">
             <div class="text-black text-center text-4xl font-bold leading-10 mt-2.5 max-md:max-w-full">
                 How to Reserve a Facility
@@ -196,7 +180,7 @@
         </span>
     </section>
     
-    <footer class = "mt-10">
+    <footer class = "-mt-4">
         <div class="mx-12 py-10 text-center md:text-left">
             <div class="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 <div class="">

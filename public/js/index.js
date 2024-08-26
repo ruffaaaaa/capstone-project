@@ -93,3 +93,29 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+const dropdown = document.querySelector('.relative');
+
+        dropdown.addEventListener('click', function () {
+            const dropdownMenu = this.querySelector('.absolute');
+            dropdownMenu.classList.toggle('hidden');
+        });
+        function toggleSettings() {
+        var dropdown = document.getElementById('settingsDropdown');
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'block';
+            localStorage.setItem('settingsDropdownState', 'open');
+        } else {
+            dropdown.style.display = 'none';
+            localStorage.setItem('settingsDropdownState', 'closed');
+        }
+    }
+
+    window.onload = function() {
+        var dropdownState = localStorage.getItem('settingsDropdownState');
+        var dropdown = document.getElementById('settingsDropdown');
+        if (dropdownState === 'open') {
+            dropdown.style.display = 'block';
+        } else {
+            dropdown.style.display = 'none';
+        }
+    };

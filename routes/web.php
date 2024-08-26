@@ -48,11 +48,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin-reservation', function () {
         return view('dashboard.admin.reservationmgmt');
     });
+    Route::get('/admin-reservation', [ReservationController::class, 'fetchReservation'])->name('admin-reservation');
+    Route::delete('/admin-reservation/{reservedetailsID}', [ReservationController::class, 'destroy'])->name('reservation.destroy');
+    Route::put('/admin-reservation/{reserveeID}', [ReservationController::class, 'update'])->name('update.reservee');
+
 
     //calendar-admin
     Route::get('/reservations', [CalendarController::class, 'getReservations']);
 
     Route::get('/admin-calendar', [CalendarController::class, 'showCalendar']);
+    Route::get('/facilities', [CalendarController::class, 'getFacilities']);
 
     
 });

@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationCodeMail;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+
+
 class ReservationController extends Controller
 {
     public function showReservationForm()
@@ -191,4 +196,49 @@ class ReservationController extends Controller
 
         return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
     }
+
+    public function fetchReservation(){ 
+        if (Auth::check()) {
+            $reservationDetails = DB::table('reservee')
+                ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->join('selected_facilities', 'selected_facilities.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->join('facilities', 'facilities.facilityID', '=', 'selected_facilities.facilityID')
+                ->select('reservee.*', 'reservation_details.*', 'selected_facilities.*', 'facilities.*')
+                ->distinct('reservee.reserveeID')
+
+                ->get();
+
+            return view('dashboard.admin.reservationmgmt', compact('reservationDetails'));
+        }
+
+        return redirect()->route('login');
+    }
+
+    public function destroy($reservedetailsID)
+    {
+        $reservation = ReservationDetails::find($reservedetailsID);
+        
+        if (!$reservation) {
+            return redirect()->route('admin-reservation')->with('error', 'Reservation not found');
+        }
+    
+        $reservation->delete();
+    
+        return redirect()->route('admin-reservation')->with('success', 'Reservation deleted successfully');
+    }
+
+    public function update(Request $request, $reserveeID)
+    {
+        $request->validate([
+            'status' => 'required|string|max:255',
+        ]);
+
+        $facility = Reservee::findOrFail($reserveeID);
+        $facility->status = $request->input('status');
+        $facility->save();
+
+        return redirect()->route('admin.adminreservation')->with('success', 'Facility updated successfully');
+    }
+    
+
 }

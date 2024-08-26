@@ -14,12 +14,11 @@
     <link href="/css/custom.css" rel="stylesheet">
 </head>
 
-<body class=" bg-green-800">
-    <nav class="w-full  bg-[#E5EFE8]">
-        <div class="flex items-center justify-between lg:justify-start ml-10 lg:ml-10 py-4 px-6">
+<body class="bg-[#E5EFE8]">
+    <nav class="w-full">
+        <div class="flex items-center justify-between lg:justify-center py-4 px-6">
             <a class="flex items-center mx-auto lg:mx-0" href="/">
-                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-8 lg:mr-2 mr-10">
-                <span class="text-green-900 lg:block hidden text-2xl" style="font-family: 'Cardo', serif;">La Salle University</span>
+                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-12  ">
             </a>
         </div>
     </nav>

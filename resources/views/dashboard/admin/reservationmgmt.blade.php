@@ -135,15 +135,12 @@
                 <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
             </svg>
         </button>
-        <div class="max-h-screen overflow-y-auto">
+        <div class="max-h-screen overflow-y-auto w-full">
             <div class=" mx-auto">
                 <div class="bg-white rounded-3xl p-8 mb-5">
                     <div class="row">
                         <div class="col-md-12">
-                        <button type="button" class="bg-green-700 mb-3 text-white font-bold py-2 px-4 rounded" id="openModalBtn">
-                            Add Facility
-                        </button>
-                        
+                       
                     </div>
                 <div>
                 <div class="mb-3">
@@ -197,50 +194,6 @@
                     </tbody>
                     </table>
 
-
-                    <!-- <div class="fixed inset-0 flex items-center justify-center overflow-auto z-50 hidden" id="addModal">
-                        <div class="transition-opacity">
-                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                        </div>
-                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                    <div class="mt-3 text-center sm:mt-0 w-full">
-                                        <a href="/" class="">
-                                            <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
-                                        </a>
-                                        <h3 class="text-lg leading-6 font-medium text-gray-900">Add Facility</h3>
-                                        <form id="addForm" action="{{ route('facility.save') }}" method="POST" enctype="multipart/form-data" class="px-3">
-                                            @csrf
-                                        
-                                            <div class="mb-2">
-                                                <label for="facilityName" class="block text-gray-700 font-bold  text-left ">Facility Name</label>
-                                                <input type="text" class=" rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="facilityName" name="facilityName" required>
-                                            </div>
-
-                                            <div class="mb-2">
-                                                <label for="image" class="block text-gray-700 font-bold  text-left ">Image</label>
-                                                <input type="file" class=" rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="image" name="image" accept="image/*" required>
-                                            </div>
-
-                                            <div class="mb-2">
-                                                <label for="status" class=" block text-gray-700 font-bold  text-left ">Status</label>
-                                                <select class="form-select rounded-l  w-full py-2 px-3" id="status" name="status" required>
-                                                    <option value="Available">Available</option>
-                                                    <option value="Not Available">Not Available</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                <button type="submit" form="addForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
-                                <button id="closeModalBtn" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
-                            </div>
-                        </div>
-                    </div> -->
-
                     
                     <div id="editModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
                         <div class="flex items-center justify-center min-h-screen">
@@ -249,47 +202,46 @@
                             </div>
                             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                                
+                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    <div class="sm:flex sm:items-start">
+                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                            <a href="/" class="-mt-8">
+                                                <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
+                                            </a>
+                                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Update Reservation Status</h3>
+                                            <form id="editForm" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="mt-2">
+                                                    <label for="editReserveeID" class="block text-gray-600 text-left font-bold ">Reservation Code:</label>
+                                                    <input type="text" id="editReserveeID" name="reserveeID" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 h-10">
+                                                </div>
+                                                
+                                                <div class="mt-2">
+                                                    <label for="editStatus" class="block text-gray-600 text-left font-bold">Status</label>
+                                                    <select id="editStatus" name="status" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 h-10">
+                                                        <option value="Approved">Approved</option>
+                                                        <option value="Not Approved">Not Approved</option>
+                                                        <option value="Pending">Pending</option>
+
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                     <button type="submit" form="editForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                     <button id="closeModal" class=" inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>  
         </div>  
     </main>
     <script src="/js/index.js"></script>
-    <script>
-    const dropdown = document.querySelector('.relative');
-
-        dropdown.addEventListener('click', function () {
-            const dropdownMenu = this.querySelector('.absolute');
-            dropdownMenu.classList.toggle('hidden');
-        });
-        function toggleSettings() {
-        var dropdown = document.getElementById('settingsDropdown');
-        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-            dropdown.style.display = 'block';
-            localStorage.setItem('settingsDropdownState', 'open');
-        } else {
-            dropdown.style.display = 'none';
-            localStorage.setItem('settingsDropdownState', 'closed');
-        }
-    }
-
-    window.onload = function() {
-        var dropdownState = localStorage.getItem('settingsDropdownState');
-        var dropdown = document.getElementById('settingsDropdown');
-        if (dropdownState === 'open') {
-            dropdown.style.display = 'block';
-        } else {
-            dropdown.style.display = 'none';
-        }
-    };
-    </script>
+    <script src="/js/reservation.js"></script>
 </body>
 </html>
 

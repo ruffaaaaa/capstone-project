@@ -142,7 +142,46 @@
                 <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
             </svg>
         </button>
+        
         <div class="flex flex-col lg:flex-row h-full">
+            <div class="min-h-full bg-white p-3 w-40 rounded-2xl shadow mr-2">
+                <div class="flex items-center justify-center">
+                    <span class="font-bold text-center">FILTER</span>
+                </div>
+                <div >
+                    <div class="relative inline-block mt-2 mb-2 w-full">
+                        <label for="scheduleFilter" class="block text-sm font-medium text-gray-700 mb-1">Schedule:</label>
+                        <div class="relative">
+                            <select id="scheduleFilter" class="text-xs block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterEvents(this.value)">
+                                <option value="all" class="text-xs">Select</option>
+                                <option value="eventProper" class="text-xs">Event Proper</option>
+                                <option value="preparation" class="text-xs">Preparation</option>
+                                <option value="cleanup" class="text-xs">Cleanup</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-0 text-gray-700">
+                                <svg class="fill-current h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M7 7l3-3 3 3m0 6l-3 3-3-3"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative inline-block text-left mt-2 mb-2 w-full">
+                        <label for="facilityFilter" class="block text-sm font-medium text-gray-700 mb-1">Facility:</label>
+                        <select id="facilityFilter" class="block text-xs appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterByFacility(this.value)">
+                                <option value="text-xs">Select</option>
+                                <!-- Facilities will be populated here -->
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4 mt-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M7 7l3-3 3 3m0 6l-3 3-3-3"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+            
             <div class="w-full lg:w-3/3 lg:mb-0 pl-1 pr-1">
                 <div class="h-full bg-white p-4 rounded-2xl shadow">    
 
@@ -152,44 +191,58 @@
                 </div>
             </div>
         </div>
+        
     </main>
     <script src="/js/index.js"></script>
     <script>
-    const dropdown = document.querySelector('.relative');
+    var currentFilter = 'all';  // Default to 'all'
+var selectedFacility = '';
 
-        dropdown.addEventListener('click', function () {
-            const dropdownMenu = this.querySelector('.absolute');
-            dropdownMenu.classList.toggle('hidden');
-        });
-        function toggleSettings() {
-        var dropdown = document.getElementById('settingsDropdown');
-        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-            dropdown.style.display = 'block';
-            localStorage.setItem('settingsDropdownState', 'open');
-        } else {
-            dropdown.style.display = 'none';
-            localStorage.setItem('settingsDropdownState', 'closed');
+function filterEvents(filter) {
+    currentFilter = filter;
+    $('#calendar').fullCalendar('rerenderEvents');
+}
+
+function filterByFacility(facility) {
+    selectedFacility = facility;
+    $('#calendar').fullCalendar('rerenderEvents');
+}
+
+$(document).ready(function() {
+    // Fetch facilities on page load
+    $.ajax({
+        url: '/facilities',
+        method: 'GET',
+        success: function(data) {
+            var dropdownMenu = $('#facilityFilter');
+            dropdownMenu.empty();  // Clear existing items
+            dropdownMenu.append('<option value="">Select</option>');  // Add default option
+
+            // Ensure data is an array
+            if (Array.isArray(data)) {
+                data.forEach(function(facility) {
+                    // Use facility.facilityName instead of facility.name
+                    dropdownMenu.append(
+                        `<option value="${facility.facilityName}">${facility.facilityName}</option>`
+                    );
+                });
+            } else {
+                console.error('Unexpected data format:', data);
+            }
+        },
+        error: function() {
+            alert('There was an error while fetching facilities.');
         }
-    }
+    });
 
-    window.onload = function() {
-        var dropdownState = localStorage.getItem('settingsDropdownState');
-        var dropdown = document.getElementById('settingsDropdown');
-        if (dropdownState === 'open') {
-            dropdown.style.display = 'block';
-        } else {
-            dropdown.style.display = 'none';
-        }
-    };
-
-    $(document).ready(function() {
+    // Initialize the calendar
     $('#calendar').fullCalendar({
         header: {
             left: 'prev, today, next',
             center: 'title',
             right: 'month, agendaWeek, agendaDay'
         },
-        defaultView: 'month',  // Default view when the calendar loads
+        defaultView: 'month',
         events: function(start, end, timezone, callback) {
             $.ajax({
                 url: '/reservations',
@@ -197,16 +250,47 @@
                 success: function(data) {
                     var events = [];
                     $(data).each(function() {
+                        var facilities = this.facilities.map(function(facility) {
+                            return facility.facilityName;  // Use facility.facilityName instead of facility.name
+                        }).join(', ');
+
+                        // Event Proper
                         events.push({
                             id: this.id,
                             title: this.title,
                             start: this.estart,
                             end: this.eend,
                             max_attendees: this.max_attendees,
-                            facilities: this.facilities.map(function(facility) {
-                                return facility.name;
-                            }).join(', ')
+                            facilities: facilities,
+                            color: '#3a87ad',
+                            type: 'eventProper'
                         });
+
+                        // Preparation Phase
+                        if (this.pstart && this.pend) {
+                            events.push({
+                                id: this.id + '_prep',
+                                title: this.title + ' (Preparation)',
+                                start: this.pstart,
+                                end: this.pend,
+                                facilities: facilities,
+                                color: '#f0ad4e',
+                                type: 'preparation'
+                            });
+                        }
+
+                        // Cleanup Phase
+                        if (this.cstart && this.cend) {
+                            events.push({
+                                id: this.id + '_cleanup',
+                                title: this.title + ' (Cleanup)',
+                                start: this.cstart,
+                                end: this.cend,
+                                facilities: facilities,
+                                color: '#d9534f',
+                                type: 'cleanup'
+                            });
+                        }
                     });
                     callback(events);
                 },
@@ -216,18 +300,27 @@
             });
         },
         eventRender: function(event, element) {
-            element.find('.fc-time').remove();
+            // Show all events if 'all' is selected
+            if (currentFilter === 'all' || event.type === currentFilter) {
+                if (selectedFacility === '' || event.facilities.includes(selectedFacility)) {
+                    element.find('.fc-time').remove();
 
-            var startTime = moment(event.start).format('hh:mm A');
-            var endTime = moment(event.end).format('hh:mm A');
+                    var startTime = moment(event.start).format('hh:mm A');
+                    var endTime = moment(event.end).format('hh:mm A');
 
-            element.find('.fc-title').html(
-                "<strong>" + event.title.toUpperCase() + "</strong><br/>" +
-                "<span class='facilities'>" + event.facilities + "<br/>" +
-                 startTime + " - " + endTime + "</span>"
-            );
-            
-            element.find('.facilities').css('font-size', '13px'); 
+                    element.find('.fc-title').html(
+                        "<strong>" + event.title.toUpperCase() + "</strong><br/>" +
+                        "<span class='facilities'>" + event.facilities + "<br/>" +
+                        startTime + " - " + endTime + "</span>"
+                    );
+
+                    element.find('.facilities').css('font-size', '13px');
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
     });
 });
