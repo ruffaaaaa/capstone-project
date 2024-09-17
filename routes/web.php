@@ -24,13 +24,12 @@ use App\Models\Facilities;
 Route::get('/', function () {
     return view('index');
 });
-Route::get('/', [FacilitiesController::class, 'CarouselFacilities']);
-
-
+Route::get('/', [FacilitiesController::class, 'homeFacilities']);
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('admin-dashboard', [AuthenticationController::class, 'index1'])->name('index1');
+    Route::get('/admin-dashboard', [AuthenticationController::class, 'adminDashboard'])->name('adminDashboard');
+
     Route::post('', [AuthenticationController::class, 'login']);
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 });
@@ -41,31 +40,31 @@ Route::middleware(['auth'])->group(function () {
         $facilities = Facilities::all();
         return view('dashboard.admin.facilities', compact('facilities'));
     })->name('admin.facilities');
-    Route::post('/facilities/save', [FacilitiesController::class, 'create'])->name('facility.save');
-    Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'update'])->name('facilities.update');
-    Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'destroy'])->name('facilities.destroy');
+    Route::post('/facilities/save', [FacilitiesController::class, 'createFacility'])->name('facility.save');
+    Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'updateFacility'])->name('facilities.update');
+    Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'destroyFacility'])->name('facilities.destroy');
+
     //reservationmgmt
     Route::get('/admin-reservation', function () {
         return view('dashboard.admin.reservationmgmt');
     });
-    Route::get('/admin-reservation', [ReservationController::class, 'fetchReservation'])->name('admin-reservation');
-    Route::delete('/admin-reservation/{reservedetailsID}', [ReservationController::class, 'destroy'])->name('reservation.destroy');
-    Route::put('/admin-reservation/{reserveeID}', [ReservationController::class, 'update'])->name('update.reservee');
-
+    Route::get('/admin-reservation', [ReservationController::class, 'adminReservation'])->name('admin-reservation');
+    Route::delete('/admin-reservation/{reservedetailsID}', [ReservationController::class, 'destroyReservation'])->name('reservation.destroy');
+    Route::put('/admin-reservation/{reserveeID}', [ReservationController::class, 'updateReservation'])->name('update.reservee');
 
     //calendar-admin
     Route::get('/reservations', [CalendarController::class, 'getReservations']);
-
     Route::get('/admin-calendar', [CalendarController::class, 'showCalendar']);
     Route::get('/facilities', [CalendarController::class, 'getFacilities']);
 
-    
+    //admin-profile
+    Route::get('admin-profile', [ProfileController::class, 'showProfile'])->name('admin-profile');
+
 });
 
+//user
 Route::get('/make-reservation', [ReservationController::class, 'showReservationForm'])->name('make-reservation');
-
-
-Route::post('', [ReservationController::class, 'store'])->name('reservation.store');
+Route::post('', [ReservationController::class, 'storeReservations'])->name('reservation.store');
 
 
 

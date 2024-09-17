@@ -27,7 +27,7 @@ class ReservationController extends Controller
         return view('make-reservation', compact('facilities'));
     }
 
-    public function store(Request $request)
+    public function storeReservations(Request $request)
     {
         $validatedData = $request->validate([
             'nameofevent' => 'required',
@@ -197,7 +197,7 @@ class ReservationController extends Controller
         return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
     }
 
-    public function fetchReservation(){ 
+    public function adminReservation(){ 
         if (Auth::check()) {
             $reservationDetails = DB::table('reservee')
                 ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
@@ -214,7 +214,7 @@ class ReservationController extends Controller
         return redirect()->route('login');
     }
 
-    public function destroy($reservedetailsID)
+    public function destroyReservation($reservedetailsID)
     {
         $reservation = ReservationDetails::find($reservedetailsID);
         
@@ -227,7 +227,7 @@ class ReservationController extends Controller
         return redirect()->route('admin-reservation')->with('success', 'Reservation deleted successfully');
     }
 
-    public function update(Request $request, $reserveeID)
+    public function updateReservation(Request $request, $reserveeID)
     {
         $request->validate([
             'status' => 'required|string|max:255',
@@ -240,5 +240,4 @@ class ReservationController extends Controller
         return redirect()->route('admin.adminreservation')->with('success', 'Facility updated successfully');
     }
     
-
 }

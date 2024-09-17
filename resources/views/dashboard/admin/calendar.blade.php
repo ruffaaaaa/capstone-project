@@ -103,17 +103,7 @@
                                             </svg>
                                         </span>
                                         <span class="text ml-3">Profile</span>
-                                    </a>
-                                    <a href="admin-management" class=" hover:bg-green-300 flex font-bold text-sm text-gray-900 py-2 px-4">
-                                        <span class="icon">
-                                            <svg width="20" height="20" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M35.8752 10.7099H34.1668V8.92489C34.1668 8.45148 33.9868 7.99746 33.6665 7.66271C33.3461 7.32795 32.9116 7.13989 32.4585 7.13989C32.0054 7.13989 31.5709 7.32795 31.2505 7.66271C30.9301 7.99746 30.7502 8.45148 30.7502 8.92489V10.7099H29.0418C28.5888 10.7099 28.1542 10.898 27.8339 11.2327C27.5135 11.5675 27.3335 12.0215 27.3335 12.4949C27.3335 12.9683 27.5135 13.4223 27.8339 13.7571C28.1542 14.0918 28.5888 14.2799 29.0418 14.2799H30.7502V16.0649C30.7502 16.5383 30.9301 16.9923 31.2505 17.3271C31.5709 17.6618 32.0054 17.8499 32.4585 17.8499C32.9116 17.8499 33.3461 17.6618 33.6665 17.3271C33.9868 16.9923 34.1668 16.5383 34.1668 16.0649V14.2799H35.8752C36.3282 14.2799 36.7628 14.0918 37.0831 13.7571C37.4035 13.4223 37.5835 12.9683 37.5835 12.4949C37.5835 12.0215 37.4035 11.5675 37.0831 11.2327C36.7628 10.898 36.3282 10.7099 35.8752 10.7099Z" fill="#231F20"/>
-                                                <path d="M17.0833 19.635C18.4348 19.635 19.756 19.2162 20.8797 18.4317C22.0035 17.6471 22.8793 16.532 23.3965 15.2273C23.9137 13.9227 24.049 12.4871 23.7854 11.102C23.5217 9.71701 22.8709 8.44479 21.9152 7.44624C20.9596 6.44769 19.742 5.76768 18.4165 5.49218C17.0909 5.21668 15.717 5.35807 14.4683 5.89848C13.2197 6.43889 12.1525 7.35404 11.4016 8.52821C10.6508 9.70238 10.25 11.0828 10.25 12.495C10.25 14.3886 10.9699 16.2047 12.2514 17.5437C13.5329 18.8827 15.271 19.635 17.0833 19.635Z" fill="#231F20"/>
-                                                <path d="M27.3333 37.4851C27.7864 37.4851 28.2209 37.297 28.5413 36.9623C28.8617 36.6275 29.0417 36.1735 29.0417 35.7001C29.0417 32.3862 27.7818 29.208 25.5392 26.8648C23.2965 24.5215 20.2549 23.2051 17.0833 23.2051C13.9118 23.2051 10.8701 24.5215 8.62751 26.8648C6.38489 29.208 5.125 32.3862 5.125 35.7001C5.125 36.1735 5.30498 36.6275 5.62536 36.9623C5.94573 37.297 6.38026 37.4851 6.83333 37.4851" fill="#231F20"/>
-                                            </svg>
-                                        </span>
-                                        <span class="text ml-3">Admin Management</span>
-                                    </a>     
+                                    </a>  
                                 </div>
                             </div>
                         </li>
@@ -195,137 +185,135 @@
     </main>
     <script src="/js/index.js"></script>
     <script>
-    var currentFilter = 'all';  // Default to 'all'
-var selectedFacility = '';
+        var currentFilter = 'all';  // Default to 'all'
+        var selectedFacility = '';
 
-function filterEvents(filter) {
-    currentFilter = filter;
-    $('#calendar').fullCalendar('rerenderEvents');
-}
-
-function filterByFacility(facility) {
-    selectedFacility = facility;
-    $('#calendar').fullCalendar('rerenderEvents');
-}
-
-$(document).ready(function() {
-    // Fetch facilities on page load
-    $.ajax({
-        url: '/facilities',
-        method: 'GET',
-        success: function(data) {
-            var dropdownMenu = $('#facilityFilter');
-            dropdownMenu.empty();  // Clear existing items
-            dropdownMenu.append('<option value="">Select</option>');  // Add default option
-
-            // Ensure data is an array
-            if (Array.isArray(data)) {
-                data.forEach(function(facility) {
-                    // Use facility.facilityName instead of facility.name
-                    dropdownMenu.append(
-                        `<option value="${facility.facilityName}">${facility.facilityName}</option>`
-                    );
-                });
-            } else {
-                console.error('Unexpected data format:', data);
-            }
-        },
-        error: function() {
-            alert('There was an error while fetching facilities.');
+        function filterEvents(filter) {
+            currentFilter = filter;
+            $('#calendar').fullCalendar('rerenderEvents');
         }
-    });
 
-    // Initialize the calendar
-    $('#calendar').fullCalendar({
-        header: {
-            left: 'prev, today, next',
-            center: 'title',
-            right: 'month, agendaWeek, agendaDay'
-        },
-        defaultView: 'month',
-        events: function(start, end, timezone, callback) {
+        function filterByFacility(facility) {
+            selectedFacility = facility;
+            $('#calendar').fullCalendar('rerenderEvents');
+        }
+
+        $(document).ready(function() {
+            // Fetch facilities on page load
             $.ajax({
-                url: '/reservations',
+                url: '/facilities',
                 method: 'GET',
                 success: function(data) {
-                    var events = [];
-                    $(data).each(function() {
-                        var facilities = this.facilities.map(function(facility) {
-                            return facility.facilityName;  // Use facility.facilityName instead of facility.name
-                        }).join(', ');
+                    var dropdownMenu = $('#facilityFilter');
+                    dropdownMenu.empty();  // Clear existing items
+                    dropdownMenu.append('<option value="">Select</option>');  // Add default option
 
-                        // Event Proper
-                        events.push({
-                            id: this.id,
-                            title: this.title,
-                            start: this.estart,
-                            end: this.eend,
-                            max_attendees: this.max_attendees,
-                            facilities: facilities,
-                            color: '#3a87ad',
-                            type: 'eventProper'
+                    // Ensure data is an array
+                    if (Array.isArray(data)) {
+                        data.forEach(function(facility) {
+                            // Use facility.facilityName instead of facility.name
+                            dropdownMenu.append(
+                                `<option value="${facility.facilityName}">${facility.facilityName}</option>`
+                            );
                         });
-
-                        // Preparation Phase
-                        if (this.pstart && this.pend) {
-                            events.push({
-                                id: this.id + '_prep',
-                                title: this.title + ' (Preparation)',
-                                start: this.pstart,
-                                end: this.pend,
-                                facilities: facilities,
-                                color: '#f0ad4e',
-                                type: 'preparation'
-                            });
-                        }
-
-                        // Cleanup Phase
-                        if (this.cstart && this.cend) {
-                            events.push({
-                                id: this.id + '_cleanup',
-                                title: this.title + ' (Cleanup)',
-                                start: this.cstart,
-                                end: this.cend,
-                                facilities: facilities,
-                                color: '#d9534f',
-                                type: 'cleanup'
-                            });
-                        }
-                    });
-                    callback(events);
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
                 },
                 error: function() {
-                    alert('There was an error while fetching events.');
+                    alert('There was an error while fetching facilities.');
                 }
             });
-        },
-        eventRender: function(event, element) {
-            // Show all events if 'all' is selected
-            if (currentFilter === 'all' || event.type === currentFilter) {
-                if (selectedFacility === '' || event.facilities.includes(selectedFacility)) {
-                    element.find('.fc-time').remove();
 
-                    var startTime = moment(event.start).format('hh:mm A');
-                    var endTime = moment(event.end).format('hh:mm A');
+            // Initialize the calendar
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev, today, next',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay'
+                },
+                defaultView: 'month',
+                events: function(start, end, timezone, callback) {
+                    $.ajax({
+                        url: '/reservations',
+                        method: 'GET',
+                        success: function(data) {
+                            var events = [];
+                            $(data).each(function() {
+                                var facilities = this.facilities.map(function(facility) {
+                                    return facility.facilityName;  // Use facility.facilityName instead of facility.name
+                                }).join(', ');
 
-                    element.find('.fc-title').html(
-                        "<strong>" + event.title.toUpperCase() + "</strong><br/>" +
-                        "<span class='facilities'>" + event.facilities + "<br/>" +
-                        startTime + " - " + endTime + "</span>"
-                    );
+                                // Event Proper
+                                events.push({
+                                    id: this.id,
+                                    title: this.title,
+                                    start: this.estart,
+                                    end: this.eend,
+                                    max_attendees: this.max_attendees,
+                                    facilities: facilities,
+                                    color: '#3a87ad',
+                                    type: 'eventProper'
+                                });
 
-                    element.find('.facilities').css('font-size', '13px');
-                } else {
-                    return false;
+                                // Preparation Phase
+                                if (this.pstart && this.pend) {
+                                    events.push({
+                                        id: this.id + '_prep',
+                                        title: this.title + ' (Preparation)',
+                                        start: this.pstart,
+                                        end: this.pend,
+                                        facilities: facilities,
+                                        color: '#f0ad4e',
+                                        type: 'preparation'
+                                    });
+                                }
+
+                                // Cleanup Phase
+                                if (this.cstart && this.cend) {
+                                    events.push({
+                                        id: this.id + '_cleanup',
+                                        title: this.title + ' (Cleanup)',
+                                        start: this.cstart,
+                                        end: this.cend,
+                                        facilities: facilities,
+                                        color: '#d9534f',
+                                        type: 'cleanup'
+                                    });
+                                }
+                            });
+                            callback(events);
+                        },
+                        error: function() {
+                            alert('There was an error while fetching events.');
+                        }
+                    });
+                },
+                eventRender: function(event, element) {
+                    // Show all events if 'all' is selected
+                    if (currentFilter === 'all' || event.type === currentFilter) {
+                        if (selectedFacility === '' || event.facilities.includes(selectedFacility)) {
+                            element.find('.fc-time').remove();
+
+                            var startTime = moment(event.start).format('hh:mm A');
+                            var endTime = moment(event.end).format('hh:mm A');
+
+                            element.find('.fc-title').html(
+                                "<strong>" + event.title.toUpperCase() + "</strong><br/>" +
+                                "<span class='facilities'>" + event.facilities + "<br/>" +
+                                startTime + " - " + endTime + "</span>"
+                            );
+
+                            element.find('.facilities').css('font-size', '13px');
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
                 }
-            } else {
-                return false;
-            }
-        }
-    });
-});
-
-
+            });
+        });
     </script>
 </body>
 </html>

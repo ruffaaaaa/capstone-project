@@ -229,8 +229,27 @@ hr {
     display: none;
 }
 
-/* For IE, Edge and Firefox */
-.scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+/* calendar */
+
+.fc td, .fc th {
+    border-width: 0 0px 0px 0; /* Set border widths to avoid doubling */
+    border-color: #ccc; /* Ensure borders are the same color */
+    border-style: solid;
+}
+
+/* Remove the right and bottom borders for the last row and column */
+.fc .fc-row:last-child .fc-day, 
+.fc .fc-row:last-child .fc-day-top,
+.fc .fc-day-header:last-child {
+    border-bottom-width: 0;
+}
+
+.fc .fc-row .fc-day:last-child,
+.fc .fc-row .fc-day-header:last-child {
+    border-right-width: 0;
+}
+
+/* Optional: Make sure the table doesn't add spacing between cells */
+.fc table {
+    border-spacing: 0;
 }

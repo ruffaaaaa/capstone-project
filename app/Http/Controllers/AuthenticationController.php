@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\ReservationDetails;
+use App\Models\Reservee;
+
 
 
 class AuthenticationController extends Controller
@@ -37,9 +40,7 @@ class AuthenticationController extends Controller
 
             switch ($user->role_id) {
                 case 1:
-                    return redirect()->route('index1');
-                case 2:
-                    return redirect()->route('index2');
+                    return redirect()->route('adminDashboard');
                 default:
                     return view('dashboard.default');
             }
@@ -48,17 +49,18 @@ class AuthenticationController extends Controller
         return back()->withErrors(['login' => 'Invalid login credentials']);
     }
 
-    public function index1()
+    public function adminDashboard()
     {
-        return view('dashboard.admin.index');
+        $pendingRequestsCount = Reservee::where('status', 'Pending')->count();
+        $reservations = ReservationDetails::with('facilities')
+        ->join('reservee', 'reservation_details.reservedetailsID', '=', 'reservee.reservedetailsID')
+        ->select('reservation_details.*', 'reservee.*')
+        ->orderBy('reservation_details.reservedetailsID', 'desc')
+        ->get();
+
+        return view('dashboard.admin.index', compact('pendingRequestsCount', 'reservations'));
     }
 
-    public function index2()
-    {
-        return view('dashboard.user.index'); 
-    }
-
-    
 
     protected $redirectTo = '/dashboard'; 
 

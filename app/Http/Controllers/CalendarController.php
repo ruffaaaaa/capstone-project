@@ -45,7 +45,7 @@ class CalendarController extends Controller
 
             $facilities = Facilities::all();    
             return response()->json($facilities);
-    
+
     }
 
 }

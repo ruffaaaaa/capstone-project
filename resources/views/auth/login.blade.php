@@ -15,12 +15,12 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#E5EFE8] text-white">
-            <div class="w-full sm:max-w-md mt-7 px-7 py-16 border-4 border-green-700 bg-white dark:bg-white-800 shadow-md overflow-hidden sm:rounded-lg">
+    <body class="font-sans text-gray-900 antialiased ">
+        <div class="min-h-screen flex items-center justify-center bg-[#076334] text-white max-md:px-4">
+            <div class="w-full sm:max-w-md  px-7 py-16  bg-white dark:bg-white-800 shadow-xl overflow-hidden rounded-xl ">
                 <div class="flex flex-col items-center">
                     <a href="/" class="-mt-8">
-                        <img src="/images/lsu-logo 2.png" class="w-20 h-30" />
+                        <img src="/images/lsu-logo 2.png" class="pl-2 w-12 h-14" />
                         <h1 class="text-l text-green-600 text-center font-bold">ADMIN</h1>
                     </a>
                 </div>
