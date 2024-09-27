@@ -8,6 +8,6 @@ class ProfileController extends Controller
 {
     public function showProfile()
     {
-        return view('dashboard.admin.profile');
+        return view('dashboard.east.profile');
     }
 }

@@ -22,7 +22,6 @@ class Reservee extends Model
         'date_of_filing',
         'endorsed_by',
         'attachment',
-        'status',
     ];
 
     
@@ -31,8 +30,4 @@ class Reservee extends Model
         return $this->hasMany(ReservationDetails::class, 'reserveeID', 'reserveeID');
     }
     
-
-    protected $attributes = [
-        'status' => 'Pending',
-    ];
 }

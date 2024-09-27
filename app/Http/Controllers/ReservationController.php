@@ -9,6 +9,7 @@ use App\Models\Attachment;
 use App\Models\Facilities;
 use App\Models\Reservee;
 use App\Models\Equipment;
+use App\Models\ReservationApprovals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -91,25 +92,28 @@ class ReservationController extends Controller
                 if (!empty($pname) && !empty($personnelQuantities[$index])) {
                     $personnelData[] = [
                         'reservedetailsID' => $nextNumericPart,
-                        'name' => $pname,
-                        'total_no' => $personnelQuantities[$index],
+                        'pname' => $pname,
+                        'ptotal_no' => $personnelQuantities[$index],
                     ];
                 }
             }
         }
 
         if ($request->has('other_personnel_name') && $request->has('other_personnel_no')) {
+            // Fetch the input values
             $potherName = $request->input('other_personnel_name');
             $potherQuantity = $request->input('other_personnel_no');
-
+        
+            // Ensure the checkbox is checked and the inputs are not empty
             if (!empty($potherName) && !empty($potherQuantity)) {
                 $personnelData[] = [
                     'reservedetailsID' => $nextNumericPart,
-                    'name' => $potherName,
-                    'total_no' => $potherQuantity,
+                    'pname' => $potherName,
+                    'ptotal_no' => $potherQuantity,
                 ];
             }
         }
+        
 
         if (!empty($personnelData)) {
             SupportPersonnels::insert($personnelData);
@@ -124,8 +128,8 @@ class ReservationController extends Controller
                 if (!empty($name) && !empty($equipmentQuantities[$index])) {
                     $equipmentData[] = [
                         'reservedetailsID' => $nextNumericPart,
-                        'name' => $name,
-                        'total_no' => $equipmentQuantities[$index],
+                        'ename' => $name,
+                        'etotal_no' => $equipmentQuantities[$index],
                     ];
                 }
             }
@@ -138,11 +142,12 @@ class ReservationController extends Controller
             if (!empty($otherName) && !empty($otherQuantity)) {
                 $equipmentData[] = [
                     'reservedetailsID' => $nextNumericPart,
-                    'name' => $otherName,
-                    'total_no' => $otherQuantity,
+                    'ename' => $otherName,
+                    'etotal_no' => $otherQuantity,
                 ];
             }
         }
+
 
         if (!empty($equipmentData)) {
             Equipment::insert($equipmentData);
@@ -178,6 +183,8 @@ class ReservationController extends Controller
             'file' => $attachmentFilenameString,
         ]);
 
+        
+
         $reservee = Reservee::create([
             'reserveeID' => $reserveeID,
             'reserveeName' => $validatedData['reserveeName'],
@@ -189,8 +196,16 @@ class ReservationController extends Controller
             'date_of_filing' => $validatedData['date_of_filing'],
             'endorsed_by' => $validatedData['endorsed_by'],
             'attachment' => $validatedData['endorsement_attachment'],
-            'status' => 'Pending',
         ]);
+
+        $approvals = ReservationApprovals::create([
+            'reserveeID' => $reserveeID,
+            'east_status' => 'Pending', // Make sure these match the column names
+            'cisso_status' => 'Pending',
+            'gso_status' => 'Pending',
+        ]);
+
+       
 
         Mail::to($validatedData['email'])->send(new ReservationCodeMail($reserveeID));
 
@@ -203,17 +218,35 @@ class ReservationController extends Controller
                 ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
                 ->join('selected_facilities', 'selected_facilities.reservedetailsID', '=', 'reservation_details.reservedetailsID')
                 ->join('facilities', 'facilities.facilityID', '=', 'selected_facilities.facilityID')
-                ->select('reservee.*', 'reservation_details.*', 'selected_facilities.*', 'facilities.*')
+                ->leftJoin('support_personnel', 'support_personnel.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->leftJoin('equipment', 'equipment.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->leftJoin('reservation_approvals', 'reservation_approvals.reserveeID', '=', 'reservee.reserveeID') // Added join
+                ->select(
+                    'reservee.*', 
+                    'reservation_details.*', 
+                    'selected_facilities.*', 
+                    'facilities.*', 
+                    'support_personnel.pname',
+                    'support_personnel.ptotal_no',
+                    'equipment.ename',
+                    'equipment.etotal_no',
+                    'reservation_approvals.approvalID', // Select additional fields from reservation_approvals as needed
+                    'reservation_approvals.east_status', // Select additional fields from reservation_approvals as needed
+                    'reservation_approvals.cisso_status',
+                    'reservation_approvals.gso_status',
+                    'reservation_approvals.final_status'
+                )
                 ->distinct('reservee.reserveeID')
-
                 ->get();
-
-            return view('dashboard.admin.reservationmgmt', compact('reservationDetails'));
+    
+            return view('dashboard.east.reservationmgmt', compact('reservationDetails'));
         }
-
+    
         return redirect()->route('login');
     }
-
+    
+    
+    
     public function destroyReservation($reservedetailsID)
     {
         $reservation = ReservationDetails::find($reservedetailsID);
@@ -227,17 +260,19 @@ class ReservationController extends Controller
         return redirect()->route('admin-reservation')->with('success', 'Reservation deleted successfully');
     }
 
-    public function updateReservation(Request $request, $reserveeID)
-    {
-        $request->validate([
-            'status' => 'required|string|max:255',
-        ]);
+    public function updateReservation(Request $request, $approvalID)
+        {
+            $request->validate([
+                'east_status' => 'required|string|max:255',
+            ]);
 
-        $facility = Reservee::findOrFail($reserveeID);
-        $facility->status = $request->input('status');
-        $facility->save();
+            $eastApproval = ReservationApprovals::findOrFail($approvalID);
+            
+            // Update the east_status
+            $eastApproval->east_status = $request->input('east_status');
+            $eastApproval->save();
 
-        return redirect()->route('admin.adminreservation')->with('success', 'Facility updated successfully');
-    }
-    
+            return redirect()->route('admin-reservation')->with('success', 'Reservation updated successfully');
+        }
+
 }

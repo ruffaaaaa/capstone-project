@@ -14,179 +14,39 @@
 
 /* Sidebar transitions */
 #sidebar {
-    transition: width 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+#sidebar {
+    width: 100px; 
+    overflow: hidden;
+    background-color: #f0f0f0; /* Optional: Add background color for visibility */
 }
 
 main {
-    transition: margin-left 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    margin-left: 100px; /* Align next to the sidebar */
+    transition: none; /* Disable transition on load */
+    flex-grow: 1; /* Allow main to take remaining space */
 }
 
-#sidebar.collapsed {
-    width: 100px; /* Set the collapsed width */
-    overflow: hidden;
-}
-
-#sidebar.collapsed .text {
-    display: none;
-}
-
-#sidebar.collapsed #toggleSidebar {
-    left: 10px; 
-}
-
-/* Center the icons */
 #sidebar .icon {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    margin-left: -9px; /* Add some right margin to the icons */
+    justify-content: center; 
+    align-items: center; 
+    height: 30px;
+    margin-left: 0;
 }
 
-/* Add styles for the main content when sidebar is collapsed */
-main.collapsed {
-    margin-left: 100px; /* Adjust based on the collapsed sidebar width */
+
+#toggleSidebar {
+    transition: left 0.3s ease-in-out;
 }
+
+
 
 .image-container {
     position: relative;
-}
-
-.overlay {
-    background-color: rgba(0, 0, 0, 0.7); /* Adjust the overlay background color and opacity as needed */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    border-radius: 20px;
-
-}
-
-/* Hover effect */
-.image-container:hover .overlay {
-    opacity: 1;
-}
-
-.swiper-container {
-    overflow-x: hidden;
-}
-
-
-.left-title {
-    position: relative;
-    height: 150px;
-    width:30%;
-    background: linear-gradient(125deg, rgba(166, 225, 163, 0.8) 75%, rgba(166, 225, 163, 0.8) 75%, rgba(58, 201, 26, 0.7) 80%, transparent 75%);
-  }
-  
-  .left-title:after {
-    position: absolute;
-    content: '';
-    width: 333%;
-    height: 100%;
-    background: url('/images/form2.png'); 
-    background-size: cover; 
-    z-index: -1;
-  }
-
-
-  .step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    
-}
-
-.step span {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #087830;
-    background-color: #A7EBC2;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #000000;
-    
-}
-
-.step-active span {
-    border-color: #087830;
-    background-color: #087830;
-    color: white;
-}
-
-.line {
-    margin-top: -30px;
-    width: 200px;
-    border: 2px solid #087830;
-}
-
-.checkmark {
-    margin-left: 8px;
-}
-
-.step label {
-    margin-top: 10px;
-    text-align: center;
-}
-
-@media (max-width: 640px) {
-    .step label {
-        display: none; 
-    }
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    width: 60%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
-.calendar {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.calendar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
 }
 
 @keyframes lineAnimation {
@@ -253,3 +113,65 @@ hr {
 .fc table {
     border-spacing: 0;
 }
+
+.small-col {
+    width: 30%; /* Adjust the percentage or pixel value as needed */
+}
+
+.large-col {
+width: 70%; /* Adjust the percentage or pixel value as needed */
+}
+
+
+
+
+@media print {
+.page-break {
+    page-break-after: always;
+
+    
+}
+.shadow, .shadow-md, .shadow-lg {
+    box-shadow: none !important;
+    border-style: none;
+}
+}
+
+@media print {
+    /* Hide the entire page except for the modal */
+    body * {
+      visibility: hidden;
+    }
+    
+    /* Ensure the modal is visible during print */
+    #viewModal, #viewModal * {
+      visibility: visible;
+    }
+  
+    /* Adjust the modal for printing */
+    #viewModal {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+  
+    /* Optional: Adjust the print layout */
+    .modal-content {
+      width: 100%;
+      max-width: none;
+      padding: 0;
+      border: none;
+    }
+  
+    /* Remove the print button and close button */
+    button {
+      display: none;
+    }
+  }
+  
+

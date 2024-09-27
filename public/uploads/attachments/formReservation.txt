@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facilities Reservation Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 p-8">
+    <div class="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-md">
+      <h1 class="mb-6 text-center text-2xl font-bold">Facilities Reservation Form</h1>
+
+      <!-- Table starts -->
+      <table class="min-w-full table-auto border border-black text-left text-sm">
+        <thead>
+          <tr>
+            <!-- Left column is smaller -->
+            <td colspan="2" class="small-col border border-black bg-gray-200 px-3 py-1 font-bold">A. FACILITIES</td>
+            <!-- Right column is larger -->
+            <td colspan="2" class="large-col border border-black px-2 py-2 font-bold">...</td>
+          </tr>
+        </thead>
+      </table>
+
+      <table class="min-w-full table-auto border border-black text-left text-sm">
+        <tbody>
+          <tr>
+            <td colspan="1" class="w-full border border-black bg-gray-200 px-3 py-1 font-bold">B. RESERVATION DETAILS</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="min-w-full table-auto border border-black text-left text-sm">
+        <thead>
+          <tr>
+            <td colspan="2" class="small-col border border-black bg-gray-200 px-6 py-1 font-bold">NAME OF EVENT</td>
+            <td colspan="2" class="large-col border border-black  px-2 py-2 font-bold">...</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="small-col border border-black bg-gray-200 px-6 py-1 font-bold">Maximum Number of Attendees</td>
+            <td colspan="2" class="large-col border border-black  px-2 py-2 font-bold">...</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="small-col border border-black bg-gray-200 px-6 py-1 font-bold">Event Date and Time</td>
+            <td colspan="2" class="large-col border border-black  px-2 py-2 font-bold">...</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="small-col border border-black bg-gray-200 px-6 py-1 font-bold">Preparation Date and Time</td>
+            <td colspan="2" class="large-col border border-black  px-2 py-2 font-bold">...</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="small-col border border-black bg-gray-200 px-6 py-1 font-bold">Cleanup Date and Time</td>
+            <td colspan="2" class="large-col border border-black  px-2 py-2 font-bold">...</td>
+          </tr>
+        </thead>
+      </table>
+
+      <table class="mt-4 min-w-full table-auto border border-black text-left text-sm">
+        <thead>
+          <tr>
+            <th colspan="2" class="border border-black bg-gray-200 px-4 py-2 font-bold">B.2 EVENT DETAILS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="w-1/2 border border-black px-4 py-2">
+              Start Date & Time of Event <br />
+              <input type="datetime-local" class="w-full rounded border border-gray-300 p-2" />
+            </td>
+            <td class="w-1/2 border border-black px-4 py-2">
+              End Date & Time of Event <br />
+              <input type="datetime-local" class="w-full rounded border border-gray-300 p-2" />
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black px-4 py-2">
+              Maximum Expected Number of Attendees <br />
+              <input type="number" class="w-full rounded border border-gray-300 p-2" placeholder="Enter number of attendees" />
+            </td>
+            <td class="w-1/2 border border-black px-4 py-2">
+              Venue Preparation Date & Time <br />
+              <input type="datetime-local" class="w-full rounded border border-gray-300 p-2" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="border border-black px-4 py-2">
+              Venue Clean-Up Date & Time <br />
+              <input type="datetime-local" class="w-full rounded border border-gray-300 p-2" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- B.3 Facilities & Equipment -->
+      <table class="mt-4 min-w-full table-auto border border-black text-left text-sm">
+        <thead>
+          <tr>
+            <th colspan="3" class="border border-black bg-gray-200 px-4 py-2 font-bold">B.3 FACILITIES & EQUIPMENT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border border-black px-4 py-2">Chairs</td>
+            <td class="border border-black px-4 py-2">Tables</td>
+            <td class="border border-black px-4 py-2">Sound System</td>
+          </tr>
+          <tr>
+            <td class="border border-black px-4 py-2">Microphones</td>
+            <td class="border border-black px-4 py-2">LCD</td>
+            <td class="border border-black px-4 py-2">Plants</td>
+          </tr>
+          <tr>
+            <td class="border border-black px-4 py-2">Comfort Rooms</td>
+            <td class="border border-black px-4 py-2">Internet Access</td>
+            <td class="border border-black px-4 py-2">Others, please specify</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- B.4 Support Personnel -->
+      <table class="mt-4 min-w-full table-auto border border-black text-left text-sm">
+        <thead>
+          <tr>
+            <th colspan="2" class="border border-black bg-gray-200 px-4 py-2 font-bold">B.4 SUPPORT PERSONNEL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border border-black px-4 py-2">Maintenance Crew (Regular Work Hours)</td>
+            <td class="border border-black px-4 py-2">Maintenance Crew (Overtime)</td>
+          </tr>
+          <tr>
+            <td class="border border-black px-4 py-2">Sound/Lights Technician</td>
+            <td class="border border-black px-4 py-2">Nurse/ First-Aider</td>
+          </tr>
+          <tr>
+            <td class="border border-black px-4 py-2">Security Guards</td>
+            <td class="border border-black px-4 py-2">Others, please specify</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- C. Endorsement & Approvals -->
+      <table class="mt-8 min-w-full table-auto border border-black text-left text-sm">
+        <thead>
+          <tr>
+            <th colspan="3" class="border border-black bg-gray-200 px-4 py-2 font-bold">C. ENDORSEMENT & APPROVALS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border border-black px-4 py-2">Requested by</td>
+            <td class="border border-black px-4 py-2">Reservation taken by</td>
+            <td class="border border-black px-4 py-2">Signature of Personnel-in-charge</td>
+          </tr>
+          <tr>
+            <td class="border border-black px-4 py-2">Unit/Department/Company</td>
+            <td class="border border-black px-4 py-2">Contact Details</td>
+            <td class="border border-black px-4 py-2">Date</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-8">
+        <button class="rounded bg-blue-500 p-2 text-white hover:bg-blue-600">Submit</button>
+      </div>
+    </div>
+  </body>
+</html>
+
+.small-col {
+  width: 30%; /* Adjust the percentage or pixel value as needed */
+}
+
+.large-col {
+  width: 70%; /* Adjust the percentage or pixel value as needed */
+}

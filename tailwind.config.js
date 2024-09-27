@@ -6,8 +6,11 @@ export default {
     "./resources/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      // screens: {
+      //   'print-only': { 'raw': 'print' }, // Create a custom screen
+      // },
+    },
   },
-  
-  
+  plugins: [],
 }

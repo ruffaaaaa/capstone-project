@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
     //facilities
     Route::get('/admin-facilities', function () {
         $facilities = Facilities::all();
-        return view('dashboard.admin.facilities', compact('facilities'));
+        return view('dashboard.east.facilities', compact('facilities'));
     })->name('admin.facilities');
     Route::post('/facilities/save', [FacilitiesController::class, 'createFacility'])->name('facility.save');
     Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'updateFacility'])->name('facilities.update');
@@ -46,11 +46,11 @@ Route::middleware(['auth'])->group(function () {
 
     //reservationmgmt
     Route::get('/admin-reservation', function () {
-        return view('dashboard.admin.reservationmgmt');
+        return view('dashboard.east.reservationmgmt');
     });
     Route::get('/admin-reservation', [ReservationController::class, 'adminReservation'])->name('admin-reservation');
     Route::delete('/admin-reservation/{reservedetailsID}', [ReservationController::class, 'destroyReservation'])->name('reservation.destroy');
-    Route::put('/admin-reservation/{reserveeID}', [ReservationController::class, 'updateReservation'])->name('update.reservee');
+    Route::put('/admin-reservation/{approvalID}', [ReservationController::class, 'updateReservation'])->name('update.reservee');
 
     //calendar-admin
     Route::get('/reservations', [CalendarController::class, 'getReservations']);

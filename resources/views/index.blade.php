@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
     <link href="/css/custom.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -31,14 +30,14 @@
     </nav>
 
     <section class="">
-        <div class="flex relative flex-col items-start px-20 py-16 min-h-[440px] rounded-[100px] max-md:px-5 max-md:mx-4 md:ml-12 md:mr-12">
+        <div class="flex relative flex-col items-start px-20 py-16 min-h-[440px] rounded-[100px] mx-12 max-md:px-5 max-md:ml-4 max-md:mr-4 ">
             <img
                 loading="lazy"
                 srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
                 class="object-cover absolute inset-0 size-full rounded-3xl"/>
-                <div class="relative pt-8 mt-12 text-6xl font-bold tracking-wider text-white leading-[50px] max-md:max-w-full max-md:text-4xl max-md:leading-10 ">
+                <div class="relative pt-8 mt-10 text-6xl font-bold tracking-wider text-white max-md:text-5xl max-md:mt-3">
                     RESERVE
-                    <span class="font-thin">YOUR</span> SPACE
+                    <span class="font-thin max-md:-mt-2">YOUR</span> SPACE
                     <span class="font-thin"><br/>WITH</span> EASE
                 </div>
 
@@ -52,8 +51,7 @@
                         <img
                             loading="lazy"
                             srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
-                            class="object-contain w-full aspect-[0.94]"
-                        />
+                            class="object-contain w-full aspect-[0.94]"/>
                     </div>
                     <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded-md">
                         Status
@@ -90,8 +88,8 @@
             <!-- Facilities Images -->
             <div class="flex z-0 gap-6 justify-center items-center self-stretch min-h-[373px] min-w-[240px] w-[485px] max-md:w-full max-md:order-2 max-md:flex-col max-md:items-center">
                 @foreach ($facilities->random(2) as $facility)
-                <div class="flex overflow-hidden flex-col rounded-md border border-solid border-black border-opacity-10 min-h-[305px] min-w-[240px] w-[242px] max-md:w-full">
-                    <div class="flex overflow-hidden w-full min-h-[240px]">
+                <div class="flex overflow-hidden flex-col rounded-md border border-solid border-black border-opacity-10 min-h-[305px] min-w-[240px] w-[242px] max-md:w-full ">
+                    <div class="flex overflow-hidden w-full min-h-[240px] max-md:mr-5">
                         <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-[250px] w-full object-cover object-center inset-0" />
                     </div>
                     <div class="flex flex-col p-3 w-full text-black">
@@ -130,7 +128,10 @@
                         <div class=" max-md:text-sm">Date</div>
                         </div>
                     </div> 
-                </div>              
+                </div> 
+                <div class="mt-2 italic	">
+                    <a href="calendar">Click to view more.</a>
+                </div>            
             </div>
     </section>
     <section class="">

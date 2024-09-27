@@ -10,7 +10,7 @@ class SupportPersonnels extends Model
     
     protected $table = 'support_personnel';
     protected $primaryKey = 'personnelID';
-    protected $fillable = ['name', 'total_no', 'reservedetailsID'];
+    protected $fillable = ['pname', 'ptotal_no', 'reservedetailsID'];
 
 
     public function reservationDetail()

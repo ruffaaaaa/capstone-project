@@ -18,11 +18,6 @@ class FacilitiesController extends Controller
          return view('index', compact('facilities'));
     }
 
-    public function showCreateFacilities()
-    {
-        return view('dashboard.admin.facilities-crud.create'); 
-    }
-
 
     // CRUD FACILITES
     public function createFacility(Request $request)

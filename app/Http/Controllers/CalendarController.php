@@ -12,7 +12,7 @@ class CalendarController extends Controller
 {
     public function showCalendar()
     {
-        return view('dashboard.admin.calendar');
+        return view('dashboard.east.calendar');
     }
 
     public function getReservations(){

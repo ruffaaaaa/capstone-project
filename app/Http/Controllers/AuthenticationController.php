@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\ReservationDetails;
+use App\Models\ReservationApprovals;
+
 use App\Models\Reservee;
 
 
@@ -51,14 +53,14 @@ class AuthenticationController extends Controller
 
     public function adminDashboard()
     {
-        $pendingRequestsCount = Reservee::where('status', 'Pending')->count();
+        $pendingRequestsCount = ReservationApprovals::where('east_status', 'Pending')->count();
         $reservations = ReservationDetails::with('facilities')
         ->join('reservee', 'reservation_details.reservedetailsID', '=', 'reservee.reservedetailsID')
         ->select('reservation_details.*', 'reservee.*')
         ->orderBy('reservation_details.reservedetailsID', 'desc')
         ->get();
 
-        return view('dashboard.admin.index', compact('pendingRequestsCount', 'reservations'));
+        return view('dashboard.east.index', compact('pendingRequestsCount', 'reservations'));
     }
 
 

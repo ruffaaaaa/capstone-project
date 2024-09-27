@@ -16,8 +16,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased ">
-        <div class="min-h-screen flex items-center justify-center bg-[#076334] text-white max-md:px-4">
-            <div class="w-full sm:max-w-md  px-7 py-16  bg-white dark:bg-white-800 shadow-xl overflow-hidden rounded-xl ">
+        <div class="min-h-screen flex items-center justify-center bg-[#076334] text-white max-md:px-5 ">
+            <div class="w-full sm:max-w-md  px-7 py-16  bg-white dark:bg-white-800 shadow-xl overflow-hidden rounded-xl max-md:md-10" ">
                 <div class="flex flex-col items-center">
                     <a href="/" class="-mt-8">
                         <img src="/images/lsu-logo 2.png" class="pl-2 w-12 h-14" />

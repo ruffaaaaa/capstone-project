@@ -10,8 +10,8 @@ class Equipment extends Model
     protected $table = 'equipment';
     protected $primaryKey = 'equipmentID';
     protected $fillable = ['reservedetailsID',
-                            'name',
-                            'total_no'
+                            'ename',
+                            'etotal_no'
                             ];
 
     public function reservationDetail()

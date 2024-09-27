@@ -238,7 +238,7 @@ document.querySelectorAll('.equipment-checkbox').forEach(function(checkbox) {
     });
 });
 
-// Add event listeners to personnel checkboxes
+
 document.querySelectorAll('.personnel-checkbox').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {
         var inputField = this.parentNode.querySelector('.personnel-input');
@@ -262,16 +262,35 @@ document.getElementById('other-equipment').addEventListener('change', function()
         numberInput.style.display = 'none';
     }
 });
+document.getElementById('other-equipment').addEventListener('change', function () {
+    const otherEquipmentName = document.getElementById('other-equipment-name');
+    const otherEquipmentNumber = document.getElementById('other-equipment-number');
 
-document.getElementById('other-personnel').addEventListener('change', function() {
-    var nameInput = document.getElementById('other-personnel-name');
-    var numberInput = document.getElementById('other-personnel-number');
     if (this.checked) {
-        nameInput.style.display = 'inline-block';
-        numberInput.style.display = 'inline-block';
+        otherEquipmentName.style.display = 'block';
+        otherEquipmentNumber.style.display = 'block';
     } else {
-        nameInput.style.display = 'none';
-        numberInput.style.display = 'none';
+        otherEquipmentName.style.display = 'none';
+        otherEquipmentNumber.style.display = 'none';
+        otherEquipmentName.value = ''; // Clear the input
+        otherEquipmentNumber.value = ''; // Clear the input
+    }
+});
+
+
+
+document.getElementById('other-personnel').addEventListener('change', function () {
+    const otherPersonnelName = document.getElementById('other-personnel-name');
+    const otherPersonnelNumber = document.getElementById('other-personnel-number');
+
+    if (this.checked) {
+        otherPersonnelName.style.display = 'block';
+        otherPersonnelNumber.style.display = 'block';
+    } else {
+        otherPersonnelName.style.display = 'none';
+        otherPersonnelNumber.style.display = 'none';
+        otherPersonnelName.value = ''; // Clear the input
+        otherPersonnelNumber.value = ''; // Clear the input
     }
 });
 
