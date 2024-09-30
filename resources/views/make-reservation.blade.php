@@ -243,8 +243,8 @@
                         <span class="text-l font-bold text-white pl-4">B5. ATTACHMENTS</span>
                     </div>
                     <div class="flex pt-5">
-                        <input type="file" id="attachments" name="attachments[]" multiple class="hidden" onchange="displayFiles()">
-                        <label for="attachments" class="inline-block bg-green-100 text-green-700 rounded-full w-10 h-10 text-center cursor-pointer m-2">
+                        <input type="file" id="attachments" name="attachments[]" accept="image/png" multiple class="hidden" onchange="displayFiles()">
+                        <label for="attachments" accept="image/png" class="inline-block bg-green-100 text-green-700 rounded-full w-10 h-10 text-center cursor-pointer m-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 m-auto mt-2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
                             </svg>
@@ -297,7 +297,7 @@
                 <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
                 <div class="flex items-center">
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" autocomplete="new-endorsed_by" type="text" required>
-                    <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment" autocomplete="new-endorsement_attachment"type="file">
+                    <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment"  autocomplete="new-endorsement_attachment"type="file">
                 </div>
             </div>
             <div id="customerDetailsAlert" class="text-center hidden text-red-500 mb-4">Please fill all required fields.</div>

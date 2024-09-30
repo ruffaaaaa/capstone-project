@@ -9,7 +9,7 @@ class ReservationApprovals extends Model
 {
     protected $table = 'reservation_approvals';
     protected $primaryKey = 'approvalID';
-    protected $fillable = ['reserveeID', 'east_status', 'cisso_status', 'gso_status', 'final_status'];
+    protected $fillable = ['reserveeID', 'final_status'];
 
     public function reservationDetails()
     {
@@ -17,9 +17,7 @@ class ReservationApprovals extends Model
     }
 
     protected $attributes = [
-        'east_status' => 'Pending',
-        'cisso_status' => 'Pending',
-        'gso_status' => 'Pending',
+        'final_status' => 'Pending',
     ];
 
 }

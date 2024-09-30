@@ -9,6 +9,11 @@ use App\Models\Attachment;
 use App\Models\Facilities;
 use App\Models\Reservee;
 use App\Models\Equipment;
+use App\Models\AdminSignature;
+use App\Models\User;
+use App\Models\AdminApprovals;
+
+
 use App\Models\ReservationApprovals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -198,21 +203,19 @@ class ReservationController extends Controller
             'attachment' => $validatedData['endorsement_attachment'],
         ]);
 
-        $approvals = ReservationApprovals::create([
+        $approval = ReservationApprovals::create([
             'reserveeID' => $reserveeID,
-            'east_status' => 'Pending', // Make sure these match the column names
-            'cisso_status' => 'Pending',
-            'gso_status' => 'Pending',
+            'final_status' => 'Pending',
         ]);
-
-       
+        
+        
 
         Mail::to($validatedData['email'])->send(new ReservationCodeMail($reserveeID));
 
         return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
     }
 
-    public function adminReservation(){ 
+    public function eastReservation(){ 
         if (Auth::check()) {
             $reservationDetails = DB::table('reservee')
                 ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
@@ -231,15 +234,15 @@ class ReservationController extends Controller
                     'equipment.ename',
                     'equipment.etotal_no',
                     'reservation_approvals.approvalID', // Select additional fields from reservation_approvals as needed
-                    'reservation_approvals.east_status', // Select additional fields from reservation_approvals as needed
-                    'reservation_approvals.cisso_status',
-                    'reservation_approvals.gso_status',
                     'reservation_approvals.final_status'
                 )
                 ->distinct('reservee.reserveeID')
                 ->get();
+
+                $user = Auth::user(); 
+                $signature = AdminSignature::where('admin_id', $user->id)->first();
     
-            return view('dashboard.east.reservationmgmt', compact('reservationDetails'));
+            return view('dashboard.east.reservationmgmt', compact('reservationDetails', 'user', 'signature'));
         }
     
         return redirect()->route('login');
@@ -247,7 +250,7 @@ class ReservationController extends Controller
     
     
     
-    public function destroyReservation($reservedetailsID)
+    public function eastDestroy($reservedetailsID)
     {
         $reservation = ReservationDetails::find($reservedetailsID);
         
@@ -257,22 +260,99 @@ class ReservationController extends Controller
     
         $reservation->delete();
     
-        return redirect()->route('admin-reservation')->with('success', 'Reservation deleted successfully');
+        return redirect()->route('east-reservation')->with('success', 'Reservation deleted successfully');
     }
 
-    public function updateReservation(Request $request, $approvalID)
-        {
-            $request->validate([
-                'east_status' => 'required|string|max:255',
-            ]);
+    public function eastUpdate(Request $request, $approvalID)
+    {
+        $request->validate([
+            'east_status' => 'required|string|max:255',
+        ]);
 
-            $eastApproval = ReservationApprovals::findOrFail($approvalID);
-            
-            // Update the east_status
-            $eastApproval->east_status = $request->input('east_status');
-            $eastApproval->save();
+        $eastApproval = ReservationApprovals::findOrFail($approvalID);
+        
+        // Update the east_status
+        $eastApproval->east_status = $request->input('east_status');
+        $eastApproval->save();
 
-            return redirect()->route('admin-reservation')->with('success', 'Reservation updated successfully');
+        return redirect()->route('east-reservation')->with('success', 'Reservation updated successfully');
+    }
+
+
+    public function gso_cissoReservation(){ 
+        if (Auth::check()) {
+            $reservationDetails = DB::table('reservee')
+                ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->join('selected_facilities', 'selected_facilities.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->join('facilities', 'facilities.facilityID', '=', 'selected_facilities.facilityID')
+                ->leftJoin('support_personnel', 'support_personnel.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->leftJoin('equipment', 'equipment.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+                ->leftJoin('reservation_approvals', 'reservation_approvals.reserveeID', '=', 'reservee.reserveeID') // Added join
+                ->select(
+                    'reservee.*', 
+                    'reservation_details.*', 
+                    'selected_facilities.*', 
+                    'facilities.*', 
+                    'support_personnel.pname',
+                    'support_personnel.ptotal_no',
+                    'equipment.ename',
+                    'equipment.etotal_no',
+                    'reservation_approvals.approvalID', // Select additional fields from reservation_approvals as needed
+                    'reservation_approvals.final_status'
+                )
+                ->distinct('reservee.reserveeID')
+                ->get();
+
+                $user = Auth::user(); 
+                $signature = AdminSignature::where('admin_id', $user->id)->first();
+    
+            return view('dashboard.gso&cisso.reservationmgmt', compact('reservationDetails', 'user', 'signature'));
         }
+    
+        return redirect()->route('login');
+    }
+
+    public function eastStore(Request $request)
+    {
+        $request->validate([
+            'approval_id' => 'required|exists:reservation_approvals,approvalID',
+            'admin_id' => 'required|exists:admin,id',
+            'approval_status' => 'required|string|in:Approved,Rejected,Pending',
+        ]);
+
+        // Find the approval record
+        $adminApproval = AdminApprovals::firstOrNew([
+            'reservation_approval_id' => $request->approval_id,
+            'admin_id' => $request->admin_id,
+        ]);
+
+        $adminApproval->approval_status = $request->approval_status;
+        $adminApproval->save();
+
+        return redirect()->back()->with('status', 'Approval status updated successfully.');
+    }
+
+
+    public function gso_cissoStore(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'approval_id' => 'required|exists:reservation_approvals,approvalID',
+            'admin_id' => 'required|exists:admin,id',
+            'approval_status' => 'required|string|in:Approved,Pending',
+        ]);
+
+        // Find the approval record
+        $adminApproval = AdminApprovals::firstOrNew([
+            'reservation_approval_id' => $request->approval_id,
+            'admin_id' => $request->admin_id,
+        ]);
+
+        $adminApproval->approval_status = $request->approval_status;
+        $adminApproval->save();
+
+        return redirect()->back()->with('status', 'Approval status updated successfully.');
+    }
+
 
 }

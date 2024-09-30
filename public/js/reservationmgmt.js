@@ -1,4 +1,4 @@
-function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, endorsed_by, east_status, facilityNames, event_start_date, event_end_date,
+function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, endorsed_by, final_status, facilityNames, event_start_date, event_end_date,
     preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no) {
     
     const modal = document.getElementById('viewModal');
@@ -11,7 +11,7 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('unit').innerText = unit_department_company;
     document.getElementById('date').innerText = date_of_filing;
     document.getElementById('endorsed').innerText = endorsed_by;
-    document.getElementById('status1').innerText = east_status;
+    document.getElementById('status1').innerText = final_status;
     document.getElementById('name').innerText = event_name;
     document.getElementById('max').innerText = max_attendees;
     document.getElementById('facilityNames').innerText = facilityNames;
@@ -74,54 +74,26 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    var modal = document.getElementById('updateModal');
-    var editButtons = document.querySelectorAll('.editButton');
-    var editForm = document.getElementById('editForm');
-    
-    var editApprovalIDField = document.getElementById('editApprovalID');
-    var editReserveeIDField = document.getElementById('editReserveeID');
-    var editStatusField = document.getElementById('editStatus');
-
-    // Add event listeners to each edit button
-    editButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var approvalID = button.getAttribute('data-approval-id');
-            var reserveeID = button.getAttribute('data-reservee-id');
-            var eastStatus = button.getAttribute('data-status');
-            
-            // Set values in the form fields
-            editApprovalIDField.value = approvalID;
-            editReserveeIDField.value = reserveeID;
-            editReserveeIDField.disabled = true;
-
-            // Set the selected option in the status dropdown
-            editStatusField.value = eastStatus;
-
-            // Update the form action
-            editForm.setAttribute('action', '/admin-reservation/' + approvalID);
-            
-            // Show the modal
-            modal.classList.remove('hidden');
-        });
-    });
-
-    var closeModalButton = document.getElementById('closeModal');
-    closeModalButton.addEventListener('click', function() {
-        modal.classList.add('hidden');
-    });
-});
-
 
 function openAndPrintModal() {
-  document.getElementById('viewModal').style.display = 'block';
-  window.print();
-}
+    document.getElementById('viewModal').style.display = 'block';
+    window.print();
+    }
 
-// Attach the function to your print button
-document.getElementById('printButton').addEventListener('click', openAndPrintModal);
+    document.getElementById('printButton').addEventListener('click', openAndPrintModal);
 
-// For the cancel button (optional)
-document.getElementById('closeButton').addEventListener('click', function() {
-  document.getElementById('viewModal').style.display = 'none';
-});
+    document.getElementById('closeButton').addEventListener('click', function() {
+    document.getElementById('viewModal').style.display = 'none';
+    });
+
+function openStatus(button) {
+    var approvalId = button.getAttribute('data-approval-id');
+    
+    document.getElementById('approval_id').value = approvalId;
+
+    document.getElementById('updateModal').classList.remove('hidden');
+    }
+
+    function closeStatus() {
+        document.getElementById('updateModal').classList.add('hidden');
+    }

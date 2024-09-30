@@ -13,6 +13,8 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body class=" no-transition relative bg-green-50 overflow-hidden max-h-screen "  onload="initializeSidebar()">
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
@@ -29,7 +31,7 @@
                 <div class="p-4">
                     <ul class="space-y-1">
                         <li>
-                        <a href="/admin-dashboard" title="Dashboard" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                        <a href="/east-dashboard" title="Dashboard" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                     <path d="M2 4.25A2.25 2.25 0 014.25 2h2.5A2.25 2.25 0 019 4.25v2.5A2.25 2.25 0 016.75 9h-2.5A2.25 2.25 0 012 6.75v-2.5zM2 13.25A2.25 2.25 0 014.25 11h2.5A2.25 2.25 0 019 13.25v2.5A2.25 2.25 0 016.75 18h-2.5A2.25 2.25 0 012 15.75v-2.5zM11 4.25A2.25 2.25 0 0113.25 2h2.5A2.25 2.25 0 0118 4.25v2.5A2.25 2.25 0 0115.75 9h-2.5A2.25 2.25 0 0111 6.75v-2.5zM15.25 11.75a.75.75 0 00-1.5 0v2h-2a.75.75 0 000 1.5h2v2a.75.75 0 001.5 0v-2h2a.75.75 0 000-1.5h-2v-2z" />
@@ -38,7 +40,7 @@
                         </a>
                         </li>
                         <li>
-                            <a href="admin-reservation" title="Reservation" class="flex  bg-[#087830]   rounded-xl font-bold text-sm text-white py-2 px-4">
+                            <a href="east-reservation" title="Reservation" class="flex  bg-[#087830]   rounded-xl font-bold text-sm text-white py-2 px-4">
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
                                     <path d="M18.563 3.04056V0.987196C18.563 0.447529 18.104 0 17.5505 0C16.997 0 16.538 0.447529 16.538 0.987196V2.96159H7.76291V0.987196C7.76291 0.447529 7.3039 0 6.75039 0C6.19689 0 5.73788 0.447529 5.73788 0.987196V3.04056C2.09283 3.36963 0.324313 5.48881 0.0543094 8.63468C0.0273091 9.01639 0.351313 9.3323 0.729318 9.3323H23.5716C23.9631 9.3323 24.2871 9.00323 24.2466 8.63468C23.9766 5.48881 22.208 3.36963 18.563 3.04056Z" fill="#ffffff"/>
@@ -50,7 +52,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="admin-calendar" title="Calendar" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                            <a href="east-calendar" title="Calendar" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
                                     <path id="Vector" d="M18.2948 3.18727V1.03483C18.2948 0.469123 17.8425 0 17.297 0C16.7515 0 16.2991 0.469123 16.2991 1.03483V3.10449H7.65092V1.03483C7.65092 0.469123 7.19855 0 6.65305 0C6.10755 0 5.65518 0.469123 5.65518 1.03483V3.18727C2.06284 3.53222 0.319897 5.75365 0.0537984 9.05131C0.0271885 9.45144 0.346507 9.78259 0.719046 9.78259H23.231C23.6168 9.78259 23.9361 9.43764 23.8962 9.05131C23.6301 5.75365 21.8872 3.53222 18.2948 3.18727Z" fill="#292D32"/>
@@ -62,7 +64,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="admin-facilities" title="Facilities" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                            <a href="east-facilities" title="Facilities" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                                 <span class="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 27" fill="currentColor" class="w-5 h-5">
                                         <path d="M26.4045 8.5105L16.704 0.889061C15.2062 -0.294051 12.7845 -0.294051 11.3008 0.875304L1.60023 8.5105C0.508396 9.36345 -0.191498 11.1656 0.0464656 12.5138L1.90818 23.4644C2.24413 25.4179 4.14784 27 6.16354 27H21.8412C23.8429 27 25.7606 25.4042 26.0965 23.4644L27.9582 12.5138C28.1822 11.1656 27.4823 9.36345 26.4045 8.5105ZM14.0024 18.3193C12.0707 18.3193 10.5029 16.7785 10.5029 14.88C10.5029 12.9815 12.0707 11.4407 14.0024 11.4407C15.9341 11.4407 17.5018 12.9815 17.5018 14.88C17.5018 16.7785 15.9341 18.3193 14.0024 18.3193Z" fill="#292D32"/>
@@ -71,43 +73,23 @@
                                 <span class="text ml-3 hidden">Facilities</span>
                             </a>
                         </li>
-    
-                        <li>
-                            <div class="relative">
-                                <button onclick="toggleSettings()" class="flex hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4 w-100 focus:outline-none">
-                                    <span class="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                            <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                                        </svg>
-                                    </span>
-                                    <span class="text ml-3 hidden">Settings</span>
-                                </button>
-                                <div id="settingsDropdown" class="absolute hidden bg-white shadow-lg py-2 mt-2 w-100 rounded-xl">
-
-                                    <a href="admin-profile" title="Profile" class=" hover:bg-green-300 flex font-bold text-sm text-gray-900 py-2 px-4">
-                                        <span class="icon">
-                                            <svg width="20" height="20" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g id="&#240;&#159;&#166;&#134; icon &#34;person&#34;">
-                                                <g id="Group">                            
-                                                <path id="Vector" d="M19.0001 17.875C20.2527 17.875 21.4772 17.4938 22.5187 16.7796C23.5602 16.0653 24.372 15.0502 24.8513 13.8624C25.3307 12.6747 25.4561 11.3678 25.2117 10.1069C24.9673 8.84604 24.3642 7.68785 23.4784 6.77881C22.5927 5.86977 21.4642 5.2507 20.2357 4.9999C19.0071 4.74909 17.7337 4.87782 16.5764 5.36979C15.4192 5.86176 14.43 6.69488 13.7341 7.7638C13.0382 8.83272 12.6667 10.0894 12.6667 11.375C12.6667 13.0989 13.334 14.7522 14.5217 15.9712C15.7095 17.1902 17.3204 17.875 19.0001 17.875Z" fill="#231F20"/>
-                                                <path id="Vector_2" d="M28.5001 34.125C28.92 34.125 29.3227 33.9538 29.6197 33.6491C29.9166 33.3443 30.0834 32.931 30.0834 32.5C30.0834 29.4832 28.9157 26.5899 26.8372 24.4567C24.7587 22.3234 21.9396 21.125 19.0001 21.125C16.0606 21.125 13.2415 22.3234 11.163 24.4567C9.08445 26.5899 7.91675 29.4832 7.91675 32.5C7.91675 32.931 8.08356 33.3443 8.3805 33.6491C8.67743 33.9538 9.08016 34.125 9.50008 34.125H28.5001Z" fill="#231F20"/>
-                                                </g>
-                                                </g>
-                                            </svg>
-                                        </span>
-                                        <span class="text ml-3 hidden">Profile</span>
-                                    </a>  
-                                </div>
-                            </div>
-                        </li>
                     </ul>
-                    
                 </div>
             </div>
             <div class="p-4">
+                <div>
+                    <a href="javascript:void(0)" title="Profile" class="flex font-bold text-sm text-gray-900 py-2 px-4 mr-2" id="profileIcon">
+                        <span class="icon">
+                            <svg width="25px" height="25px" viewBox="2 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z" fill="#292D32"/>
+                                <path d="M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z" fill="#292D32"/>
+                            </svg>
+                        </span>
+                    </a>  
+                </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="sumbit" title="Logout" class="inline-flex items-center justify-center h-9 py-2 px-3  rounded-xl bg-[#087830] text-white text-sm font-semibold transition">
+                    <button type="sumbit" title="Logout" class="inline-flex items-center justify-center h-9 py-2 px-3 ml-[2px] rounded-xl bg-[#087830] text-white text-sm font-semibold transition">
                         <span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="ml-2" viewBox="0 0 16 18">
                                 <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clip-rule="evenodd" />
@@ -116,7 +98,7 @@
                         </span>
                     </button> <span class="text font-bold text-sm ml-2 hidden">Logout</span>
                 </form>
-            </div>  
+            </div>
         </div>
     </aside>
     <main class="p-8 max-h-screen overflow-auto">
@@ -124,35 +106,89 @@
             <div class=" mx-auto">
                 <div class="bg-white rounded-3xl p-8 mb-5">
                     <div class="row">
-                        <div class="col-md-12">
-                       
+                        <div class="col-md-12">  
                     </div>
                 <div>
                 <div class="mb-3">
                     <div class="relative inline-block mt-2 mb-2 w-full  flex justify-end">
                         <div class="mr-2 relative">
-                            <input  type="text"  id="searchInput"  class=" w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"  placeholder="Search..."  /> 
+                            <input  type="search"  id="searchInput"  class=" w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"  placeholder="Search..."  /> 
                             <div class="absolute inset-y-0 right-2 flex items-center pl-3 pointer-events-none">
                                 <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M11.8029 11.7612L9.53693 9.31367C10.268 8.30465 10.6647 7.05865 10.6632 5.77592C10.6632 4.63355 10.3505 3.51684 9.76469 2.56699C9.17885 1.61715 8.34616 0.876833 7.37194 0.439668C6.39771 0.0025026 5.3257 -0.11188 4.29147 0.110985C3.25724 0.33385 2.30724 0.883953 1.5616 1.69173C0.815957 2.49951 0.308169 3.52868 0.102448 4.64909C-0.103274 5.76951 0.00231009 6.93086 0.405847 7.98627C0.809385 9.04168 1.49275 9.94375 2.36953 10.5784C3.24631 11.2131 4.27712 11.5518 5.33162 11.5518C6.51567 11.5534 7.66583 11.1237 8.59723 10.3317L10.8565 12.7864C10.9185 12.8541 10.9922 12.9078 11.0734 12.9445C11.1546 12.9811 11.2417 13 11.3297 13C11.4177 13 11.5048 12.9811 11.586 12.9445C11.6672 12.9078 11.7409 12.8541 11.8029 12.7864C11.8653 12.7193 11.9149 12.6395 11.9487 12.5515C11.9826 12.4635 12 12.3691 12 12.2738C12 12.1785 11.9826 12.0841 11.9487 11.9962C11.9149 11.9082 11.8653 11.8283 11.8029 11.7612ZM1.33291 5.77592C1.33291 4.91914 1.56743 4.08161 2.00681 3.36922C2.44619 2.65684 3.07071 2.1016 3.80138 1.77373C4.53205 1.44586 5.33605 1.36007 6.11173 1.52722C6.8874 1.69437 7.5999 2.10694 8.15913 2.71278C8.71836 3.31861 9.0992 4.09049 9.25349 4.9308C9.40779 5.77111 9.3286 6.64212 9.02594 7.43368C8.72329 8.22524 8.21077 8.90179 7.55318 9.37779C6.8956 9.85379 6.12249 10.1079 5.33162 10.1079C4.27109 10.1079 3.25401 9.65146 2.5041 8.83906C1.7542 8.02666 1.33291 6.92482 1.33291 5.77592Z" fill="black"/>
                                 </svg>
                             </div>
                         </div>  
-                        
-                        <div>
-                            <select id="scheduleFilter" class="w-[125px] text-xs appearance-none bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 rounded leading-tight focus:outline-none focus:shadow-outline"">
-                                <option value="all" class="text-xs">Select</option>
-                                <option value="Pending" class="text-xs">Pending</option>
-                                <option value="Approved" class="text-xs">Not Approved</option>
-                                <option value="Approved" class="text-xs">Approved</option>
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-0 text-gray-700">
-                                <svg class="fill-current h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M7 7l3-3 3 3m0 6l-3 3-3-3"></path>
-                                </svg>
+                    </div>
+
+                    <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
+                        <div class="flex items-center justify-center min-h-screen">
+                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    <div class="sm:flex sm:items-start">
+                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
+                                        <a href="/" class="-mt-8">
+                                            <img src="/images/profile-icon.png" class="mx-auto w-10 h-30" />
+                                        </a>
+                                        <h3 class="text-lg leading-6 font-medium text-gray-900">Account Profile</h3>
+                                        
+
+                                        <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('profile.update', $user->id) }}" enctype="multipart/form-data">
+                                        @csrf
+                                            @method('PUT')
+
+                                            <div class="mt-2">
+                                                <label for="username" class="block text-sm font-medium text-gray-700 text-left">Username</label>
+                                                <input type="text" name="username" id="username" value="{{ $user->username }}" required 
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="email" class="block text-sm font-medium text-gray-700 text-left">Email</label>
+                                                <input type="email" name="email" id="email" value="{{ $user->email }}" required
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="password" class="block text-sm font-medium text-gray-700 text-left">Password (leave empty if you don't want to change it)</label>
+                                                <input type="password" name="password" id="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
+                                                <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div>
+
+                                                @if($signature && Storage::disk('public')->exists($signature->signature_file))
+                                                <div class="mt-2 align-center justify-center text-center">
+                                                    <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
+                                                    <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
+                                                </div>
+
+                                                @endif
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
+                                                <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
+                                            </div>
+                                            <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
+
+                                            </div>
+                                    
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                    <button type="submit" form="editprofileForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                                    <button id="closeProfile" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                     
 
                     <table class="min-w-full divide-y divide-gray-200">
@@ -161,9 +197,7 @@
                                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Event Name</th>
                                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Facility</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">EAST Status</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">CISSO Status</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">GSO Status</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Final Status</th>
                                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
@@ -176,25 +210,25 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
                                     {{ $detailsGroup->pluck('facilityName')->unique()->implode(', '), }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->east_status }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->cisso_status }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->gso_status }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
+
 
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <button class="border border-red-500 text-blue-500 px-3 py-1 rounded hover:border-red-600 hover:bg-blue-500 hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
                                 '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
-                                '{{ $detailsGroup->first()->endorsed_by }}', '{{ $detailsGroup->first()->east_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
+                                '{{ $detailsGroup->first()->endorsed_by }}', '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
                                 '{{$detailsGroup->first()->event_end_date}}', '{{$detailsGroup->first()->preparation_start_date}}', '{{$detailsGroup->first()->preparation_end_date_time}}', '{{$detailsGroup->first()->cleanup_start_date_time}}', 
                                 '{{$detailsGroup->first()->cleanup_end_date_time}}', '{{$detailsGroup->first()->event_name}}', '{{$detailsGroup->first()->max_attendees}}', '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
                                 '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
                                 '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}')"> View </button>
 
                                 <button class="border border-red-500 text-green-500 px-3 py-1 rounded hover:border-red-600 hover:bg-green-500 hover:text-white ml-2 editButton"
-                                    data-approval-id="{{ $detailsGroup->first()->approvalID }}"
-                                    data-reservee-id="{{ $reserveeID }}"
-                                    data-status="{{ $detailsGroup->first()->east_status }}">
+                                        data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $reserveeID }}"
+
+                                        onclick="openStatus(this)">
                                     Update
                                 </button>
+
 
                                 <form method="POST" action="{{ route('reservation.destroy', $detailsGroup->first()->reservedetailsID) }}" class="inline-block">
                                     @csrf
@@ -207,7 +241,7 @@
                             </tr>
                             @endforeach
                         @endif
-                    </tbody>
+                        </tbody>
                     </table>
 
                     
@@ -320,13 +354,13 @@
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold" style="width:20%">Requested by</td>
                                         <td colspan="2" class=" border border-black px-2 py-2 " style="width:30%"><span class="contents" id="reserveeName"></span></td>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold" style="width:20%">EAST</td>
-                                        <td colspan="2" class=" border border-black px-2 py-2 " style="width:30%"  ><img src="/images/dffd.png" class="w-20" alt=""><p>Ms. JAIMACA B. QUEZON</p></td>
+                                        <td colspan="2" class=" border border-black px-2 py-2 " style="width:30%"><img src="" class="w-20" alt=""><p>Ms. JAIMACA B. QUEZON</p></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
                                         <td colspan="2" class=" border border-black px-2 py-2 "><span id="person"></span></td>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
-                                        <td colspan="2" class=" border border-black px-2 py-2 "><img src="/images/dffd.png" class="w-20" alt=""><p>Ms. JAIMACA B. QUEZON</p></td>
+                                        <td colspan="2" class=" border border-black px-2 py-2 "><img src="" class="w-20" alt=""><p>Ms. JAIMACA B. QUEZON</p></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Contact Details</td>
@@ -363,59 +397,48 @@
                         </div>
                     </div>
 
-                    <div id="updateModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-                        <div class="flex items-center justify-center min-h-screen">
-                            <div class="transition-opacity">
-                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                            </div>
-                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                    <div class="sm:flex sm:items-start">
-                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            <a href="/" class="-mt-8">
-                                                <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
-                                            </a>
-                                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Update Reservation Status</h3>
-                                            <form id="editForm" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" id="editApprovalID" name="approvalID">
-
-                                                <div class="mt-2">
-                                                    <label for="editReserveeID" class="block text-gray-600 text-left font-bold ">Reservation Code:</label>
-                                                    <input type="text" id="editReserveeID" name="reserveeID" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 h-10" disabled>
-                                                </div>
-
-                                                <div class="mt-2">
-                                                    <label for="editStatus" class="block text-gray-600 text-left font-bold">EAST Status</label>
-                                                    <select id="editStatus" name="east_status" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 h-10">
-                                                        <option value="Approved">Approved</option>
-                                                        <option value="Not Approved">Not Approved</option>
-                                                        <option value="Pending">Pending</option>
-                                                    </select>
-                                                </div>
-                                        
-                                            </form>
+                    <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                        <div class="bg-white p-6 rounded shadow-md w-1/3">
+                            <h2 class="text-lg font-semibold mb-4">Update Approval</h2>
+                            
+                            <!-- Form -->
+                            <form id="updateApprovalForm" action="{{ route('admin.approvals.eastStore') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="approval_id" id="approval_id">
+                                <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
 
 
-                                        </div>
-                                    </div>
+                                <div class="mb-4">
+                                    <label for="approval_status" class="block text-gray-700 font-bold">Approval Status</label>
+                                    <select name="approval_status" id="approval_status" class="block w-full mt-2 border border-gray-300 rounded p-2">
+                                        <option value="Approved">Approved</option>
+                                        <option value="Rejected">Rejected</option>
+                                        <option value="Pending">Pending</option>
+                                    </select>
                                 </div>
-                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" form="editForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
-                                    <button id="closeModal" class=" inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+
+                                <!-- Submit Button -->
+                                <div class="flex justify-end">
+                                    <button type="button" class="mr-4 text-gray-600 hover:text-gray-800" onclick="closeStatus()">Cancel</button>
+                                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Update</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
                 </div>
-            </div>  
-        </div>  
+            </div>      
+        </div>
     </main>
+    
+    
     <script src="/js/index.js"></script>
     <script src="/js/reservationmgmt.js"></script>
+    <script src="/js/profile.js"></script>
+    <script src="/js/reservationmodal.js"></script>
+
+
+
 </body>
 </html>
 

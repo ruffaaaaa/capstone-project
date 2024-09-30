@@ -18,8 +18,6 @@ class FacilitiesController extends Controller
          return view('index', compact('facilities'));
     }
 
-
-    // CRUD FACILITES
     public function createFacility(Request $request)
     {
         $facilities = new Facilities();

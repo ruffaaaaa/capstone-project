@@ -306,4 +306,3 @@ function displayFiles() {
         fileList.appendChild(listItem);
     }
 }
-

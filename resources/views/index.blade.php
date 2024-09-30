@@ -74,7 +74,6 @@
 
     <section class="">
         <div class="flex flex-wrap gap-10 pr-16 pl-14 justify-center pt-16 bg-black bg-opacity-0 max-md:px-5 max-md:flex-col">
-        <!-- Featured Facilities Text -->
             <div class="flex z-0 flex-col justify-center text-center text-black min-w-[240px] w-[320px] max-md:w-full max-md:order-1">
                 <div class="text-4xl font-bold leading-10 px-0">
                     <span>Featured</span>

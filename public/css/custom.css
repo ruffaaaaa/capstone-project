@@ -35,8 +35,9 @@ main {
     justify-content: center; 
     align-items: center; 
     height: 30px;
-    margin-left: 0;
+    margin-left: -8px;
 }
+
 
 
 #toggleSidebar {
@@ -49,17 +50,114 @@ main {
     position: relative;
 }
 
-@keyframes lineAnimation {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: 10%;
+.overlay {
+    background-color: rgba(0, 0, 0, 0.7); /* Adjust the overlay background color and opacity as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border-radius: 20px;
+
+}
+
+/* Hover effect */
+.image-container:hover .overlay {
+    opacity: 1;
+}
+
+.swiper-container {
+    overflow-x: hidden;
+}
+
+
+.left-title {
+    position: relative;
+    height: 150px;
+    width:30%;
+    background: linear-gradient(125deg, rgba(166, 225, 163, 0.8) 75%, rgba(166, 225, 163, 0.8) 75%, rgba(58, 201, 26, 0.7) 80%, transparent 75%);
+  }
+  
+  .left-title:after {
+    position: absolute;
+    content: '';
+    width: 333%;
+    height: 100%;
+    background: url('/images/form2.png'); 
+    background-size: cover; 
+    z-index: -1;
+  }
+
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    
+}
+
+.step span {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #087830;
+    background-color: #A7EBC2;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000000;
+    
+}
+
+.step-active span {
+    border-color: #087830;
+    background-color: #087830;
+    color: white;
+}
+
+.line {
+    margin-top: -30px;
+    width: 200px;
+    border: 2px solid #087830;
+}
+
+.checkmark {
+    margin-left: 8px;
+}
+
+.step label {
+    margin-top: 10px;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .step label {
+        display: none; 
     }
 }
 
-hr {
-    animation: lineAnimation 1s ease-out; 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 60%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 

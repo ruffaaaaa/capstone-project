@@ -79,6 +79,5 @@ const dropdown = document.querySelector('.relative');
     };
 
 
-    //dashboard
 
    
