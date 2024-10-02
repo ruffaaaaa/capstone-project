@@ -6,7 +6,7 @@
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
-    <title>Laravel</title>
+    <title>Facilities Reservation System</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -229,10 +229,10 @@
                         <div class="transition-opacity">
                                 <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                         </div>
-                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-1/3 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div class="bg-white pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
-                                    <div class="mt-3 text-center sm:mt-0 w-full">
+                                    <div class="mt-3 text-center sm:mt-0 w-full ">
                                         <a href="/" class="">
                                             <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
                                         </a>
@@ -261,7 +261,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                 <button type="submit" form="addForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
                                 <button id="closeModalBtn" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
                             </div>
@@ -276,9 +276,9 @@
                             </div>
                             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="bg-white px-4 pb-4 mt-3 sm:p-6 sm:pb-4">
                                     <div class="sm:flex sm:items-start">
-                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
+                                        <div class="text-center sm:mt-0 sm:text-left w-full">
                                             <a href="/" class="-mt-8">
                                                 <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
                                             </a>
@@ -289,11 +289,11 @@
                                                 <input type="hidden" id="editFacilityID" name="facilityID">
                                                 <div class="mt-2">
                                                     <label for="editFacilityName" class="block text-gray-600 text-left font-bold ">Facility Name</label>
-                                                    <input type="text" id="editFacilityName" name="facilityName" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300">
+                                                    <input type="text" id="editFacilityName" name="facilityName" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
                                                 </div>
                                                 <div class="mt-2">
                                                     <label for="editStatus" class="block text-gray-600 text-left font-bold">Status</label>
-                                                    <select id="editStatus" name="status" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300">
+                                                    <select id="editStatus" name="status" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
                                                         <option value="Available">Available</option>
                                                         <option value="Unavailable">Unavailable</option>
                                                     </select>
@@ -302,7 +302,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                <div class=" px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                     <button type="submit" form="editForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                     <button id="closeModal" class=" inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
                                 </div>

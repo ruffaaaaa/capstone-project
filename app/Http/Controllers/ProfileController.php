@@ -15,8 +15,8 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:admin,username,' . $id,
             'email' => 'required|email|max:255|unique:admin,email,' . $id,
-            'password' => 'nullable|string|min:5|confirmed', // Ensure password can be updated, but it's optional
-            'signature_file' => 'nullable|file|mimes:png|max:2048', // PNG only and max size 2MB
+            'password' => 'nullable|string|min:5|confirmed', 
+            'signature_file' => 'nullable|file|mimes:png|max:2048', 
         ]);
 
         $admin = User::findOrFail($id);
@@ -24,6 +24,13 @@ class ProfileController extends Controller
         $admin->username = $validated['username'];
         $admin->email = $validated['email'];
 
+        // Step 1: Check if a new password is provided
+        if ($request->filled('password')) {
+            // Hash the new password and update it
+            $admin->password = bcrypt($validated['password']);
+        }
+
+        // Step 2: Handle the signature file upload
         if ($request->hasFile('signature_file')) {
             $signature = $request->file('signature_file');
             
@@ -37,6 +44,7 @@ class ProfileController extends Controller
             );
         }
         
+        // Step 3: Save the admin record
         $admin->save();
 
         return response()->json(['message' => 'Profile updated successfully']);
@@ -48,8 +56,8 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:admin,username,' . $id,
             'email' => 'required|email|max:255|unique:admin,email,' . $id,
-            'password' => 'nullable|string|min:5|confirmed', // Ensure password can be updated, but it's optional
-            'signature_file' => 'nullable|file|mimes:png|max:2048', // PNG only and max size 2MB
+            'password' => 'nullable|string|min:5|confirmed', 
+            'signature_file' => 'nullable|file|mimes:png|max:2048', 
         ]);
 
         $admin = User::findOrFail($id);
@@ -57,6 +65,13 @@ class ProfileController extends Controller
         $admin->username = $validated['username'];
         $admin->email = $validated['email'];
 
+        // Step 1: Check if a new password is provided
+        if ($request->filled('password')) {
+            // Hash the new password and update it
+            $admin->password = bcrypt($validated['password']);
+        }
+
+        // Step 2: Handle the signature file upload
         if ($request->hasFile('signature_file')) {
             $signature = $request->file('signature_file');
             
@@ -70,6 +85,7 @@ class ProfileController extends Controller
             );
         }
         
+        // Step 3: Save the admin record
         $admin->save();
 
         return response()->json(['message' => 'Profile updated successfully']);

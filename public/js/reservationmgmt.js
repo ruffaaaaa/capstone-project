@@ -1,5 +1,6 @@
 function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, endorsed_by, final_status, facilityNames, event_start_date, event_end_date,
-    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no) {
+    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no,  eastSignatureUrl, cissoSignatureUrl, gsoSignatureUrl, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus,attachmentObjects, endorsedPath
+) {
     
     const modal = document.getElementById('viewModal');
 
@@ -16,7 +17,59 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('max').innerText = max_attendees;
     document.getElementById('facilityNames').innerText = facilityNames;
 
-    // Format and display personnel (pname - ptotal_no)
+
+
+    // Fetching signature file paths and approval statuses
+
+    // Setting the source for the signature images based on approval status
+    document.getElementById('eastSignatureImage').src = eastApprovalStatus === 'Approved' ? eastSignatureUrl : '';
+    document.getElementById('cissoSignatureImage').src = cissoApprovalStatus === 'Approved' ? cissoSignatureUrl : '';
+    document.getElementById('gsoSignatureImage').src = gsoApprovalStatus === 'Approved' ? gsoSignatureUrl : '';
+
+    // Show or hide images based on approval status
+    document.getElementById('eastSignatureImage').style.display = eastApprovalStatus === 'Approved' ? 'block' : 'none';
+    document.getElementById('cissoSignatureImage').style.display = cissoApprovalStatus === 'Approved' ? 'block' : 'none';
+    document.getElementById('gsoSignatureImage').style.display = gsoApprovalStatus === 'Approved' ? 'block' : 'none';
+
+
+    let attachments = JSON.parse(attachmentObjects); // Parse the JSON string
+
+    const attachmentContainer = document.getElementById('attachmentContainer');
+    attachmentContainer.innerHTML = ''; // Clear previous attachments
+
+    // To avoid duplicates, use a Set to track unique URLs
+    const uniqueUrls = new Set();
+
+    if (attachments && attachments.length > 0) {
+        attachments.forEach((attachment) => {
+            if (!uniqueUrls.has(attachment.url)) {
+                uniqueUrls.add(attachment.url);
+                
+                const link = document.createElement('a');
+                link.href = attachment.url;           
+                link.textContent = attachment.name;     
+                link.target = '_blank';                 
+                link.classList.add( 'hover:underline');
+
+                attachmentContainer.appendChild(link);   
+                attachmentContainer.appendChild(document.createElement('br')); 
+            }
+        });
+    } else {
+        attachmentContainer.textContent = "No attachments available"; // Message if no attachments
+    }
+    // Show the moda
+    const endorsedLink = document.getElementById('endorsedLink');
+    if (endorsedPath) {
+        const fileName = endorsedPath.split('/').pop();  // This gets the last part of the URL (the file name)
+        endorsedLink.href = endorsedPath;
+        endorsedLink.textContent = fileName;  // Display the file name
+        endorsedLink.style.display = "inline";
+    } else {
+        endorsedLink.textContent = "No attachments available";
+        endorsedLink.style.display = "none";
+    }
+    
     const pnames = pname.split(', ');
     const ptotalNos = ptotal_no.split(', ');
     let personnelOutput = pnames.map((pname, index) => `${pname.trim()} - ${ptotalNos[index].trim()}`).join(', ');
@@ -64,15 +117,12 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('cleanupTime').innerText = `${cstartTimeString} - ${cendTimeString}`;
 
 
-    // Display modal and set close functionality
     modal.style.display = 'block';
     const closeModalButton = document.getElementById('closeButton');
     closeModalButton.addEventListener('click', function() {
         modal.style.display = 'none'; 
     });
 }
-
-
 
 
 function openAndPrintModal() {
@@ -86,14 +136,21 @@ function openAndPrintModal() {
     document.getElementById('viewModal').style.display = 'none';
     });
 
+    
 function openStatus(button) {
     var approvalId = button.getAttribute('data-approval-id');
-    
+    var reserveeID = button.getAttribute('data-reservee-id');
+
+    // Set the value to the hidden input
     document.getElementById('approval_id').value = approvalId;
+    
+    // Set the displayed reserveeID
+    document.getElementById('reserveeIDDisplay').innerText = reserveeID; // Update this line
 
     document.getElementById('updateModal').classList.remove('hidden');
-    }
+}
 
-    function closeStatus() {
-        document.getElementById('updateModal').classList.add('hidden');
-    }
+function closeStatus() {
+    document.getElementById('updateModal').classList.add('hidden');
+}
+

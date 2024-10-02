@@ -6,7 +6,7 @@
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
-    <title>Laravel</title>
+    <title>Facilities Reservation System</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -173,7 +173,7 @@
                 <div class="h-full bg-white p-4 rounded-2xl shadow">
                     <div class="flex overflow-hidden flex-wrap gap-10 justify-center items-center max-w-full px-8 pt-3">
                         <div class="overflow-hidden grow shrink self-stretch pb-20 pl-3 my-auto text-6xl font-bold text-black min-h-[164px] min-w-[240px] w-[588px] max-md:pr-5 max-md:max-w-full max-md:text-4xl">
-                            WELCOME, ADMIN!
+                            Welcome, {{ $user->username }}!
                         </div>
                         <div class="flex overflow-hidden grow shrink gap-4 justify-end items-center self-stretch my-auto text-white min-h-[165px] min-w-[240px] w-[216px]">
                             <div class="flex overflow-hidden gap-10 justify-center items-center self-stretch pb-0.5 pl-1.5 my-auto rounded-xl min-h-[165px] w-[239px]">
