@@ -48,16 +48,17 @@
                 <hr class="w-12 border-green-900 border-2 absolute animate-line">
             </div>
            
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-5">
                 @foreach ($facilities as $facility)
-                    <div class="mb-2 sm:col-span-1 md:col-span-1">
+                    <div class="mb-2 sm:col-span-1 md:col-span-1 p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                         <label class="flex items-center space-x-2">
-                            <input type="checkbox" name="facility_checkbox[{{ $facility->facilityID }}]" class="form-checkbox equipment-checkbox">
-                            <span class="text-l font-bold">{{ $facility->facilityName }}</span>
+                            <input type="checkbox" name="facility_checkbox[{{ $facility->facilityID }}]" class="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <span class="text-l font-bold text-gray-700">{{ $facility->facilityName }}</span>
                         </label>
                     </div>
                 @endforeach
             </div>
+
             <div id="facilitiesAlert" class="text-center hidden text-red-500 mb-4">Please select at least one facility.</div>
 
         </div>
@@ -284,7 +285,7 @@
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Contact Number:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contact_details" name="contact_details" autocomplete="new-contact_details" type="text" required>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contact_details" name="contact_details" autocomplete="new-contact_details" type="number" required>
             </div>
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Unit/Department/Company:</label>
@@ -298,8 +299,12 @@
                 <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
                 <div class="flex items-center">
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" autocomplete="new-endorsed_by" type="text" required>
-                    <input class="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsement_attachment" name="endorsement_attachment" accept=".pdf, .png" autocomplete="new-endorsement_attachment" type="file">                
                 </div>
+            </div>
+
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                <label class="w-32 text-gray-700 text-sm font-bold">Endorser Email</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorser_email" name="endorser_email" autocomplete="new-email" type="email" required>
             </div>
             <div id="customerDetailsAlert" class="text-center hidden text-red-500 mb-4">Please fill all required fields.</div>
 
@@ -318,14 +323,14 @@
         </div>
 
         <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden">
-            <div class="modal-container bg-green-700 w-100px mt-48 md:max-w-md mx-auto rounded shadow-3xl z-50 overflow-y-auto">
+            <div class="modal-container bg-green-700 w-100px mt-48 max-md:m-10 md:max-w-md mx-auto rounded shadow-3xl z-50 overflow-y-auto">
                 <div class="mt-5 mb-5 flex flex-col items-center justify-center">
                     <a href="/" class="m-4">
                         <img src="/images/lsu-logo 2.png" class="mx-auto w-16 h-30" />
                     </a>
                     <span class="font-bold text-2xl text-white text-center">YOUR RESERVATION REQUEST IS SUBMITTED.</span>
                     <span id="reservation-code" class="text-center text-white mt-2 hidden">Reservation Code: </span> 
-                    <a href="/" class="border border-white px-4 py-2 mt-5 text-white rounded-xl mb-5">Home</a>
+                    <a href="/" class="border border-white px-4 py-2 mt-5 text-white mb-5">Home</a>
                 </div>
             </div>
         </div>

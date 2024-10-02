@@ -83,8 +83,6 @@
                     Check out our popular facilities for your events.
                 </div>
             </div>
-
-            <!-- Facilities Images -->
             <div class="flex z-0 gap-6 justify-center items-center self-stretch min-h-[373px] min-w-[240px] w-[485px] max-md:w-full max-md:order-2 max-md:flex-col max-md:items-center">
                 @foreach ($facilities->random(2) as $facility)
                 <div class="flex overflow-hidden flex-col rounded-md border border-solid border-black border-opacity-10 min-h-[305px] min-w-[240px] w-[242px] max-md:w-full ">

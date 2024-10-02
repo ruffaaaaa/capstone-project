@@ -8,17 +8,23 @@ use App\Models\SupportPersonnels;
 use App\Models\Attachment;
 use App\Models\Facilities;
 use App\Models\Reservee;
+use App\Models\Endorser;
 use App\Models\Equipment;
 use App\Models\AdminSignature;
 use App\Models\User;
 use App\Models\AdminApprovals;
-
-
 use App\Models\ReservationApprovals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationCodeMail;
+// use App\Mail\EndorserCodeMail;
+use App\Mail\EndorserNotificationMail;
+use Illuminate\Support\Str;
+
+
+
+
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -51,8 +57,7 @@ class ReservationController extends Controller
             'unit_department_company' => 'required',
             'date_of_filing' => 'required|date',
             'endorsed_by' => 'required',
-            'endorsement_attachment' => 'required|mimes:png,pdf|max:2048',
-
+            'endorser_email' => 'required|email',
         ]);
 
         $eventStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-start-date'])->format('Y-m-d H:i:s');
@@ -160,56 +165,28 @@ class ReservationController extends Controller
         }
 
         if ($request->has('facility_checkbox')) {
-            foreach ($request->input('facility_checkbox') as $facilityID => $checked) {
+            // Get the facility IDs from the request input
+            $facilityIDs = array_keys($request->input('facility_checkbox'));
+        
+            // Save each selected facility
+            foreach ($facilityIDs as $facilityID) {
                 SelectedFacilities::create([
                     'reservedetailsID' => $nextNumericPart,
                     'facilityID' => $facilityID,
                 ]);
             }
+        
+            // Retrieve the facility names based on the selected facility IDs
+            $facilityNames = Facilities::whereIn('facilityID', $facilityIDs)->pluck('facilityName')->toArray();
+        
+            // Join the names into a string for the email
+            $chosenFacilityList = implode(', ', $facilityNames);
         }
 
-        // $attachmentFilenames = [];
-
-        // if ($request->hasFile('attachments')) {
-        //     $attachments = $request->file('attachments');
-
-        //     foreach ($attachments as $attachment) {
-        //         $originalFilename = $attachment->getClientOriginalName();
-        //         $originalFilename = str_replace([' ', ','], ['_', ''], $originalFilename);
-        //         $originalPath = '' . $originalFilename;
-        //         $attachment->move(public_path('uploads/attachments'), $originalFilename);
-        //         $attachmentFilenames[] = $originalPath;
-        //     }
-        // }
-
-        // $attachmentFilenameString = implode(', ', $attachmentFilenames);
-
-        // Attachment::create([
-        //     'reservedetailsID' => $nextNumericPart,
-        //     'file' => $attachmentFilenameString,
-        // ]);
-
-        // if ($request->hasFile('attachments')) {
-        //     $attachments = $request->file('attachments');
-        
-        //     foreach ($attachments as $attachment) {
-        //         // Get the original filename and replace spaces and commas
-        //         $originalFilename = $attachment->getClientOriginalName();
-        //         $originalFilename = str_replace([' ', ','], ['_', ''], $originalFilename);
-                
-        //         // Move the attachment to the specified directory
-        //         $attachment->move(public_path('uploads/attachments'), $originalFilename);
-                
-
-        //         Attachment::create([
-        //             'reservedetailsID' => $nextNumericPart, // Ensure this variable is defined
-        //             'file' => $originalFilename, // Save the filename directly
-        //         ]);               
-        //     }
-        // }
-
+            
         
 
+        
         if ($request->hasFile('attachments')) {
             $files = $request->file('attachments'); // This will now be an array of files
             $filePaths = []; // Array to store file paths
@@ -242,22 +219,55 @@ class ReservationController extends Controller
             'contact_details' => $validatedData['contact_details'],
             'unit_department_company' => $validatedData['unit_department_company'],
             'date_of_filing' => $validatedData['date_of_filing'],
-            'endorsed_by' => $validatedData['endorsed_by'],
-            'attachment' => $validatedData['endorsement_attachment'],
         ]);
+
+
+        $confirmationToken = Str::random(32);
+        $endorser = Endorser::create([
+            'reserveeID' => $reserveeID,
+            'name' => $validatedData['endorsed_by'],
+            'email' => $validatedData['endorser_email'],
+            'confirmation' => false,
+            'confirmation_token' => $confirmationToken, // Save the token
+        ]);
+
 
         $approval = ReservationApprovals::create([
             'reserveeID' => $reserveeID,
             'final_status' => 'Pending',
         ]);
         
+        Mail::to($validatedData['endorser_email'])->send(new EndorserNotificationMail(
+            $validatedData['endorsed_by'],  // Endorser's name
+            $validatedData['reserveeName'], // Reservee's name
+            $eventStartDate,                 // Event start date
+            $validatedData['nameofevent'],   // Event name
+            $chosenFacilityList,             // Chosen facilities
+            $confirmationToken                // Include the confirmation token
+        ));
         
+
 
         Mail::to($validatedData['email'])->send(new ReservationCodeMail($reserveeID));
 
         return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
     }
 
+    public function confirmEndorsement($token)
+    {
+        $endorser = Endorser::where('confirmation_token', $token)->first();
+
+        if (!$endorser) {
+            return response()->json(['message' => 'Invalid confirmation token.'], 404);
+        }
+
+        $endorser->confirmation = true;
+        $endorser->confirmation_token = null; // Optional: Clear the token
+        $endorser->save();
+
+        return view('confirmation', ['message' => 'Confirmation successful!']);
+    }
+    
     public function eastReservation()
     {
         if (Auth::check()) {
@@ -315,7 +325,7 @@ class ReservationController extends Controller
         $reservation = ReservationDetails::find($reservedetailsID);
         
         if (!$reservation) {
-            return redirect()->route('admin-reservation')->with('error', 'Reservation not found');
+            return redirect()->route('east-reservation')->with('error', 'Reservation not found');
         }
     
         $reservation->delete();

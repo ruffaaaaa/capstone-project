@@ -91,13 +91,13 @@ Route::middleware(['auth', 'role:2,3'])->group(function() {
 
 });
 
+Route::get('/confirmation/{token}', [ReservationController::class, 'confirmEndorsement'])->name('confirm.endorsement');
 
     
 Route::get('/make-reservation', [ReservationController::class, 'showReservationForm'])->name('make-reservation');
 Route::post('', [ReservationController::class, 'storeReservations'])->name('reservation.store');
 
 Route::match(['get', 'post'], '/insert-admin-user', [AuthenticationController::class, 'insertAdmin']);
-
 
 Route::get('/login', [AuthenticationController::class, 'DisplayLoginForm'])->name('login');
 

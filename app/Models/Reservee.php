@@ -20,8 +20,6 @@ class Reservee extends Model
         'contact_details',
         'unit_department_company',
         'date_of_filing',
-        'endorsed_by',
-        'attachment',
     ];
 
     
