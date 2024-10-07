@@ -1,5 +1,5 @@
-function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, endorsed_by, final_status, facilityNames, event_start_date, event_end_date,
-    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no,  eastSignatureUrl, cissoSignatureUrl, gsoSignatureUrl, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus,attachmentObjects, endorsedPath
+function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, final_status, facilityNames, event_start_date, event_end_date,
+    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no,  eastSignatureUrl, cissoSignatureUrl, gsoSignatureUrl, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus,attachmentObjects
 ) {
     
     const modal = document.getElementById('viewModal');
@@ -11,7 +11,6 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('contact').innerText = contact_details;
     document.getElementById('unit').innerText = unit_department_company;
     document.getElementById('date').innerText = date_of_filing;
-    document.getElementById('endorsed').innerText = endorsed_by;
     document.getElementById('status1').innerText = final_status;
     document.getElementById('name').innerText = event_name;
     document.getElementById('max').innerText = max_attendees;
@@ -58,17 +57,7 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     } else {
         attachmentContainer.textContent = "No attachments available"; // Message if no attachments
     }
-    // Show the moda
-    const endorsedLink = document.getElementById('endorsedLink');
-    if (endorsedPath) {
-        const fileName = endorsedPath.split('/').pop();  // This gets the last part of the URL (the file name)
-        endorsedLink.href = endorsedPath;
-        endorsedLink.textContent = fileName;  // Display the file name
-        endorsedLink.style.display = "inline";
-    } else {
-        endorsedLink.textContent = "No attachments available";
-        endorsedLink.style.display = "none";
-    }
+    
     
     const pnames = pname.split(', ');
     const ptotalNos = ptotal_no.split(', ');

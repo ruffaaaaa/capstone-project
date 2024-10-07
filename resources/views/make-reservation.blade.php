@@ -18,7 +18,7 @@
     <nav class="w-full">
         <div class="flex items-center justify-between lg:justify-center py-4 px-6">
             <a class="flex items-center mx-auto lg:mx-0" href="/">
-                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-12  ">
+                <img src="/images/corporate-logo-new.png" alt="Logo" class="h-10">
             </a>
         </div>
     </nav>
@@ -36,8 +36,8 @@
       </div>
     </div>
     <div class="flex justify-center items-center px-16 pb-12 w-full bg-green-800 max-md:px-5 max-md:max-w-full">
-    <div class="flex flex-col items-center px-12 py-12 mb-10 w-full bg-white max-w-[850px] rounded-[30px] max-md:px-5 max-md:mb-10 max-md:max-w-full background">
-    <form id="storeReservationForm" action="{{ route('reservation.store') }}" method="POST">
+    <div class="flex flex-col items-center px-12 py-12 mb-10 w-full bg-white max-w-[850px] rounded max-md:px-5 max-md:mb-10 max-md:max-w-full background">
+    <form id="storeReservationForm" action="{{ route('reservation.store') }}" method="POST" class="w-full">
     @csrf
 
         <div id="facilitiesForm" class="mx-auto flex flex-col items-center justify-center">
@@ -69,8 +69,8 @@
             <div class="mb-6 flex justify-center items-center relative"> 
                 <hr class="w-14 border-green-900 border-2 absolute animate-line">
             </div>
-            <div class = "w-100">
-                <div class="bg-[#5CC273] p-2 ">
+            <div class = "w-full">
+                <div class="bg-[#076334] p-2 ">
                     <span class="text-l font-bold text-white pl-4">EVENT DETAILS</span>
                 </div>
 
@@ -85,50 +85,52 @@
                 
                 <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="event-start-date">Start and End Date-Time of the Event Proper</label>
                 <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
-                    <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
+                    <div class="mb-2 md:mb-0 md:mr-2 w-full">
                         <label class="text-gray-700 text-sm font-bold mb-10 md:hidden" id="event-start-date-label" for="event-start-date">Start Date and Time of Event:</label>
-                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-start-date" name="event-start-date" type="datetime-local" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-start-date" name="event-start-date" type="datetime-local" required>
                     </div>
                     <div class="hidden md:block mr-4 ml-4">
                         <h1>-</h1>
                     </div>
-                    <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
+                    <div class="mb-2 md:mb-0 md:ml-2 w-full">
                         <label class="text-gray-700 text-sm font-bold mb-10 md:hidden" id="event-end-date-label" for="event-end-date">End Date and Time of Event:</label>
-                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-end-date" name="event-end-date" type="datetime-local" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="event-end-date" name="event-end-date" type="datetime-local" required>
                     </div>
                 </div>
+
                 <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="preparation-start-date">Start and End Date-Time for Event Preparation</label>
                 <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
-                    <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
+                    <div class="mb-2 md:mb-0 md:mr-2 w-full">
                         <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="preparation-start-date-label" for="preparation-start-date">Start Date-Time for Event Preparation:</label>
-                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local" required>
                     </div>
                     <div class="hidden md:block mr-4 ml-4">
                         <h1>-</h1>
                     </div>
-                    <div class="mb-2 md:mb-0 md:ml-2 w-100 md:w-auto">
+                    <div class="mb-2 md:mb-0 md:ml-2 w-full">
                         <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="preparation-end-date-label" for="preparation-end-date">End Date-Time for Event Preparation:</label>
-                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local" required>
                     </div>
                 </div>
+
                 <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="cleanup-start-date">Start and End Date-Time for Cleanup</label>
                 <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
-                    <div class="mb-2 md:mb-0 md:mr-2 w-full md:w-auto">
+                    <div class="mb-2 md:mb-0 md:mr-2 w-full">
                         <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="cleanup-start-date-label" for="cleanup-start-date">Start Date-Time of Cleanup:</label>
-                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local" required>
                     </div>
                     <div class="hidden md:block mr-4 ml-4">
                         <h1>-</h1>
                     </div>
-                    <div class="mb-2 md:mb-0 md:ml-2 w-full md:w-auto">
+                    <div class="mb-2 md:mb-0 md:ml-2 w-full">
                         <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="cleanup-end-date-label" for="cleanup-end-date">End Date-Time of Cleanup:</label>
-                        <input class="shadow appearance-none border rounded w-full md:w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date" type="datetime-local" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date" type="datetime-local" required>
                     </div>
                 </div>
 
                 <div class="flex flex-col lg:flex-row">
                     <div class="w-full lg:w-1/2 pt-2 pl-2 pr-2 ">
-                    <div class="bg-[#5CC273] p-2">
+                    <div class="bg-[#076334] p-2">
                         <span class="text-l font-bold text-white pl-4">EQUIPMENT</span>
                     </div>
                     <div>
@@ -191,7 +193,7 @@
                     </div>
                     </div>
                     <div class="w-full lg:w-1/2 pt-2 pl-2 pr-2 ">
-                        <div class="bg-[#5CC273] p-2">
+                        <div class="bg-[#076334] p-2">
                             <span class="text-l font-bold text-white pl-4">SUPPORT PERSONNEL</span>
                         </div>
                         <div>
@@ -240,7 +242,7 @@
                     </div>
                 </div>
                 <div class="mt-5">
-                    <div class="bg-[#5CC273] p-2">
+                    <div class="bg-[#076334] p-2">
                         <span class="text-l font-bold text-white pl-4">B5. ATTACHMENTS</span>
                     </div>
                     <div class="flex pt-5">
@@ -270,6 +272,7 @@
                 <span class="text-l font-bold text-white pl-4">EVENT DETAILS</span>
             </div>
 
+            
             <div class="items-center mb-5 mt-5 ml-4 mr-4">
                 <label class="w-32 text-gray-700 text-sm font-bold">Requested By:</label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="reserveeName" name="reserveeName" autocomplete="new-reserveeName" type="text" required>
@@ -338,20 +341,20 @@
 
 
         <div class="flex justify-center w-full mb-4 max-md:mb-0" id="buttonContainer">
-            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 hover:bg-green-900 max-md:px-5 hover:border-white" id="prevButton">
+            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded bg-green-950 hover:bg-green-900 max-md:px-5 hover:border-white" id="prevButton">
                 Previous
             </button>
-            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 hover:bg-green-900 max-md:px-5 hover:border-white" id="nextButton">
+            <button class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded bg-green-950 hover:bg-green-900 max-md:px-5 hover:border-white" id="nextButton">
                 Next
             </button>
-            <button id="submitButton" class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded-lg bg-green-950 hover:bg-green-900 hover:border-white max-md:px-5 hidden">
+            <button id="submitButton" class="flex justify-center m-2 items-center px-12 py-3 w-40 max-w-full text-base font-bold leading-6 text-white whitespace-nowrap rounded bg-green-950 hover:bg-green-900 hover:border-white max-md:px-5 hidden">
                 Submit
             </button>
         </div>
     </form>
     </div>
     
-</div>
+    </div>
 
 
 </body>

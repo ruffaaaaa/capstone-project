@@ -20,12 +20,8 @@
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
         <div class="flex flex-col justify-between h-full">
             <div class="flex-grow">
-                <div class="px-4 py-6 text-center border-b">
-                    <img src="/images/lsu-logo 2.png" alt="Logo" class="mx-auto h-10 mb-1">
-                    <h1 class=" text-l font-bold leading-none text-[#087830] text">
-                        <!-- Display this text when not collapsed -->
-                        <span class="hidden">FACILITIES RESERVATION SYSTEM</span>
-                    </h1>
+                <div class="flex justify-center text-center py-6 border-b">
+                    <img src="/images/corporate-logo-new.png" alt="Logo" class="h-8 mb-1">
                 </div>
                 
                 <div class="p-4">
@@ -102,9 +98,9 @@
         </div>
     </aside>
     <main class="p-8 max-h-screen overflow-auto">
-        <div class="max-h-screen overflow-y-auto w-full">
+        <div class="max-h-screen shadow-md w-full">
             <div class=" mx-auto">
-                <div class="bg-white rounded-3xl p-8 mb-5">
+                <div class="bg-white rounded  p-8 mb-5">
                     <div class="row">
                         <div class="col-md-12">  
                     </div>
@@ -241,10 +237,10 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
 
 
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                <button class="border border-red-500 text-blue-500 px-3 py-1 rounded hover:border-red-600 hover:bg-blue-500 hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
+                                <button class="border-solid border-1 border-gray-500  text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
                                     '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
-                                    '{{ $detailsGroup->first()->endorsed_by }}', '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
+                                    '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
                                     '{{$detailsGroup->first()->event_end_date}}', '{{$detailsGroup->first()->preparation_start_date}}', '{{$detailsGroup->first()->preparation_end_date_time}}', '{{$detailsGroup->first()->cleanup_start_date_time}}', 
                                     '{{$detailsGroup->first()->cleanup_end_date_time}}','{{$detailsGroup->first()->event_name}}', '{{$detailsGroup->first()->max_attendees}}', '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
                                     '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
@@ -257,14 +253,13 @@
                                     '{{ $gso->approval_status ?? '' }}',
 
                                     '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}',  // Attachments array
-                                    '{{ $detailsGroup->first()->endorsedPath }}',  // Main attachment
 
                                     )">
                                     View
     
                                 </button>
 
-                                <button class="border border-red-500 text-green-500 px-3 py-1 rounded hover:border-red-600 hover:bg-green-500 hover:text-white ml-2 editButton"
+                                <button class="border-solid border-1 border-gray-500  text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
                                         data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $reserveeID }}"
 
                                         onclick="openStatus(this)">
@@ -275,7 +270,7 @@
                                 <form method="POST" action="{{ route('reservation.destroy', $detailsGroup->first()->reservedetailsID) }}" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="border border-red-500 text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white ml-2">
+                                    <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
                                         Delete
                                     </button>
                                 </form>
@@ -289,12 +284,12 @@
                     
                     <div id="viewModal" class="modal overflow-auto  items-center ">
                         
-                        <div class="modal-content my-6  w-a4-width  max-w-4xl rounded-lg bg-white p-6 shadow ">
+                        <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow ">
                             <div class=" ">
                                 <table class=" w-full border border-black">
                                     <thead>
                                         <tr class="border border-black bg-gray-100 ">
-                                            <th rowspan="5"  style="width:5%"><img src="/images/lsu-logo 2.png" class="mx-auto w-15 h-20" /></th>
+                                            <th rowspan="5"  style="width:5%"><img src="/images/corporate-logo-new.png" class="mx-auto h-10" /></th>
                                         </tr>
                                         <tr class="border border-black">
                                             <th rowspan="2"  style="width:20%" class="text-center border border-black">
@@ -435,7 +430,7 @@
                                     <tr>
                                         
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Endorsed by</td>
-                                        <td colspan="2" class=" border border-black px-2 py-2 "><span id="endorsed">
+                                        <td colspan="2" class=" border border-black px-2 py-2 ">
                                         
                                         </td>
                                     </tr>

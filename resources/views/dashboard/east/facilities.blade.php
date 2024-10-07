@@ -20,10 +20,10 @@
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
             <div class="flex flex-col justify-between h-full">
                 <div class="flex-grow">
-                    <div class="px-4 py-6 text-center border-b">
-                        <img src="/images/lsu-logo 2.png" alt="Logo" class="mx-auto h-10 mb-1">
-                        
+                    <div class="flex justify-center text-center py-8 border-b">
+                        <img src="/images/corporate-logo-new.png" alt="Logo" class="h-8 mb-1">
                     </div>
+                
                     <div class="p-4">
                         <ul class="space-y-1">
                             <li>
@@ -98,83 +98,14 @@
                         
                     </form>
                 </div>
-                <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
-                    <div class="flex items-center justify-center min-h-screen">
-                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
-                                    <a href="/" class="-mt-8">
-                                        <img src="/images/profile-icon.png" class="mx-auto w-10 h-30" />
-                                    </a>
-                                    <h3 class="text-lg leading-6 font-medium text-gray-900">Account Profile</h3>
-                                    
-
-                                    <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('profile.update', $user->id) }}" enctype="multipart/form-data">
-                                    @csrf
-                                        @method('PUT')
-
-                                        <div class="mt-2">
-                                            <label for="username" class="block text-sm font-medium text-gray-700 text-left">Username</label>
-                                            <input type="text" name="username" id="username" value="{{ $user->username }}" required 
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                        </div>
-
-                                        <div class="mt-2">
-                                            <label for="email" class="block text-sm font-medium text-gray-700 text-left">Email</label>
-                                            <input type="email" name="email" id="email" value="{{ $user->email }}" required
-                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                        </div>
-
-                                        <div class="mt-2">
-                                            <label for="password" class="block text-sm font-medium text-gray-700 text-left">Password (leave empty if you don't want to change it)</label>
-                                            <input type="password" name="password" id="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                        </div>
-
-                                        <div class="mt-2">
-                                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
-                                            <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                        </div>
-
-                                        <div>
-
-                                            @if($signature && Storage::disk('public')->exists($signature->signature_file))
-                                            <div class="mt-2 align-center justify-center text-center">
-                                                <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
-                                                <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
-                                            </div>
-
-                                            @endif
-                                        </div>
-
-                                        <div class="mt-2">
-                                            <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
-                                            <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
-                                        </div>
-                                        <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
-
-                                        </div>
-                                
-                                    </form>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                <button type="submit" form="editprofileForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
-                                <button id="closeProfile" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </aside>
  
  
     <main class="p-8 max-h-screen w-auto">
-
         <div class="max-h-screen overflow-y-auto">
             <div class=" mx-auto">
-                <div class="bg-white rounded-3xl p-8 mb-5">
+                <div class="bg-white rounded shadow-md p-8 mb-5">
                     <div class="row">
                         <div class="col-md-12">
                         <button type="button" class="bg-green-700 mb-3 text-white font-bold py-2 px-4 rounded" id="openModalBtn">
@@ -187,11 +118,11 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Facility Name</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Facility Name</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -206,13 +137,13 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-center hidden"></td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <button class="border border-red-500 text-blue-500 px-4 py-1 rounded hover:border-red-600 hover:bg-blue-500 hover:text-white ml-2 editButton">
+                                    <button class="border-solid border-1 border-gray-500 font-semibold text-blue-500 px-4 py-1 rounded  hover:bg-blue-500 hover:text-white ml-2 editButton">
                                         Edit
                                     </button>
                                     <form method="POST" action="{{ route('facilities.destroy', $facility->facilityID) }}" class="inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="border border-red-500 text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white ml-2">
+                                        <button type="submit" class="border-solid border-1 border-gray-500 font-semibold text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white ml-2">
                                             Delete
                                         </button>
                                     </form>                          
@@ -223,95 +154,145 @@
                             @endforeach
                         </tbody>
                     </table>
-
-
-                    <div class="fixed inset-0 flex items-center justify-center overflow-auto z-50 hidden" id="addModal">
-                        <div class="transition-opacity">
-                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                        </div>
-                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-1/3 sm:align-middle sm:max-w-lg sm:w-full">
-                            <div class="bg-white pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                    <div class="mt-3 text-center sm:mt-0 w-full ">
-                                        <a href="/" class="">
-                                            <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
-                                        </a>
-                                        <h3 class="text-lg leading-6 font-medium text-gray-900">Add Facility</h3>
-                                        <form id="addForm" action="{{ route('facility.save') }}" method="POST" enctype="multipart/form-data" class="px-3">
-                                            @csrf
-                                        
-                                            <div class="mb-2">
-                                                <label for="facilityName" class="block text-gray-700 font-bold  text-left ">Facility Name</label>
-                                                <input type="text" class=" rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="facilityName" name="facilityName" required>
-                                            </div>
-
-                                            <div class="mb-2">
-                                                <label for="image" class="block text-gray-700 font-bold  text-left ">Image</label>
-                                                <input type="file" class=" rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="image" name="image" accept="image/*" required>
-                                            </div>
-
-                                            <div class="mb-2">
-                                                <label for="status" class=" block text-gray-700 font-bold  text-left ">Status</label>
-                                                <select class="form-select rounded-l  w-full py-2 px-3" id="status" name="status" required>
-                                                    <option value="Available">Available</option>
-                                                    <option value="Not Available">Not Available</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                </div>
+            </div>  
+        </div>
+        <div id="addModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div class="bg-white px-2 py-2 rounded-lg shadow-lg w-1/3">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 w-full ">
+                        <a href="/" class="">
+                            <img src="/images/lsu-logo 2.png"  class="mx-auto w-10 h-30" />
+                        </a>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Add Facility</h3>
+                        <form id="addForm" action="{{ route('facility.save') }}" method="POST" enctype="multipart/form-data" class="px-3">
+                            @csrf
+                            <div class="mb-2">
+                                <label for="facilityName" class="block text-gray-700 font-bold  text-left ">Facility Name</label>
+                                <input type="text" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="facilityName" name="facilityName" required>
                             </div>
-                            <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                <button type="submit" form="addForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
-                                <button id="closeModalBtn" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                            <div class="mb-2">
+                                <label for="image" class="block text-gray-700 font-bold  text-left ">Image</label>
+                                <input type="file" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="image" name="image" accept="image/*" required>
                             </div>
-                        </div>
+                            <div class="mb-2">
+                                <label for="status" class="block text-gray-700 font-bold  text-left ">Status</label>
+                                <select class="form-select rounded-l w-full py-2 px-3" id="status" name="status" required>
+                                    <option value="Available">Available</option>
+                                    <option value="Not Available">Not Available</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
-
-                    
-                    <div id="editModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-                        <div class="flex items-center justify-center min-h-screen">
-                            <div class="transition-opacity">
-                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+                <div class="px-3 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" form="addForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
+                    <button id="closeModalBtn" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div id="editModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div class="inline-block align-bottom bg-white rounded-lg w-1/3  text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 py-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="justify text-center sm:mt-0 sm:text-left w-full">
+                            <div class="flex justify-center text-center">
+                                <!-- <img src="/images/corporate-logo-new.png"  class=" h-8" /> -->
                             </div>
-                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                                <div class="bg-white px-4 pb-4 mt-3 sm:p-6 sm:pb-4">
-                                    <div class="sm:flex sm:items-start">
-                                        <div class="text-center sm:mt-0 sm:text-left w-full">
-                                            <a href="/" class="-mt-8">
-                                                <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
-                                            </a>
-                                            <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Facility</h3>
-                                            <form id="editForm" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" id="editFacilityID" name="facilityID">
-                                                <div class="mt-2">
-                                                    <label for="editFacilityName" class="block text-gray-600 text-left font-bold ">Facility Name</label>
-                                                    <input type="text" id="editFacilityName" name="facilityName" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
-                                                </div>
-                                                <div class="mt-2">
-                                                    <label for="editStatus" class="block text-gray-600 text-left font-bold">Status</label>
-                                                    <select id="editStatus" name="status" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
-                                                        <option value="Available">Available</option>
-                                                        <option value="Unavailable">Unavailable</option>
-                                                    </select>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                            <h3 class="text-lg leading-6 mt-2 font-medium text-gray-900">Edit Facility</h3>
+                            <form id="editForm" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" id="editFacilityID" name="facilityID">
+                                <div class="mt-2">
+                                    <label for="editFacilityName" class="block text-gray-600 text-left font-bold ">Facility Name</label>
+                                    <input type="text" id="editFacilityName" name="facilityName" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
                                 </div>
-                                <div class=" px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" form="editForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
-                                    <button id="closeModal" class=" inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                                <div class="mt-2">
+                                    <label for="editStatus" class="block text-gray-600 text-left font-bold">Status</label>
+                                    <select id="editStatus" name="status" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
+                                        <option value="Available">Available</option>
+                                        <option value="Unavailable">Unavailable</option>
+                                    </select>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>  
-        </div>  
+                <div class=" px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" form="editForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                    <button id="closeModal" class=" inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
+            <div class="flex items-center justify-center min-h-screen">
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
+                            <a href="/" class="-mt-8">
+                                <img src="/images/profile-icon.png" class="mx-auto w-10 h-30" />
+                            </a>
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Account Profile</h3>
+                            
+
+                            <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('profile.update', $user->id) }}" enctype="multipart/form-data">
+                            @csrf
+                                @method('PUT')
+
+                                <div class="mt-2">
+                                    <label for="username" class="block text-sm font-medium text-gray-700 text-left">Username</label>
+                                    <input type="text" name="username" id="username" value="{{ $user->username }}" required 
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+
+                                <div class="mt-2">
+                                    <label for="email" class="block text-sm font-medium text-gray-700 text-left">Email</label>
+                                    <input type="email" name="email" id="email" value="{{ $user->email }}" required
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+
+                                <div class="mt-2">
+                                    <label for="password" class="block text-sm font-medium text-gray-700 text-left">Password (leave empty if you don't want to change it)</label>
+                                    <input type="password" name="password" id="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+
+                                <div class="mt-2">
+                                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+
+                                <div>
+
+                                    @if($signature && Storage::disk('public')->exists($signature->signature_file))
+                                    <div class="mt-2 align-center justify-center text-center">
+                                        <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
+                                        <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
+                                    </div>
+
+                                    @endif
+                                </div>
+
+                                <div class="mt-2">
+                                    <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
+                                    <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
+                                </div>
+                                <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
+
+                                </div>
+                        
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="submit" form="editprofileForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                        <button id="closeProfile" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <script src='js/index.js'></script>
     <script src='js/modal.js'></script>

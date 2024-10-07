@@ -300,7 +300,6 @@ class ReservationController extends Controller
                     'admin_roles.name as role_name',
                     'admin_signature.signature_file',
                     'reservation_attachments.file as attachment_path', // Attachments
-                    'reservee.attachment as endorsedPath'
                 )
                 ->orderBy('admin_approvals.admin_id', 'asc')
                 ->get();
@@ -379,7 +378,6 @@ class ReservationController extends Controller
                     'admin_roles.name as role_name',
                     'admin_signature.signature_file',
                     'reservation_attachments.file as attachment_path', // Attachments
-                    'reservee.attachment as endorsedPath'
                 )
                 ->orderBy('admin_approvals.admin_id', 'asc')
                 ->distinct('reservee.reserveeID')

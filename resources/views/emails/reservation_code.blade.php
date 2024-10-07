@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Template</title>
+    <title>Email</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: 'Helvetica', 'Arial', sans-serif;">
     <table width="100%" cellspacing="0" cellpadding="0" style="background-color: #f3f4f6;">
@@ -22,13 +22,11 @@
                         <td style="padding: 20px; font-size: 16px; line-height: 1.5; color: #374151;">
                             <p style="margin: 0;">Hello,</p>
                             <p style="margin: 16px 0;">Thank you for making a reservation with us. Your reservation code is provided below. Please keep this code safe as you will need it to track the status of your reservation.</p>
-                            <table align="center" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
-                                <tr>
-                                    <td style=" background-color: #05481C; border-radius: 4px;">
-                                        <span style="display: inline-block; padding: 12px 24px; color: #ffffff; font-weight: bold;">{{ $reservationCode }}</span>
-                                    </td>
-                                </tr>
-                            </table>
+                            
+                            <div style="text-align: center;">
+                                <span style="background-color: #05481C; border-radius: 4px;display: inline-block; padding: 12px 24px; color: #ffffff; font-weight: bold;">{{ $reservationCode }}</span>
+                                    
+                            </div>
                             <p style="margin: 0;">If you have any questions or need to make changes to your reservation, feel free to <a href="https://example.com/contact" style="color: #4f46e5; text-decoration: none;">contact us</a>.</p>
                         </td>
                     </tr>

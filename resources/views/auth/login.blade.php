@@ -17,11 +17,11 @@
     </head>
     <body class="font-sans text-gray-900 antialiased ">
         <div class="min-h-screen flex items-center justify-center bg-[#076334] text-white max-md:px-5 ">
-            <div class="w-full sm:max-w-md  px-7 py-16  bg-white dark:bg-white-800 shadow-xl overflow-hidden rounded-xl max-md:md-10" ">
+            <div class="w-full sm:max-w-md  px-7 py-16  bg-white dark:bg-white-800 shadow-xl overflow-hidden rounded max-md:md-10" ">
                 <div class="flex flex-col items-center">
-                    <a href="/" class="-mt-8">
-                        <img src="/images/lsu-logo 2.png" class="pl-2 w-12 h-14" />
-                        <h1 class="text-l text-green-600 text-center font-bold">ADMIN</h1>
+                    <a href="/" class="-mt-4">
+                        <img src="/images/corporate-logo-new.png" class="pl-2 h-10" />
+                        <h1 class="text-sm text-green-600 text-center font-bold mt-2">ADMIN</h1>
                     </a>
                 </div>
 
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="flex items-center justify-center">
-                        <button type="submit" class="ml-3 py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 focus:ring-offset-gray-800">Log in</button>
+                        <button type="submit" class="ml-3 py-2 px-4 bg-[#087830] hover:bg-green-700 text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 focus:ring-offset-gray-800">Log in</button>
                     </div>
                     <a href="/" class="text-center text-black text-xs block mt-2 hover:text-green">Back to the Home Page</a>
                 </form>

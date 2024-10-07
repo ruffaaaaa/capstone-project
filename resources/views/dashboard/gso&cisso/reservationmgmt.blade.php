@@ -20,12 +20,8 @@
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
         <div class="flex flex-col justify-between h-full">
             <div class="flex-grow">
-                <div class="px-4 py-6 text-center border-b">
-                    <img src="/images/lsu-logo 2.png" alt="Logo" class="mx-auto h-10 mb-1">
-                    <h1 class=" text-l font-bold leading-none text-[#087830] text">
-                        <!-- Display this text when not collapsed -->
-                        <span class="hidden">FACILITIES RESERVATION SYSTEM</span>
-                    </h1>
+                <div class="flex justify-center text-center py-8 border-b">
+                    <img src="/images/corporate-logo-new.png" alt="Logo" class="h-8 mb-1">
                 </div>
                 
                 <div class="p-4">
@@ -92,9 +88,9 @@
         </div>
     </aside>
     <main class="p-8 max-h-screen overflow-auto">
-        <div class="max-h-screen overflow-y-auto w-full">
+        <div class="max-h-screen shadow-md overflow-y-auto w-full">
             <div class=" mx-auto">
-                <div class="bg-white rounded-3xl p-8 mb-5">
+                <div class="bg-white rounded p-8 mb-5">
                     <div class="row">
                         <div class="col-md-12">  
                     </div>
@@ -158,9 +154,9 @@
 
 
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                <button class="border border-red-500 text-blue-500 px-3 py-1 rounded hover:border-red-600 hover:bg-blue-500 hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
+                                <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 font-semibold hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
                                     '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
-                                    '{{ $detailsGroup->first()->endorsed_by }}', '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
+                                    '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
                                     '{{$detailsGroup->first()->event_end_date}}', '{{$detailsGroup->first()->preparation_start_date}}', '{{$detailsGroup->first()->preparation_end_date_time}}', '{{$detailsGroup->first()->cleanup_start_date_time}}', 
                                     '{{$detailsGroup->first()->cleanup_end_date_time}}','{{$detailsGroup->first()->event_name}}', '{{$detailsGroup->first()->max_attendees}}', '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
                                     '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
@@ -173,14 +169,13 @@
                                     '{{ $gso->approval_status ?? '' }}',
 
                                     '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}',  // Create an array of objects with URL and file name
-                                    '{{ $detailsGroup->first()->endorsedPath }}',  // Main attachment
 
                                     )">
                                     View
     
                                 </button>
 
-                                <button class="border border-red-500 text-green-500 px-3 py-1 rounded hover:border-red-600 hover:bg-green-500 hover:text-white ml-2 editButton"
+                                <button class="border-solid border-1 border-gray-500 text-green-500 px-3 py-1 rounded font-semibold hover:bg-green-500 hover:text-white ml-2 editButton"
                                         data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $reserveeID }}"
 
                                         onclick="openStatus(this)">
@@ -292,7 +287,6 @@
                                                 <th colspan="4" class="border border-black px-2 text-sm text-sm">
                                                    
                                                     <div id="attachmentContainer" class="font-normal"></div>
-                                                    <a id="endorsedLink" href="" target="_blank" class="font-normal	hover:underline"></a>
                                                 </th>
                                             </tr>
                                             <tr class="">
@@ -340,7 +334,7 @@
                                     <tr>
                                         
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Endorsed by</td>
-                                        <td colspan="2" class=" border border-black px-2 py-2 "><span id="endorsed">
+                                        <td colspan="2" class=" border border-black px-2 py-2 ">
                                         
                                         </td>
                                     </tr>
@@ -365,7 +359,7 @@
                                     <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
                                 </a>
 
-                                
+                                \\
                                 <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2"> Approval Status</h3>
                             </div>
                             <form id="updateApprovalForm" action="{{route('admin.approvals.adminStore') }}" method="POST">
@@ -399,7 +393,7 @@
         </div>
         <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
             <div class="flex items-center justify-center min-h-screen">
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="inline-block align-bottom bg-white rounded text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">

@@ -20,9 +20,10 @@
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
         <div class="flex flex-col justify-between h-full">
             <div class="flex-grow">
-                <div class="px-4 py-6 text-center border-b">
-                    <img src="/images/lsu-logo 2.png" alt="Logo" class="mx-auto h-10 mb-1">
+                <div class="flex justify-center text-center py-8 border-b">
+                    <img src="/images/corporate-logo-new.png" alt="Logo" class="h-8 mb-1">
                 </div>
+                
                 <div class="p-4">
                     <ul class="space-y-1">
                         <li>
@@ -170,7 +171,7 @@
         
         <div class="flex flex-col lg:flex-row h-full">
             <div class="w-full lg:w-3/3 lg:mb-0 ">
-                <div class="h-full bg-white p-4 rounded-2xl shadow">
+                <div class="h-full bg-white p-4 rounded drop-shadow-md">
                     <div class="flex overflow-hidden flex-wrap gap-10 justify-center items-center max-w-full px-8 pt-3">
                         <div class="overflow-hidden grow shrink self-stretch pb-20 pl-3 my-auto text-6xl font-bold text-black min-h-[164px] min-w-[240px] w-[588px] max-md:pr-5 max-md:max-w-full max-md:text-4xl">
                             Welcome, {{ $user->username }}!

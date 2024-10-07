@@ -24,18 +24,18 @@
     <nav class="w-full">
         <div class="flex items-center justify-between lg:justify-center py-4 px-6">
             <a class="flex items-center mx-auto lg:mx-0" href="/">
-                <img src="/images/lsu-logo 2.png" alt="Logo" class="h-12">
+                <img src="/images/corporate-logo-new.png" alt="Logo" class="h-10">
             </a>
         </div>
     </nav>
 
     <section class="">
-        <div class="flex relative flex-col items-start px-20 py-16 min-h-[440px] rounded-[100px] mx-12 max-md:px-5 max-md:ml-4 max-md:mr-4 ">
+        <div class="flex relative flex-col items-start px-20 py-16 min-h-[440px] rounded mx-12 max-md:px-5 max-md:ml-4 max-md:mr-4 ">
             <img
                 loading="lazy"
                 srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/0081b274fa8106289a577e3b7d8573936e07f1e7a391948a826ae4e447f2a302?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
-                class="object-cover absolute inset-0 size-full rounded-3xl"/>
-                <div class="relative pt-8 mt-10 text-6xl font-bold tracking-wider text-white max-md:text-5xl max-md:mt-3">
+                class="object-cover absolute inset-0 size-full rounded  shadow-md"/>
+                <div class="relative pt-8 mt-10 text-6xl font-bold tracking-wider text-white max-md:text-5xl max-md:mt-3 ">
                     RESERVE
                     <span class="font-thin max-md:-mt-2">YOUR</span> SPACE
                     <span class="font-thin"><br/>WITH</span> EASE
@@ -43,28 +43,28 @@
 
             <div class="flex relative gap-1.5 justify-center items-center py-3 mt-2 ">
                 <a href="make-reservation" class="flex flex-col justify-center self-stretch text-base font-medium text-black rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105">
-                    <div class="p-3 bg-white rounded-lg max-md:px-5">RESERVE NOW</div>
+                    <div class="p-3 bg-white rounded g max-md:px-5">RESERVE NOW</div>
                 </a>
 
-                <a class="group flex flex-col justify-center self-stretch my-auto rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative text-decoration-line: none;">
-                    <div class="flex flex-col justify-center items-center px-3 rounded-md bg-white bg-opacity-90 h-[43px] w-[43px]">
+                <a class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative text-decoration-line: none;">
+                    <div class="flex flex-col justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
                         <img
                             loading="lazy"
                             srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
                             class="object-contain w-full aspect-[0.94]"/>
                     </div>
-                    <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded-md">
+                    <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded">
                         Status
                     </div>
                 </a>
-                <a href="" class="group flex flex-col justify-center self-stretch my-auto rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative">
-                    <div class="flex justify-center items-center px-3 rounded-md bg-white bg-opacity-90 h-[43px] w-[43px]">
+                <a href="" class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative">
+                    <div class="flex justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
                         <img
                             loading="lazy"
                             src="https://cdn.builder.io/api/v1/image/assets/TEMP/7b09d27cab37db47103086580c25867c01cbce72eb51be0b55484a7437aae598?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
                             class="border-2 aspect-square w-[18px]"/>
                     </div>
-                    <div class=" text-[10px] absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded-md">
+                    <div class=" text-[10px] absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded">
                         Calendar
                     </div>
                 </a>
@@ -139,7 +139,7 @@
             <div class="text-black text-center text-base leading-6 mt-6 max-md:max-w-full">
                 Follow these steps to reserve a facility
             </div>
-            <div class="items-stretch self-stretch bg-white flex flex-col justify-center mt-5 w-full rounded-3xl max-md:max-w-full max-md:mr-2.5 max-md:mt-10">
+            <div class="items-stretch self-stretch bg-white flex flex-col justify-center mt-5 w-full rounded max-md:max-w-full max-md:mr-2.5 max-md:mt-10 shadow-md">
                 <div class="justify-between items-stretch border flex gap-4 p-4 rounded-md border-opacity-10 max-md:max-w-full max-md:flex-wrap">
                     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/d2224dc124401e149cabec63f6b04e92b1bad80155c218ed8c0cbac38570eadb?" class="aspect-square object-contain object-center w-[100px] items-center overflow-hidden shrink-0 max-w-full"/>
                     <span class="items-stretch flex grow basis-[0%] flex-col self-start max-md:max-w-full">
@@ -152,7 +152,7 @@
                     </span>
                 </div>
             </div>
-            <div class="justify-between items-stretch border bg-white self-stretch flex gap-4 mt-5 w-full p-4 rounded-3xl border-solid border-black border-opacity-10 max-md:max-w-full max-md:flex-wrap max-md:mr-2.5">
+            <div class="justify-between items-stretch border bg-white self-stretch flex gap-4 mt-5 w-full p-4 rounded border-solid border-black border-opacity-10 max-md:max-w-full max-md:flex-wrap max-md:mr-2.5  shadow-md">
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/64ba174e863e80ba60a65627d893ca993dc44729302f25afc076db8105a5088b?" class="aspect-square object-contain object-center w-[100px] justify-center items-center overflow-hidden shrink-0 max-w-full"/>
                 <span class="items-stretch flex grow basis-[0%] flex-col self-start max-md:max-w-full">
                     <div class="text-black text-xl font-medium leading-7 max-md:max-w-full">
@@ -163,7 +163,7 @@
                     </div>
                 </span>
             </div>
-            <div class="justify-between items-stretch border bg-white self-stretch flex gap-4 mt-5 w-full p-4 rounded-3xl border-solid border-black border-opacity-10 max-md:max-w-full max-md:flex-wrap max-md:mr-2.5">
+            <div class="justify-between items-stretch border bg-white self-stretch flex gap-4 mt-5 w-full p-4 rounded border-solid border-black border-opacity-10 max-md:max-w-full max-md:flex-wrap max-md:mr-2.5  shadow-md">
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6056405e608fe5b9691386695203a927553b55443dd46905f5ae7d1f7147450a?" class="aspect-square object-contain object-center w-[100px] justify-center items-center overflow-hidden shrink-0 max-w-full"/>
                 <span class="items-stretch flex grow basis-[0%] flex-col self-start max-md:max-w-full">
                     <div class="text-black text-xl font-medium leading-7 max-md:max-w-full">
