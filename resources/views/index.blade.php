@@ -17,6 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
      
 </head>
 
@@ -42,22 +44,21 @@
                 </div>
 
             <div class="flex relative gap-1.5 justify-center items-center py-3 mt-2 ">
-                <a href="make-reservation" class="flex flex-col justify-center self-stretch text-base font-medium text-black rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105">
-                    <div class="p-3 bg-white rounded g max-md:px-5">RESERVE NOW</div>
-                </a>
-
-                <a class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative text-decoration-line: none;">
-                    <div class="flex flex-col justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
-                        <img
-                            loading="lazy"
-                            srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b?apiKey=a25d9352c0e24748b58ba2c7e0217b4a&&apiKey=a25d9352c0e24748b58ba2c7e0217b4a"
-                            class="object-contain w-full aspect-[0.94]"/>
-                    </div>
-                    <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded">
-                        Status
-                    </div>
-                </a>
-                <a href="" class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative">
+                <button type="button" class="flex flex-col justify-center self-stretch text-base font-medium text-black rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105" id="openMakeReservation">
+                    <div class="p-3 bg-white rounded max-md:px-5">RESERVE NOW</div>
+                </button> 
+                <button type="button" class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative text-decoration-line: none;" id="openCheckStatus">
+    <div class="flex flex-col justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
+        <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b"
+            class="object-contain w-full aspect-[0.94]" />
+    </div>
+    <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded">
+        Status
+    </div>
+</button>
+                <a href="calendar" class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative">
                     <div class="flex justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
                         <img
                             loading="lazy"
@@ -69,6 +70,7 @@
                     </div>
                 </a>
             </div>
+           
         </div>
     </section>
 
@@ -175,6 +177,7 @@
                 </span>
             </div>
         </span>
+        
     </section>
     
     <footer class="">
@@ -239,14 +242,68 @@
                 </div>
             </div>
         </div>
-
+        
         <div>
             <div class="bg-green-800 flex min-h-[70px] flex-col text-center text-white">
                 <span class="mt-6">© 2023 Copyright. <span class="font-bold">La Salle University - Ozamiz</span></span>
             </div>
         </div>
+        <div id="reservationModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div class="bg-white p-6 rounded shadow-lg w-1/3 max-md:w-full max-md:mx-4">
+                <div class="flex gap-2 justify-between items-center font-bold">
+                    <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
+                        <span class="text-4xl tracking-tighter">REQUIREMENTS</span>
+                        <span class="text-base tracking-tight">BEFORE RESERVING FACILITIES</span>
+                    
+                    </div>
+                    <button id="closeReservationModal" class="text-lg tracking-tighter text-white">
+                        <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
+                    </button>
+                </div>
+
+                <a href="make-reservation" class="block mt-4 px-5 text-base font-medium text-center text-black rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105">
+                    <div class="p-3 bg-white rounded max-md:px-5">RESERVE NOW</div>
+                </a>
+            </div>
+        </div>
+        <div id="checkStatusModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div class="bg-white p-6 rounded shadow-lg w-1/3 max-md:w-full max-md:mx-4">
+                <div class="flex gap-2 justify-between items-center font-bold">
+                    <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
+                        <span class="text-2xl tracking-tighter">RESERVATION TRACKING</span>
+                    </div>
+                    <button id="closeCheckStatusModal" class="text-lg tracking-tighter text-white">
+                        <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
+                    </button>
+                </div>
+                <div class="py-4">
+                    <input type="text" id="reserveeID" class="mt-2 p-2 border border-gray-300 rounded w-full" placeholder="Enter Reservation Code" />
+
+                    <div class="flex justify-center text-center">
+                        <button id="fetchStatusButton" class="mt-4 px-4 py-2 bg-green-700 text-white rounded">
+                            Search
+                        </button>
+                    </div>
+
+                    <div id="admin-approvals-header" class="mt-3 hidden"> <!-- Header hidden initially -->
+                        <h6>ADMIN APPROVALS</h6>
+                        <ul id="admin-approvals-list" class="list-disc list-inside hidden"> <!-- List hidden initially -->
+                        </ul>
+                    </div>
+
+                    <div id="reservation-status-header" class="mt-3 hidden"> <!-- Header hidden initially -->
+                        <h6>RESERVATION STATUS:
+                            <span id="reservation-status" class="font-semibold"> </span>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </footer>
 </body>
 
+<script src="/js/home.js"></script>
 
 </html>

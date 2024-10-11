@@ -16,18 +16,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
-<body class=" no-transition relative bg-green-50 overflow-hidden max-h-screen "  onload="initializeSidebar()">
+<body class=" no-transition relative bg-[#E5EFE8] overflow-hidden max-h-screen "  onload="initializeSidebar()">
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
         <div class="flex flex-col justify-between h-full">
             <div class="flex-grow">
-                <div class="flex justify-center text-center py-6 border-b">
+                <div class="flex justify-center text-center py-8 border-b">
                     <img src="/images/corporate-logo-new.png" alt="Logo" class="h-8 mb-1">
                 </div>
                 
                 <div class="p-4">
                     <ul class="space-y-1">
                         <li>
-                        <a href="/east-dashboard" title="Dashboard" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                        <a href="{{ route('dashboard', ['role_id' => $user->role_id]) }}" title="Dashboard" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                     <path d="M2 4.25A2.25 2.25 0 014.25 2h2.5A2.25 2.25 0 019 4.25v2.5A2.25 2.25 0 016.75 9h-2.5A2.25 2.25 0 012 6.75v-2.5zM2 13.25A2.25 2.25 0 014.25 11h2.5A2.25 2.25 0 019 13.25v2.5A2.25 2.25 0 016.75 18h-2.5A2.25 2.25 0 012 15.75v-2.5zM11 4.25A2.25 2.25 0 0113.25 2h2.5A2.25 2.25 0 0118 4.25v2.5A2.25 2.25 0 0115.75 9h-2.5A2.25 2.25 0 0111 6.75v-2.5zM15.25 11.75a.75.75 0 00-1.5 0v2h-2a.75.75 0 000 1.5h2v2a.75.75 0 001.5 0v-2h2a.75.75 0 000-1.5h-2v-2z" />
@@ -36,7 +36,7 @@
                         </a>
                         </li>
                         <li>
-                            <a href="east-reservation" title="Reservation" class="flex  bg-[#087830]   rounded-xl font-bold text-sm text-white py-2 px-4">
+                            <a href="{{ route('admin.reservation', ['role_id' => $user->role_id]) }}" title="Reservation" class="flex  bg-[#087830]   rounded-xl font-bold text-sm text-white py-2 px-4">
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
                                     <path d="M18.563 3.04056V0.987196C18.563 0.447529 18.104 0 17.5505 0C16.997 0 16.538 0.447529 16.538 0.987196V2.96159H7.76291V0.987196C7.76291 0.447529 7.3039 0 6.75039 0C6.19689 0 5.73788 0.447529 5.73788 0.987196V3.04056C2.09283 3.36963 0.324313 5.48881 0.0543094 8.63468C0.0273091 9.01639 0.351313 9.3323 0.729318 9.3323H23.5716C23.9631 9.3323 24.2871 9.00323 24.2466 8.63468C23.9766 5.48881 22.208 3.36963 18.563 3.04056Z" fill="#ffffff"/>
@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="east-calendar" title="Calendar" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                            <a href="{{ route('dashboard.calendar', ['role_id' => $user->role_id]) }}" title="Calendar" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
                                     <path id="Vector" d="M18.2948 3.18727V1.03483C18.2948 0.469123 17.8425 0 17.297 0C16.7515 0 16.2991 0.469123 16.2991 1.03483V3.10449H7.65092V1.03483C7.65092 0.469123 7.19855 0 6.65305 0C6.10755 0 5.65518 0.469123 5.65518 1.03483V3.18727C2.06284 3.53222 0.319897 5.75365 0.0537984 9.05131C0.0271885 9.45144 0.346507 9.78259 0.719046 9.78259H23.231C23.6168 9.78259 23.9361 9.43764 23.8962 9.05131C23.6301 5.75365 21.8872 3.53222 18.2948 3.18727Z" fill="#292D32"/>
@@ -60,7 +60,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="east-facilities" title="Facilities" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                            <a href="{{ route('admin.facilities', ['role_id' => $user->role_id]) }}" title="Facilities" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                                 <span class="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 27" fill="currentColor" class="w-5 h-5">
                                         <path d="M26.4045 8.5105L16.704 0.889061C15.2062 -0.294051 12.7845 -0.294051 11.3008 0.875304L1.60023 8.5105C0.508396 9.36345 -0.191498 11.1656 0.0464656 12.5138L1.90818 23.4644C2.24413 25.4179 4.14784 27 6.16354 27H21.8412C23.8429 27 25.7606 25.4042 26.0965 23.4644L27.9582 12.5138C28.1822 11.1656 27.4823 9.36345 26.4045 8.5105ZM14.0024 18.3193C12.0707 18.3193 10.5029 16.7785 10.5029 14.88C10.5029 12.9815 12.0707 11.4407 14.0024 11.4407C15.9341 11.4407 17.5018 12.9815 17.5018 14.88C17.5018 16.7785 15.9341 18.3193 14.0024 18.3193Z" fill="#292D32"/>
@@ -129,7 +129,7 @@
                                         <h3 class="text-lg leading-6 font-medium text-gray-900">Account Profile</h3>
                                         
 
-                                        <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('profile.update', $user->id) }}" enctype="multipart/form-data">
+                                        <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('profile.update', ['role_id' => $user->role_id, 'id' => $user->id]) }}" enctype="multipart/form-data">
                                         @csrf
                                             @method('PUT')
 
@@ -267,7 +267,7 @@
                                 </button>
 
 
-                                <form method="POST" action="{{ route('reservation.destroy', $detailsGroup->first()->reservedetailsID) }}" class="inline-block">
+                                <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
@@ -450,13 +450,15 @@
 
                     <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white p-6  rounded shadow-md w-1/3 text-center">
-                            <div class="mt-3">
-                                <a href="" class="">
-                                    <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
-                                </a>
-                                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2"> Approval Status</h3>
+                            <div class="flex gap-2 justify-between items-center font-bold">
+                                <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
+                                    <span class="text-3xl tracking-tighter">UPDATE STATUS</span>
+                                </div>
+                                <button class="text-lg tracking-tighter text-white" onclick="closeStatus()">
+                                    <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
+                                </button>
                             </div>
-                            <form id="updateApprovalForm" action="{{ route('admin.approvals.eastStore') }}" method="POST">
+                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="approval_id" id="approval_id">
                                 <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
@@ -468,7 +470,7 @@
 
                                 <div class="mb-4">
                                     <label class="block text-gray-700 font-bold  text-left ">Status</label>
-                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded py-2 px-3">
+                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2">
                                         <option value="Pending">Pending</option>
                                         <option value="Denied">Denied</option>
                                         <option value="Approved">Approved</option>
@@ -476,7 +478,6 @@
                                 </div>
 
                                 <div class="flex justify-end">
-                                    <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm" onclick="closeStatus()">Cancel</button>
                                     <button type="submit" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                 </div>
                             </form>

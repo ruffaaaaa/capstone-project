@@ -309,6 +309,10 @@
                 <label class="w-32 text-gray-700 text-sm font-bold">Endorser Email</label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorser_email" name="endorser_email" autocomplete="new-email" type="email" required>
             </div>
+            <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                {!! NoCaptcha::renderJs() !!}
+                {!! NoCaptcha::display() !!}
+            </div>
             <div id="customerDetailsAlert" class="text-center hidden text-red-500 mb-4">Please fill all required fields.</div>
 
         </div>

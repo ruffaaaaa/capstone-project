@@ -48,3 +48,4 @@ document.getElementById('openModalBtn').addEventListener('click', function () {
 document.getElementById('closeModalBtn').addEventListener('click', function () {
     document.getElementById('addModal').classList.add('hidden'); 
 });
+

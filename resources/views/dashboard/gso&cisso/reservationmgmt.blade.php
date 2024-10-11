@@ -16,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
-<body class=" no-transition relative bg-green-50 overflow-hidden max-h-screen "  onload="initializeSidebar()">
+<body class=" no-transition relative bg-[#E5EFE8]overflow-hidden max-h-screen "  onload="initializeSidebar()">
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
         <div class="flex flex-col justify-between h-full">
             <div class="flex-grow">
@@ -27,7 +27,7 @@
                 <div class="p-4">
                     <ul class="space-y-1">
                         <li>
-                        <a href="admin-dashboard" title="Dashboard" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                        <a href="{{ route('dashboard', ['role_id' => $user->role_id]) }}" title="Dashboard" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                     <path d="M2 4.25A2.25 2.25 0 014.25 2h2.5A2.25 2.25 0 019 4.25v2.5A2.25 2.25 0 016.75 9h-2.5A2.25 2.25 0 012 6.75v-2.5zM2 13.25A2.25 2.25 0 014.25 11h2.5A2.25 2.25 0 019 13.25v2.5A2.25 2.25 0 016.75 18h-2.5A2.25 2.25 0 012 15.75v-2.5zM11 4.25A2.25 2.25 0 0113.25 2h2.5A2.25 2.25 0 0118 4.25v2.5A2.25 2.25 0 0115.75 9h-2.5A2.25 2.25 0 0111 6.75v-2.5zM15.25 11.75a.75.75 0 00-1.5 0v2h-2a.75.75 0 000 1.5h2v2a.75.75 0 001.5 0v-2h2a.75.75 0 000-1.5h-2v-2z" />
@@ -36,7 +36,7 @@
                         </a>
                         </li>
                         <li>
-                            <a href="admin-reservation" title="Reservation" class="flex  bg-[#087830]   rounded-xl font-bold text-sm text-white py-2 px-4">
+                            <a href="{{ route('admin.reservation', ['role_id' => $user->role_id]) }}" title="Reservation" class="flex  bg-[#087830]   rounded-xl font-bold text-sm text-white py-2 px-4">
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
                                     <path d="M18.563 3.04056V0.987196C18.563 0.447529 18.104 0 17.5505 0C16.997 0 16.538 0.447529 16.538 0.987196V2.96159H7.76291V0.987196C7.76291 0.447529 7.3039 0 6.75039 0C6.19689 0 5.73788 0.447529 5.73788 0.987196V3.04056C2.09283 3.36963 0.324313 5.48881 0.0543094 8.63468C0.0273091 9.01639 0.351313 9.3323 0.729318 9.3323H23.5716C23.9631 9.3323 24.2871 9.00323 24.2466 8.63468C23.9766 5.48881 22.208 3.36963 18.563 3.04056Z" fill="#ffffff"/>
@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="admin-calendar" title="Calendar" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                            <a href="{{ route('dashboard.calendar', ['role_id' => $user->role_id]) }}" title="Calendar" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
                                     <path id="Vector" d="M18.2948 3.18727V1.03483C18.2948 0.469123 17.8425 0 17.297 0C16.7515 0 16.2991 0.469123 16.2991 1.03483V3.10449H7.65092V1.03483C7.65092 0.469123 7.19855 0 6.65305 0C6.10755 0 5.65518 0.469123 5.65518 1.03483V3.18727C2.06284 3.53222 0.319897 5.75365 0.0537984 9.05131C0.0271885 9.45144 0.346507 9.78259 0.719046 9.78259H23.231C23.6168 9.78259 23.9361 9.43764 23.8962 9.05131C23.6301 5.75365 21.8872 3.53222 18.2948 3.18727Z" fill="#292D32"/>
@@ -84,13 +84,13 @@
                         </span>
                     </button> <span class="text font-bold text-sm ml-2 hidden">Logout</span>
                 </form>
-            </div>  
+            </div>
         </div>
     </aside>
     <main class="p-8 max-h-screen overflow-auto">
-        <div class="max-h-screen shadow-md overflow-y-auto w-full">
+        <div class="max-h-screen shadow-md w-full">
             <div class=" mx-auto">
-                <div class="bg-white rounded p-8 mb-5">
+                <div class="bg-white rounded  p-8 mb-5">
                     <div class="row">
                         <div class="col-md-12">  
                     </div>
@@ -107,6 +107,74 @@
                         </div>  
                     </div>
 
+                    <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
+                        <div class="flex items-center justify-center min-h-screen">
+                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    <div class="sm:flex sm:items-start">
+                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
+                                        <a href="/" class="-mt-8">
+                                            <img src="/images/profile-icon.png" class="mx-auto w-10 h-30" />
+                                        </a>
+                                        <h3 class="text-lg leading-6 font-medium text-gray-900">Account Profile</h3>
+                                        
+
+                                        <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('profile.update', ['role_id' => $user->role_id, 'id' => $user->id]) }}" enctype="multipart/form-data">
+                                        @csrf
+                                            @method('PUT')
+
+                                            <div class="mt-2">
+                                                <label for="username" class="block text-sm font-medium text-gray-700 text-left">Username</label>
+                                                <input type="text" name="username" id="username" value="{{ $user->username }}" required 
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="email" class="block text-sm font-medium text-gray-700 text-left">Email</label>
+                                                <input type="email" name="email" id="email" value="{{ $user->email }}" required
+                                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="password" class="block text-sm font-medium text-gray-700 text-left">Password (leave empty if you don't want to change it)</label>
+                                                <input type="password" name="password" id="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
+                                                <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            </div>
+
+                                            <div>
+
+                                                @if($signature && Storage::disk('public')->exists($signature->signature_file))
+                                                <div class="mt-2 align-center justify-center text-center">
+                                                    <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
+                                                    <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
+                                                </div>
+
+                                                @endif
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
+                                                <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
+                                            </div>
+                                            <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
+
+                                            </div>
+                                    
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                    <button type="submit" form="editprofileForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                                    <button id="closeProfile" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
                     
 
                     <table class="min-w-full divide-y divide-gray-200">
@@ -115,13 +183,16 @@
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Event Name</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Facility</th>
-                                <th scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Status</th>
 
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Final Status</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 w-full">
+
+                       
+
                         @if ($reservationDetails)
                             @foreach($reservationDetails->groupBy('reserveeID') as $reserveeID => $detailsGroup)
                             <tr>
@@ -144,17 +215,20 @@
                                     $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
                                 @endphp
 
+
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
                                     @foreach($sortedDetailsGroup as $detail)
                                         {{ $detail->role_name }} - {{ $detail->approval_status }}<br>
                                     @endforeach
                                 </td>
 
+                                
+
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
 
 
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 font-semibold hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
+                                <button class="border-solid border-1 border-gray-500  text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
                                     '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
                                     '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
                                     '{{$detailsGroup->first()->event_end_date}}', '{{$detailsGroup->first()->preparation_start_date}}', '{{$detailsGroup->first()->preparation_end_date_time}}', '{{$detailsGroup->first()->cleanup_start_date_time}}', 
@@ -168,14 +242,14 @@
                                     '{{ $cisso->approval_status ?? '' }}',
                                     '{{ $gso->approval_status ?? '' }}',
 
-                                    '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}',  // Create an array of objects with URL and file name
+                                    '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}',  // Attachments array
 
                                     )">
                                     View
     
                                 </button>
 
-                                <button class="border-solid border-1 border-gray-500 text-green-500 px-3 py-1 rounded font-semibold hover:bg-green-500 hover:text-white ml-2 editButton"
+                                <button class="border-solid border-1 border-gray-500  text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
                                         data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $reserveeID }}"
 
                                         onclick="openStatus(this)">
@@ -190,12 +264,13 @@
 
                     
                     <div id="viewModal" class="modal overflow-auto  items-center ">
-                        <div class="modal-content my-6  w-a4-width  max-w-4xl rounded-lg bg-white p-6 shadow ">
+                        
+                        <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow ">
                             <div class=" ">
                                 <table class=" w-full border border-black">
                                     <thead>
                                         <tr class="border border-black bg-gray-100 ">
-                                            <th rowspan="5"  style="width:5%"><img src="/images/lsu-logo 2.png" class="mx-auto w-15 h-20" /></th>
+                                            <th rowspan="5"  style="width:5%"><img src="/images/corporate-logo-new.png" class="mx-auto h-10" /></th>
                                         </tr>
                                         <tr class="border border-black">
                                             <th rowspan="2"  style="width:20%" class="text-center border border-black">
@@ -286,7 +361,8 @@
                                             <tr class="">
                                                 <th colspan="4" class="border border-black px-2 text-sm text-sm">
                                                    
-                                                    <div id="attachmentContainer" class="font-normal"></div>
+                                                <div id="attachmentContainer"></div>
+                                                <a id="endorsedLink" href="" target="_blank" class="font-normal	 hover:underline"></a>
                                                 </th>
                                             </tr>
                                             <tr class="">
@@ -301,10 +377,11 @@
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Requested by</td>
                                         <td colspan="2" class="border border-black px-2 py-2"><span class="contents" id="reserveeName"></span></td>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">EAST</td>
-                                        <td colspan="2" class="border border-black px-2 py-2">
-                                            <img id="eastSignatureImage" src="" class="w-16" alt="East Signature" style="display: none;">
-                                            <p>Ms. JAIMACA QUEZON</p>
+                                        <td colspan="2" class="border border-black px-2 py-2 relative" style="position: relative;">
+                                            <img id="eastSignatureImage" src="" class="w-16 absolute" alt="East Signature" style="display: none; top: 0; left: 0;">
+                                            <p style="position: relative; z-index: 1;">Ms. JAIMACA QUEZON</p>
                                         </td>
+
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
@@ -354,15 +431,15 @@
 
                     <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white p-6  rounded shadow-md w-1/3 text-center">
-                            <div class="mt-3">
-                                <a href="" class="">
-                                    <img src="/images/lsu-logo 2.png"  class=" mx-auto w-10 h-30" />
-                                </a>
-
-                                \\
-                                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2"> Approval Status</h3>
+                            <div class="flex gap-2 justify-between items-center font-bold">
+                                <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
+                                    <span class="text-3xl tracking-tighter">UPDATE STATUS</span>
+                                </div>
+                                <button class="text-lg tracking-tighter text-white" onclick="closeStatus()">
+                                    <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
+                                </button>
                             </div>
-                            <form id="updateApprovalForm" action="{{route('admin.approvals.adminStore') }}" method="POST">
+                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="approval_id" id="approval_id">
                                 <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
@@ -374,14 +451,13 @@
 
                                 <div class="mb-4">
                                     <label class="block text-gray-700 font-bold  text-left ">Status</label>
-                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded py-2 px-3">
+                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2">
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
                                     </select>
                                 </div>
 
                                 <div class="flex justify-end">
-                                    <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm" onclick="closeStatus()">Cancel</button>
                                     <button type="submit" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                 </div>
                             </form>
@@ -391,82 +467,15 @@
                 </div>
             </div>      
         </div>
-        <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
-            <div class="flex items-center justify-center min-h-screen">
-                <div class="inline-block align-bottom bg-white rounded text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
-                            <a href="/" class="-mt-8">
-                                <img src="/images/profile-icon.png" class="mx-auto w-10 h-30" />
-                            </a>
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Account Profile</h3>
-                            
-
-                            <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('gso-cisso.profile.update', $user->id) }}" enctype="multipart/form-data">
-                            @csrf
-                                @method('PUT')
-
-                                <div class="mt-2">
-                                    <label for="username" class="block text-sm font-medium text-gray-700 text-left">Username</label>
-                                    <input type="text" name="username" id="username" value="{{ $user->username }}" required 
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="email" class="block text-sm font-medium text-gray-700 text-left">Email</label>
-                                    <input type="email" name="email" id="email" value="{{ $user->email }}" required
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="password" class="block text-sm font-medium text-gray-700 text-left">Password (leave empty if you don't want to change it)</label>
-                                    <input type="password" name="password" id="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-
-                                <div>
-
-                                    @if($signature && Storage::disk('public')->exists($signature->signature_file))
-                                    <div class="mt-2 align-center justify-center text-center">
-                                        <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
-                                        <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
-                                    </div>
-
-                                    @endif
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
-                                    <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
-                                </div>
-                                <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
-
-                                </div>
-                        
-                            </form>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="submit" form="editprofileForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
-                        <button id="closeProfile" class="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
+    
+    
     <script src="/js/index.js"></script>
     <script src="/js/reservationmgmt.js"></script>
+    <script src="/js/profile.js"></script>
     <script src="/js/reservationmodal.js"></script>
 
 
-    <script src="/js/profile.js"></script>
-    
 
 </body>
 </html>

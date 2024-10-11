@@ -9,7 +9,7 @@
     <table style="width: 100%; background-color: #f3f4f6;">
         <tr>
             <td>
-                <table style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" cellspacing="0" cellpadding="0">
+                <table align="center" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" cellspacing="0" cellpadding="0">
                     <tr>
                         <td style="text-align: center; padding: 20px;">
                             <div>

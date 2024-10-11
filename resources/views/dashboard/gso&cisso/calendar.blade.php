@@ -23,17 +23,18 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
-<body class="relative bg-green-50 overflow-hidden max-h-screen">
+<body class="relative bg-[#E5EFE8] overflow-hidden max-h-screen">
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
         <div class="flex flex-col justify-between h-full">
             <div class="flex-grow">
                 <div class="flex justify-center text-center py-8 border-b">
                     <img src="/images/corporate-logo-new.png" alt="Logo" class="h-8 mb-1">
                 </div>
+                
                 <div class="p-4">
                     <ul class="space-y-1">
                         <li>
-                        <a href="admin-dashboard" title="Dashboard" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-6">
+                        <a href="{{ route('dashboard', ['role_id' => $user->role_id]) }}" title="Dashboard" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-6">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                     <path d="M2 4.25A2.25 2.25 0 014.25 2h2.5A2.25 2.25 0 019 4.25v2.5A2.25 2.25 0 016.75 9h-2.5A2.25 2.25 0 012 6.75v-2.5zM2 13.25A2.25 2.25 0 014.25 11h2.5A2.25 2.25 0 019 13.25v2.5A2.25 2.25 0 016.75 18h-2.5A2.25 2.25 0 012 15.75v-2.5zM11 4.25A2.25 2.25 0 0113.25 2h2.5A2.25 2.25 0 0118 4.25v2.5A2.25 2.25 0 0115.75 9h-2.5A2.25 2.25 0 0111 6.75v-2.5zM15.25 11.75a.75.75 0 00-1.5 0v2h-2a.75.75 0 000 1.5h2v2a.75.75 0 001.5 0v-2h2a.75.75 0 000-1.5h-2v-2z" />
@@ -42,7 +43,7 @@
                         </a>
                         </li>
                         <li>
-                            <a href="admin-reservation" title="Reservation" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm py-2 px-4" >
+                            <a href="{{ route('admin.reservation', ['role_id' => $user->role_id]) }}" title="Reservation" class="flex items-center hover:bg-green-300 rounded-xl font-bold text-sm py-2 px-4" >
 
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
@@ -55,7 +56,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="admin-calendar" title="Calendar" class="flex  bg-[#087830]  rounded-xl font-bold text-sm text-white py-2 px-4">
+                            <a href="{{ route('dashboard.calendar', ['role_id' => $user->role_id]) }}" title="Calendar" class="flex  bg-[#087830]  rounded-xl font-bold text-sm text-white py-2 px-4">
                                 <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="currentColor" class="w-5 h-5">
                                 <path id="Vector" d="M18.2948 3.18727V1.03483C18.2948 0.469123 17.8425 0 17.297 0C16.7515 0 16.2991 0.469123 16.2991 1.03483V3.10449H7.65092V1.03483C7.65092 0.469123 7.19855 0 6.65305 0C6.10755 0 5.65518 0.469123 5.65518 1.03483V3.18727C2.06284 3.53222 0.319897 5.75365 0.0537984 9.05131C0.0271885 9.45144 0.346507 9.78259 0.719046 9.78259H23.231C23.6168 9.78259 23.9361 9.43764 23.8962 9.05131C23.6301 5.75365 21.8872 3.53222 18.2948 3.18727Z" fill="#ffffff"/>
@@ -82,7 +83,7 @@
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="sumbit" title="Logout" class="inline-flex items-center justify-center h-9 py-2 px-3 ml-[2px] rounded-xl bg-[#087830] text-white text-sm font-semibold transition">
+                    <button type="sumbit" title="Logout" class="inline-flex items-center justify-center h-9 py-2 px-3 ml-[2px]  rounded-xl bg-[#087830] text-white text-sm font-semibold transition">
                         <span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="ml-2" viewBox="0 0 16 18">
                                 <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clip-rule="evenodd" />
@@ -91,13 +92,13 @@
                         </span>
                     </button> <span class="text font-bold text-sm ml-2 hidden">Logout</span>
                 </form>
-            </div>  
+            </div> 
         </div>
     </aside>
     <main class="p-8 max-h-screen overflow-auto">
         
         <div class="flex flex-col lg:flex-row h-full">
-            <div class="min-h-full bg-white drop-shadow-md p-3 w-40 rounded mr-2 mb-2 max-md:w-full">
+            <div class="min-h-full bg-white p-3 w-40 rounded drop-shadow-md mr-2 mb-2 max-md:w-full">
                 <div class="flex items-center justify-center">
                     <span class="font-bold text-center">FILTER</span>
                 </div>
@@ -132,18 +133,29 @@
                 </div>
             </div>
             
-            <div class="w-full lg:w-3/3 lg:mb-0 pl-1 pr-1">
-                <div class="h-full bg-white p-4 rounded drop-shadow-md">    
-
-                    <div id ="calendar">
+            <div class="w-full lg:w-3/3 lg:mb-0 mb-2">
+                <div class="h-full bg-white p-4 rounded drop-shadow-md">
+                    <div id="calendar-controls" class="flex flex-wrap">
+                        <button id="today-btn" class="flex min-h-[38px] w-[100px] items-center justify-center gap-2.5 overflow-hidden rounded bg-green-800 font-bold text-white max-md:hidden">Today</button>
+                        <button id="prev-btn" class="mx-1 flex min-h-[38px] w-[40px] items-center justify-center overflow-hidden rounded bg-green-800 px-2 text-white max-md:w-[40px]">&lt;</button>
+                        <button id="next-btn" class="flex min-h-[38px] w-[40px] items-center justify-center overflow-hidden rounded bg-green-800 px-2 text-white max-md:w-[40px]">&gt;</button>
+                        <p id="calendar-title" class="h-[38px] overflow-hidden px-2.5 text-2xl  text-black uppercase"></p>
+                        
+                        <!-- Adjusted to align these buttons to the right -->
+                        <div class="flex ml-auto">
+                            <button id="month-btn" class="flex min-h-[38px] w-[95px] items-center justify-center gap-2.5 overflow-hidden  rounded bg-green-800 font-bold text-white max-md:w-[40px] max-md:text-[10px] max-md:mx-1">Month</button>
+                            <button id="week-btn" class="flex min-h-[38px] w-[95px] mx-1 items-center justify-center gap-2.5 overflow-hidden rounded bg-green-800 font-bold text-white  max-md:hidden" >Week</button>
+                            <button id="day-btn" class="flex min-h-[38px] w-[95px] items-center justify-center gap-2.5 overflow-hidden rounded bg-green-800 font-bold text-white max-md:w-[40px] max-md:text-[10px]">Day</button>
+                        </div>
                     </div>
-                    
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
+
         <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
             <div class="flex items-center justify-center min-h-screen">
-                <div class="inline-block align-bottom bg-white rounded text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full mr-3">
@@ -153,7 +165,7 @@
                             <h3 class="text-lg leading-6 font-medium text-gray-900">Account Profile</h3>
                             
 
-                            <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('gso-cisso.profile.update', $user->id) }}" enctype="multipart/form-data">
+                            <form id="editprofileForm" onsubmit="submitProfileForm(event)" method="POST" action="{{ route('profile.update', ['role_id' => $user->role_id, 'id' => $user->id]) }}" enctype="multipart/form-data">
                             @csrf
                                 @method('PUT')
 
@@ -208,140 +220,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
         
     </main>
-    <script src="/js/index.js"></script>
     <script src="/js/profile.js"></script>
+    <script src="/js/calendar.js"></script>
+    <script src="/js/index.js"></script>
 
-    <script>
-        var currentFilter = 'all';  // Default to 'all'
-        var selectedFacility = '';
-
-        function filterEvents(filter) {
-            currentFilter = filter;
-            $('#calendar').fullCalendar('rerenderEvents');
-        }
-
-        function filterByFacility(facility) {
-            selectedFacility = facility;
-            $('#calendar').fullCalendar('rerenderEvents');
-        }
-
-        $(document).ready(function() {
-            // Fetch facilities on page load
-            $.ajax({
-                url: '/admin-facilities',
-                method: 'GET',
-                success: function(data) {
-                    var dropdownMenu = $('#facilityFilter');
-                    dropdownMenu.empty();  // Clear existing items
-                    dropdownMenu.append('<option value="">Select</option>');  // Add default option
-
-                    // Ensure data is an array
-                    if (Array.isArray(data)) {
-                        data.forEach(function(facility) {
-                            // Use facility.facilityName instead of facility.name
-                            dropdownMenu.append(
-                                `<option value="${facility.facilityName}">${facility.facilityName}</option>`
-                            );
-                        });
-                    } else {
-                        console.error('Unexpected data format:', data);
-                    }
-                },
-                error: function() {
-                    alert('There was an error while fetching facilities.');
-                }
-            });
-
-            // Initialize the calendar
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev, today, next',
-                    center: 'title',
-                    right: 'month, agendaWeek, agendaDay'
-                },
-                defaultView: 'month',
-                events: function(start, end, timezone, callback) {
-                    $.ajax({
-                        url: '/admin-reservations',
-                        method: 'GET',
-                        success: function(data) {
-                            var events = [];
-                            $(data).each(function() {
-                                var facilities = this.facilities.map(function(facility) {
-                                    return facility.facilityName;  
-                                }).join(', ');
-
-                                events.push({
-                                    id: this.id,
-                                    title: this.title,
-                                    start: this.estart,
-                                    end: this.eend,
-                                    max_attendees: this.max_attendees,
-                                    facilities: facilities,
-                                    color: '#3a87ad',
-                                    type: 'eventProper'
-                                });
-
-                                if (this.pstart && this.pend) {
-                                    events.push({
-                                        id: this.id + '_prep',
-                                        title: this.title + ' (Preparation)',
-                                        start: this.pstart,
-                                        end: this.pend,
-                                        facilities: facilities,
-                                        color: '#f0ad4e',
-                                        type: 'preparation'
-                                    });
-                                }
-
-                                if (this.cstart && this.cend) {
-                                    events.push({
-                                        id: this.id + '_cleanup',
-                                        title: this.title + ' (Cleanup)',
-                                        start: this.cstart,
-                                        end: this.cend,
-                                        facilities: facilities,
-                                        color: '#d9534f',
-                                        type: 'cleanup'
-                                    });
-                                }
-                            });
-                            callback(events);
-                        },
-                        error: function() {
-                            alert('There was an error while fetching events.');
-                        }
-                    });
-                },
-                eventRender: function(event, element) {
-                    // Show all events if 'all' is selected
-                    if (currentFilter === 'all' || event.type === currentFilter) {
-                        if (selectedFacility === '' || event.facilities.includes(selectedFacility)) {
-                            element.find('.fc-time').remove();
-
-                            var startTime = moment(event.start).format('hh:mm A');
-                            var endTime = moment(event.end).format('hh:mm A');
-
-                            element.find('.fc-title').html(
-                                "<strong>" + event.title.toUpperCase() + "</strong><br/>" +
-                                "<span class='facilities'>" + event.facilities + "<br/>" +
-                                startTime + " - " + endTime + "</span>"
-                            );
-
-                            element.find('.facilities').css('font-size', '13px');
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-            });
-        });
-    </script>
+   
 </body>
 </html>
 

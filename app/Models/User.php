@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\AdminRole;
+
 
 class User extends Authenticatable
 {
@@ -56,4 +58,9 @@ class User extends Authenticatable
         return $this->belongsTo(Roles::class);
     }
 
+
+    public function adminRole()
+    {
+        return $this->belongsTo(AdminRoles::class, 'role_id', 'id'); // Assuming 'role_id' links to AdminRole
+    }
 }

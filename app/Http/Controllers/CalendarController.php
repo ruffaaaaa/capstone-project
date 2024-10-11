@@ -14,20 +14,20 @@ use Illuminate\Support\Facades\Auth;
 
 class CalendarController extends Controller
 {
-    public function showEASTCalendar()
+
+    
+
+    private function getUserSignature()
     {
-
-        $user = Auth::user(); 
-        $signature = AdminSignature::where('admin_id', $user->id)->first();
-
-
-        return view('dashboard.east.calendar', compact('user', 'signature'));
+        $user = Auth::user();
+        return ['user' => $user, 'signature' => AdminSignature::where('admin_id', $user->id)->first()];
     }
 
-    public function getEASTReservations(){
+    private function getReservations()
+    {
         $reservations = ReservationDetails::with('facilities')->get();
-        
-        $events = $reservations->map(function ($reservation) {
+
+        return $reservations->map(function ($reservation) {
             return [
                 'id' => $reservation->reservedetailsID,
                 'title' => $reservation->event_name,
@@ -41,63 +41,63 @@ class CalendarController extends Controller
                 'facilities' => $reservation->facilities->map(function ($facility) {
                     return [
                         'id' => $facility->facilityID,
-                        'facilityName' => $facility->facilityName, // Assuming `facility_name` is a column in the facilities table
+                        'facilityName' => $facility->facilityName, 
                     ];
                 }),
             ];
         });
-
-        return response()->json($events);
     }
 
-    public function getEASTFacilities() {
-
-            $facilities = Facilities::all();    
-            return response()->json($facilities);
-
-    }
-
-    public function showGSO_CISSOCalendar()
+    private function getFacilities()
     {
-        $user = Auth::user(); 
-        $signature = AdminSignature::where('admin_id', $user->id)->first();
-
-
-        return view('dashboard.gso&cisso.calendar', compact('user', 'signature'));
+        return Facilities::all();
     }
 
-    public function getGSO_CISSOReservations(){
-        $reservations = ReservationDetails::with('facilities')->get();
-        
-        $events = $reservations->map(function ($reservation) {
-            return [
-                'id' => $reservation->reservedetailsID,
-                'title' => $reservation->event_name,
-                'estart' => $reservation->event_start_date,
-                'eend' => $reservation->event_end_date,
-                'pstart' => $reservation->preparation_start_date,
-                'pend' => $reservation->preparation_end_date_time,
-                'cstart' => $reservation->cleanup_start_date_time,
-                'cend' => $reservation->cleanup_end_date_time,
-                'max_attendees' => $reservation->max_attendees,
-                'facilities' => $reservation->facilities->map(function ($facility) {
-                    return [
-                        'id' => $facility->facilityID,
-                        'facilityName' => $facility->facilityName, // Assuming `facility_name` is a column in the facilities table
-                    ];
-                }),
-            ];
-        });
+    
+
+    public function showCalendar($role_id)
+    {
+        $data = $this->getUserSignature();
+
+        if ($role_id == 1) {
+            return view('dashboard.aa.calendar', $data);
+        } elseif ($role_id == 2 || $role_id == 3) {
+            return view('dashboard.gso&cisso.calendar', $data);
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+    }
+
+    public function getReservationsByRole()
+    {
+        $events = $this->getReservations();
 
         return response()->json($events);
     }
 
-    public function getGSO_CISSOFacilities() {
+    public function getFacilitiesByRole()
+    {
+        $facilities = $this->getFacilities();
 
-            $facilities = Facilities::all();    
-            return response()->json($facilities);
-
+        return response()->json($facilities);
     }
 
+    private function getCommonData()
+    {
+        $reservations = $this->getReservations();
+        $facilities = $this->getFacilities();
+
+        return [
+            'reservations' => $reservations,
+            'facilities' => $facilities,
+        ];
+    }
+
+    public function showCalendarPage()
+    {
+        $data = $this->getCommonData();
+        return view('calendar', $data);
+    }
+    
 
 }

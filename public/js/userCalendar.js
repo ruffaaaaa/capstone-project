@@ -1,4 +1,4 @@
-var currentFilter = 'all';  // Default to 'all'
+var currentFilter = 'eventProper';  // Default to show only main events
 var selectedFacility = '';
 
 function filterEvents(filter) {
@@ -11,6 +11,8 @@ function filterByFacility(facility) {
     $('#calendar').fullCalendar('rerenderEvents');
 }
 
+
+
 $(document).ready(function() {
     // Fetch facilities on page load
     $.ajax({
@@ -20,14 +22,10 @@ $(document).ready(function() {
             var dropdownMenu = $('#facilityFilter');
             dropdownMenu.empty();  // Clear existing items
             dropdownMenu.append('<option value="">Select</option>');  // Add default option
-
-            // Ensure data is an array
+    
             if (Array.isArray(data)) {
                 data.forEach(function(facility) {
-                    // Use facility.facilityName instead of facility.name
-                    dropdownMenu.append(
-                        `<option value="${facility.facilityName}">${facility.facilityName}</option>`
-                    );
+                    dropdownMenu.append(`<option value="${facility.facilityName}">${facility.facilityName}</option>`);
                 });
             } else {
                 console.error('Unexpected data format:', data);
@@ -37,38 +35,8 @@ $(document).ready(function() {
             alert('There was an error while fetching facilities.');
         }
     });
-
     $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
 
-    $('#prev-btn').click(function() {
-        $('#calendar').fullCalendar('prev'); // Go to the previous month
-    });
-
-    $('#next-btn').click(function() {
-        $('#calendar').fullCalendar('next'); // Go to the next month
-    });
-
-    $('#today-btn').click(function() {
-        $('#calendar').fullCalendar('today'); // Go to today's date
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    $('#month-btn').click(function() {
-        $('#calendar').fullCalendar('changeView', 'month'); // Change to month view
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    $('#week-btn').click(function() {
-        $('#calendar').fullCalendar('changeView', 'agendaWeek'); // Change to week view
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    $('#day-btn').click(function() {
-        $('#calendar').fullCalendar('changeView', 'agendaDay'); // Change to day view
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    // Initialize the calendar
     $('#calendar').fullCalendar({
         header: {
             left: '',
@@ -78,7 +46,6 @@ $(document).ready(function() {
         defaultView: 'month',
         height: 'auto',
 
-        
         events: function(start, end, timezone, callback) {
             $.ajax({
                 url: '/reservationsQuery',
@@ -97,9 +64,9 @@ $(document).ready(function() {
                             end: this.eend,
                             max_attendees: this.max_attendees,
                             facilities: facilities,
-                            color: '#3a87ad',
-                            
-                            type: 'eventProper'
+                            color: '#7AE7B7',
+                            type: 'eventProper',
+                            description: this.description 
                         });
 
                         if (this.pstart && this.pend) {
@@ -110,7 +77,8 @@ $(document).ready(function() {
                                 end: this.pend,
                                 facilities: facilities,
                                 color: '#f0ad4e',
-                                type: 'preparation'
+                                type: 'preparation',
+                                description: this.description
                             });
                         }
 
@@ -122,7 +90,8 @@ $(document).ready(function() {
                                 end: this.cend,
                                 facilities: facilities,
                                 color: '#d9534f',
-                                type: 'cleanup'
+                                type: 'cleanup',
+                                description: this.description
                             });
                         }
                     });
@@ -133,51 +102,48 @@ $(document).ready(function() {
                 }
             });
         },
+
         eventRender: function(event, element) {
-            // Show all events if 'all' is selected
             if (currentFilter === 'all' || event.type === currentFilter) {
                 if (selectedFacility === '' || event.facilities.includes(selectedFacility)) {
-                    element.find('.fc-time').remove();
-
+                    element.find('.fc-time').remove();  
+        
                     var startTime = moment(event.start).format('hh:mm A');
                     var endTime = moment(event.end).format('hh:mm A');
-
+        
                     element.find('.fc-title').html(
-                        "<strong>" + event.title.toUpperCase() + "</strong><br/>" +
-                        "<span class='facilities'>" + event.facilities + "<br/>" +
-                        startTime + " - " + endTime + "</span>"
+                        `<strong style="color: black;">${event.title.toUpperCase()}</strong><br/>` +  
+                        `<span class='facilities' style="color: black;">${event.facilities}</span><br/>` +  
+                        `<span class='time' style="color: black;">${startTime} - ${endTime}</span>`  
                     );
-
+        
                     element.find('.facilities').css('font-size', '13px');
+                    element.find('.time').css('font-size', '13px');
                 } else {
-                    return false;
+                    return false; 
                 }
             } else {
-                return false;
+                return false; 
             }
         },
-
+        
         eventClick: function(event, jsEvent, view) {
             $('#eventTitle').text(event.title);
-            $('#eventDescription').text(event.description || 'No additional information available.');
+            $('#eventFacilities').text(event.facilities);
             $('#eventStart').text(moment(event.start).format('MMMM Do YYYY, h:mm:ss a'));
             $('#eventEnd').text(moment(event.end).format('MMMM Do YYYY, h:mm:ss a'));
 
-            // Show the modal
             $('#eventModal').removeClass('hidden');
         },
 
         viewRender: function(view) {
-            $('#calendar-title').text(view.title).css('font-size', '25px');
-            $('.fc table').css('border-spacing', '10px'); // Adjust this value for more or less space
-
+            $('#calendar-title').text(view.title);
         }
     });
 
     $('#closeModal').click(function() {
         $('#eventModal').addClass('hidden');
     });
-
 
     $('#view-selector').change(function() {
         var selectedView = $(this).val();
@@ -198,10 +164,8 @@ $(document).ready(function() {
         $('#calendar').fullCalendar('next');
         $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
     });
-    
-
-    
 });
+
 
 $(document).ready(function() {
     function updateViewSelector() {
@@ -218,3 +182,4 @@ $(document).ready(function() {
         updateViewSelector();
     });
 });
+

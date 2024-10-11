@@ -55,7 +55,7 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
             }
         });
     } else {
-        attachmentContainer.textContent = "No attachments available"; // Message if no attachments
+        attachmentContainer.textContent = "No attachments available";
     }
     
     
@@ -64,7 +64,6 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     let personnelOutput = pnames.map((pname, index) => `${pname.trim()} - ${ptotalNos[index].trim()}`).join(', ');
     document.getElementById('pname').innerText = personnelOutput;
 
-    // Format and display equipment (ename - etotal_no)
     const enames = ename.split(', ');
     const etotalNos = etotal_no.split(', ');
     let equipmentOutput = enames.map((ename, index) => `${ename.trim()} - ${etotalNos[index].trim()}`).join(', ');
@@ -130,14 +129,12 @@ function openStatus(button) {
     var approvalId = button.getAttribute('data-approval-id');
     var reserveeID = button.getAttribute('data-reservee-id');
 
-    // Set the value to the hidden input
     document.getElementById('approval_id').value = approvalId;
     
-    // Set the displayed reserveeID
-    document.getElementById('reserveeIDDisplay').innerText = reserveeID; // Update this line
+    document.getElementById('reserveeIDDisplay').innerText = reserveeID; 
 
     document.getElementById('updateModal').classList.remove('hidden');
-}
+    }
 
 function closeStatus() {
     document.getElementById('updateModal').classList.add('hidden');

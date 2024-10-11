@@ -14,6 +14,8 @@ use App\Models\AdminSignature;
 use App\Models\User;
 use App\Models\AdminApprovals;
 use App\Models\ReservationApprovals;
+use App\Models\AdminRoles;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -111,11 +113,9 @@ class ReservationController extends Controller
         }
 
         if ($request->has('other_personnel_name') && $request->has('other_personnel_no')) {
-            // Fetch the input values
             $potherName = $request->input('other_personnel_name');
             $potherQuantity = $request->input('other_personnel_no');
         
-            // Ensure the checkbox is checked and the inputs are not empty
             if (!empty($potherName) && !empty($potherQuantity)) {
                 $personnelData[] = [
                     'reservedetailsID' => $nextNumericPart,
@@ -165,10 +165,8 @@ class ReservationController extends Controller
         }
 
         if ($request->has('facility_checkbox')) {
-            // Get the facility IDs from the request input
             $facilityIDs = array_keys($request->input('facility_checkbox'));
         
-            // Save each selected facility
             foreach ($facilityIDs as $facilityID) {
                 SelectedFacilities::create([
                     'reservedetailsID' => $nextNumericPart,
@@ -176,34 +174,27 @@ class ReservationController extends Controller
                 ]);
             }
         
-            // Retrieve the facility names based on the selected facility IDs
             $facilityNames = Facilities::whereIn('facilityID', $facilityIDs)->pluck('facilityName')->toArray();
         
-            // Join the names into a string for the email
             $chosenFacilityList = implode(', ', $facilityNames);
         }
-
-            
-        
-
         
         if ($request->hasFile('attachments')) {
-            $files = $request->file('attachments'); // This will now be an array of files
-            $filePaths = []; // Array to store file paths
+            $files = $request->file('attachments'); 
+            $filePaths = []; 
         
             foreach ($files as $file) {
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->move(public_path('uploads/attachments'), $fileName);
-                $filePaths[] = 'uploads/attachments/' . $fileName; // Store each file path
+                $filePaths[] = 'uploads/attachments/' . $fileName; 
             }
         
-            $validatedData['attachments'] = $filePaths; // Store array of file paths
+            $validatedData['attachments'] = $filePaths; 
         }
         
-        // Save each attachment in the database
         foreach ($validatedData['attachments'] as $attachmentPath) {
             Attachment::create([
-                'reservedetailsID' => $nextNumericPart, // Ensure this variable is defined
+                'reservedetailsID' => $nextNumericPart, 
                 'file' => $attachmentPath,
             ]);
         }
@@ -228,7 +219,7 @@ class ReservationController extends Controller
             'name' => $validatedData['endorsed_by'],
             'email' => $validatedData['endorser_email'],
             'confirmation' => false,
-            'confirmation_token' => $confirmationToken, // Save the token
+            'confirmation_token' => $confirmationToken, 
         ]);
 
 
@@ -238,12 +229,12 @@ class ReservationController extends Controller
         ]);
         
         Mail::to($validatedData['endorser_email'])->send(new EndorserNotificationMail(
-            $validatedData['endorsed_by'],  // Endorser's name
-            $validatedData['reserveeName'], // Reservee's name
-            $eventStartDate,                 // Event start date
-            $validatedData['nameofevent'],   // Event name
-            $chosenFacilityList,             // Chosen facilities
-            $confirmationToken                // Include the confirmation token
+            $validatedData['endorsed_by'],  
+            $validatedData['reserveeName'], 
+            $eventStartDate,                 
+            $validatedData['nameofevent'],   
+            $chosenFacilityList,            
+            $confirmationToken                
         ));
         
 
@@ -262,232 +253,169 @@ class ReservationController extends Controller
         }
 
         $endorser->confirmation = true;
-        $endorser->confirmation_token = null; // Optional: Clear the token
+        $endorser->confirmation_token = null; 
         $endorser->save();
 
         return view('confirmation', ['message' => 'Confirmation successful!']);
     }
     
-    public function eastReservation()
-    {
-        if (Auth::check()) {
-            // Retrieve reservation details
-            $reservationDetails = DB::table('reservee')
-                ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->join('selected_facilities', 'selected_facilities.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->join('facilities', 'facilities.facilityID', '=', 'selected_facilities.facilityID')
-                ->leftJoin('support_personnel', 'support_personnel.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->leftJoin('equipment', 'equipment.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->leftJoin('reservation_approvals', 'reservation_approvals.reserveeID', '=', 'reservee.reserveeID')
-                ->leftJoin('admin_approvals', 'reservation_approvals.approvalID', '=', 'admin_approvals.reservation_approval_id')
-                ->leftJoin('admin', 'admin_approvals.admin_id', '=', 'admin.id')
-                ->leftJoin('admin_roles', 'admin.role_id', '=', 'admin_roles.id')
-                ->leftJoin('admin_signature', 'admin.id', '=', 'admin_signature.admin_id')
-                ->leftJoin('reservation_attachments', 'reservation_attachments.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->select(
-                    'reservee.*',
-                    'reservation_details.*',
-                    'selected_facilities.*',
-                    'facilities.*',
-                    'support_personnel.pname',
-                    'support_personnel.ptotal_no',
-                    'equipment.ename',
-                    'equipment.etotal_no',
-                    'reservation_approvals.approvalID',
-                    'reservation_approvals.final_status',
-                    'admin_approvals.approval_status',
-                    'admin_approvals.admin_id',
-                    'admin_roles.name as role_name',
-                    'admin_signature.signature_file',
-                    'reservation_attachments.file as attachment_path', // Attachments
-                )
-                ->orderBy('admin_approvals.admin_id', 'asc')
-                ->get();
     
-            $attachments = $reservationDetails
-                ->pluck('attachment_path')
-                ->filter()
-                ->unique() 
-                ->values() 
-                ->toArray();
-    
-            $user = Auth::user();
-            $signature = AdminSignature::where('admin_id', $user->id)->first();
-    
-            return view('dashboard.east.reservationmgmt', compact('reservationDetails', 'user', 'signature', 'attachments'));
-        }
-    }
-    
-
-    public function eastDestroy($reservedetailsID)
+    public function deleteReservation($role_id, $reservedetailsID)
     {
         $reservation = ReservationDetails::find($reservedetailsID);
-        
+        $user = Auth::user(); 
         if (!$reservation) {
-            return redirect()->route('east-reservation')->with('error', 'Reservation not found');
+            return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('error', 'Reservation not found');
         }
-    
+
         $reservation->delete();
-    
-        return redirect()->route('east-reservation')->with('success', 'Reservation deleted successfully');
+
+        return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('success', 'Reservation deleted successfully');
     }
 
-    public function eastUpdate(Request $request, $approvalID)
+    private function getReservationDetails()
     {
-        $request->validate([
-            'east_status' => 'required|string|max:255',
-        ]);
+        $reservationDetails = DB::table('reservee')
+            ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+            ->join('selected_facilities', 'selected_facilities.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+            ->join('facilities', 'facilities.facilityID', '=', 'selected_facilities.facilityID')
+            ->leftJoin('support_personnel', 'support_personnel.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+            ->leftJoin('equipment', 'equipment.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+            ->leftJoin('reservation_approvals', 'reservation_approvals.reserveeID', '=', 'reservee.reserveeID')
+            ->leftJoin('admin_approvals', 'reservation_approvals.approvalID', '=', 'admin_approvals.reservation_approval_id')
+            ->leftJoin('admin', 'admin_approvals.admin_id', '=', 'admin.id')
+            ->leftJoin('admin_roles', 'admin.role_id', '=', 'admin_roles.id')
+            ->leftJoin('admin_signature', 'admin.id', '=', 'admin_signature.admin_id')
+            ->leftJoin('reservation_attachments', 'reservation_attachments.reservedetailsID', '=', 'reservation_details.reservedetailsID')
+            ->select(
+                'reservee.*',
+                'reservation_details.*',
+                'selected_facilities.*',
+                'facilities.*',
+                'support_personnel.pname',
+                'support_personnel.ptotal_no',
+                'equipment.ename',
+                'equipment.etotal_no',
+                'reservation_approvals.approvalID',
+                'reservation_approvals.final_status',
+                'admin_approvals.approval_status',
+                'admin_approvals.admin_id',
+                'admin_roles.name as role_name',
+                'admin_signature.signature_file',
+                'reservation_attachments.file as attachment_path'
+            )
+            ->orderBy('admin_approvals.admin_id', 'asc')
+            ->distinct('reservee.reserveeID')
+            ->get();
 
-        $eastApproval = ReservationApprovals::findOrFail($approvalID);
-        
-        $eastApproval->east_status = $request->input('east_status');
-        $eastApproval->save();
-
-        return redirect()->route('east-reservation')->with('success', 'Reservation updated successfully');
+        $attachments = $reservationDetails->pluck('attachment_path')->filter()->unique()->toArray();
+        return ['reservationDetails' => $reservationDetails, 'attachments' => $attachments];
     }
-
-
-    public function gso_cissoReservation(){ 
+    
+    public function listReservations($role_id)
+    {
         if (Auth::check()) {
-            // Retrieve reservation details
-            $reservationDetails = DB::table('reservee')
-                ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->join('selected_facilities', 'selected_facilities.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->join('facilities', 'facilities.facilityID', '=', 'selected_facilities.facilityID')
-                ->leftJoin('support_personnel', 'support_personnel.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->leftJoin('equipment', 'equipment.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->leftJoin('reservation_approvals', 'reservation_approvals.reserveeID', '=', 'reservee.reserveeID')
-                ->leftJoin('admin_approvals', 'reservation_approvals.approvalID', '=', 'admin_approvals.reservation_approval_id')
-                ->leftJoin('admin', 'admin_approvals.admin_id', '=', 'admin.id')
-                ->leftJoin('admin_roles', 'admin.role_id', '=', 'admin_roles.id')
-                ->leftJoin('admin_signature', 'admin.id', '=', 'admin_signature.admin_id')
-                ->leftJoin('reservation_attachments', 'reservation_attachments.reservedetailsID', '=', 'reservation_details.reservedetailsID')
-                ->select(
-                    'reservee.*',
-                    'reservation_details.*',
-                    'selected_facilities.*',
-                    'facilities.*',
-                    'support_personnel.pname',
-                    'support_personnel.ptotal_no',
-                    'equipment.ename',
-                    'equipment.etotal_no',
-                    'reservation_approvals.approvalID',
-                    'reservation_approvals.final_status',
-                    'admin_approvals.approval_status',
-                    'admin_approvals.admin_id',
-                    'admin_roles.name as role_name',
-                    'admin_signature.signature_file',
-                    'reservation_attachments.file as attachment_path', // Attachments
-                )
-                ->orderBy('admin_approvals.admin_id', 'asc')
-                ->distinct('reservee.reserveeID')
-                ->get();
-
-            $attachments = $reservationDetails->pluck('attachment_path')->filter()->unique()->toArray();
-            
+            $data = $this->getReservationDetails();
             $user = Auth::user();
             $signature = AdminSignature::where('admin_id', $user->id)->first();
-            
-            return view('dashboard.gso&cisso.reservationmgmt', compact('reservationDetails', 'user', 'signature', 'attachments'));
+
+            if ($role_id == 2 || $role_id == 3)  {
+                return view('dashboard.gso&cisso.reservationmgmt', [
+                    'reservationDetails' => $data['reservationDetails'],
+                    'user' => $user,
+                    'signature' => $signature,
+                    'attachments' => $data['attachments'],
+                ]);
+            } elseif ($role_id == 1) {
+                return view('dashboard.aa.reservationmgmt', [
+                    'reservationDetails' => $data['reservationDetails'],
+                    'user' => $user,
+                    'signature' => $signature,
+                    'attachments' => $data['attachments'],
+                ]);
+            } else {
+                return redirect()->route('admin.reservation', ['role_id' => $user->role_id])->with('error', 'Invalid role specified');
+            }
         }
+
+        return redirect()->route('login'); 
     }
 
-    
-    public function eastStore(Request $request)
+
+
+    private function handleApproval(Request $request, $role_id)
+    {
+        $request->validate([
+            'approval_id' => 'required|exists:reservation_approvals,approvalID',
+            'admin_id' => 'required|exists:admin,id',
+            'approval_status' => 'required|string|in:Approved,Denied,Pending',
+        ]);
+
+        $adminApproval = AdminApprovals::firstOrNew([
+            'reservation_approval_id' => $request->approval_id,
+            'admin_id' => $request->admin_id,
+        ]);
+
+        $adminApproval->approval_status = $request->approval_status;
+        $adminApproval->save();
+
+        // Step 2: Check if the admin_id is 3
+        if ($request->role_id == 3) {
+            $reservationApproval = ReservationApprovals::find($request->approval_id);
+
+            if ($reservationApproval) { 
+                if ($request->approval_status === 'Approved') {
+                    $reservationApproval->final_status = 'Approved';
+                } else {
+                    $reservationApproval->final_status = 'Pending';
+                }
+
+                $reservationApproval->save();
+            } else {
+                return redirect()->back()->withErrors(['error' => 'Reservation approval not found.']);
+            }
+        }
+
+        return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('status', 'Approval status updated successfully.');
+    }
+
+    public function updateApproval(Request $request, $role_id)
     {
         if (Auth::check()) {
-            $request->validate([
-                'approval_id' => 'required|exists:reservation_approvals,approvalID',
-                'admin_id' => 'required|exists:admin,id',
-                'approval_status' => 'required|string|in:Approved,Denied,Pending',
-            ]);
-    
-            // Step 1: Update or create the admin approval record
-            $adminApproval = AdminApprovals::firstOrNew([
-                'reservation_approval_id' => $request->approval_id,
-                'admin_id' => $request->admin_id,
-            ]);
-    
-            $adminApproval->approval_status = $request->approval_status;
-            $adminApproval->save();
-    
-            // Step 2: Check if the admin_id is 3
-            if ($request->admin_id == 2) {
-                // Find the corresponding reservation approval
-                $reservationApproval = ReservationApprovals::find($request->approval_id);
-    
-                if ($reservationApproval) { // Ensure the reservation approval exists
-                    // Update the final status based on the admin approval
-                    if ($request->approval_status === 'Approved') {
-                        $reservationApproval->final_status = 'Approved';
-                    } elseif ($request->approval_status === 'Denied') {
-                        $reservationApproval->final_status = 'Denied';
-                    } else {
-                        $reservationApproval->final_status = 'Pending';
-                    }
-    
-                    // Save the final status update
-                    $reservationApproval->save();
-                } else {
-                    return redirect()->back()->withErrors(['error' => 'Reservation approval not found.']);
-                }
-            }
-    
-            return redirect()->back()->with('status', 'Approval status updated successfully.');
+            return $this->handleApproval($request, $role_id);
         }
-    
+
         return redirect()->back()->withErrors(['error' => 'Unauthorized access.']);
     }
     
+    public function fetchStatus($reserveeID)
+{
+    $reservationApproval = ReservationApprovals::where('reserveeID', $reserveeID)->first();
 
+    if ($reservationApproval) {
+        $adminRoles = AdminRoles::all();
 
+        $adminApprovals = AdminApprovals::where('reservation_approval_id', $reservationApproval->approvalID)
+            ->with('admin.adminRole') // Eager load the admin and their role
+            ->get();
 
+        $adminStatuses = $adminRoles->map(function ($role) use ($adminApprovals) {
+            $approval = $adminApprovals->firstWhere('admin.adminRole.id', $role->id);
 
-    public function gso_cissoStore(Request $request)
-    {
-        if (Auth::check()) {
-            $request->validate([
-                'approval_id' => 'required|exists:reservation_approvals,approvalID',
-                'admin_id' => 'required|exists:admin,id',
-                'approval_status' => 'required|string|in:Approved,Denied,Pending',
-            ]);
-    
-            // Step 1: Update or create the admin approval record
-            $adminApproval = AdminApprovals::firstOrNew([
-                'reservation_approval_id' => $request->approval_id,
-                'admin_id' => $request->admin_id,
-            ]);
-    
-            $adminApproval->approval_status = $request->approval_status;
-            $adminApproval->save();
-    
-            // Step 2: Check if the admin_id is 3
-            if ($request->admin_id == 2) {
-                // Find the corresponding reservation approval
-                $reservationApproval = ReservationApprovals::find($request->approval_id);
-    
-                if ($reservationApproval) { // Ensure the reservation approval exists
-                    // Update the final status based on the admin approval
-                    if ($request->approval_status === 'Approved') {
-                        $reservationApproval->final_status = 'Approved';
-                    } elseif ($request->approval_status === 'Denied') {
-                        $reservationApproval->final_status = 'Denied';
-                    } else {
-                        $reservationApproval->final_status = 'Pending';
-                    }
-    
-                    // Save the final status update
-                    $reservationApproval->save();
-                } else {
-                    return redirect()->back()->withErrors(['error' => 'Reservation approval not found.']);
-                }
-            }
-    
-            return redirect()->back()->with('status', 'Approval status updated successfully.');
-        }
-    
-        return redirect()->back()->withErrors(['error' => 'Unauthorized access.']);
+            return [
+                'admin' => $role->name,
+                'status' => $approval->approval_status ?? 'Pending'
+            ];
+        });
+
+        return response()->json([
+            'reservationStatus' => $reservationApproval->final_status,
+            'adminStatuses' => $adminStatuses
+        ]);
     }
-    
+
+    return response()->json(['error' => 'No approval data found for this Reservee'], 404);
+}
+
 
 }

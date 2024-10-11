@@ -41,22 +41,35 @@ class AuthenticationController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            switch ($user->role_id) {
-                case 1:
-                    return redirect()->route('eastDashboard');
-                case 2:
-                case 3: 
-                    return redirect()->route('dashboard');
-                default:
-                    return view('dashboard.default');
-            }
+            return redirect()->route('dashboard', ['role_id' => $user->role_id]);
         }
 
         return back()->withErrors(['login' => 'Invalid login credentials']);
     }
 
 
-    public function eastDashboard()
+    public function dashboard($role_id)
+    {
+        $user = Auth::user(); 
+        $data = $this->getDashboardData();
+
+        
+        if ($user->role_id != $role_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        switch ($role_id) {
+            case 1:
+                return view('dashboard.aa.index', $data); // Load AA dashboard for role 1
+            case 2:
+            case 3:
+                return view('dashboard.gso&cisso.index', $data); // Load GSO/CISSO dashboard for roles 2 and 3
+            default:
+                return view('dashboard.default'); // Load a default dashboard if needed
+        }
+    }
+
+    protected function getDashboardData()
     {
         $pendingRequestsCount = ReservationApprovals::where('final_status', 'Pending')->count();
         $reservations = ReservationDetails::with('facilities')
@@ -65,30 +78,10 @@ class AuthenticationController extends Controller
             ->orderBy('reservation_details.reservedetailsID', 'desc')
             ->get();
 
-        
-        $user = Auth::user(); 
+        $user = Auth::user();
         $signature = AdminSignature::where('admin_id', $user->id)->first();
 
-
-        return view('dashboard.east.index', compact('pendingRequestsCount', 'reservations', 'user', 'signature'));
-    }
-
-
-
-    public function gso_cissoDashboard()
-    {        
-        $pendingRequestsCount = ReservationApprovals::where('final_status', 'Pending')->count();
-        $reservations = ReservationDetails::with('facilities')
-        ->join('reservee', 'reservation_details.reservedetailsID', '=', 'reservee.reservedetailsID')
-        ->select('reservation_details.*', 'reservee.*')
-        ->orderBy('reservation_details.reservedetailsID', 'desc')
-        ->get();
-
-        $user = Auth::user(); 
-        $signature = AdminSignature::where('admin_id', $user->id)->first();
-
-
-        return view('dashboard.gso&cisso.index', compact('pendingRequestsCount', 'reservations', 'user', 'signature'));
+        return compact('pendingRequestsCount', 'reservations', 'user', 'signature');
     }
 
 
