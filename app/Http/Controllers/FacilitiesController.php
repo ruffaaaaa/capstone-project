@@ -45,11 +45,10 @@ class FacilitiesController extends Controller
             $image = $request->file('image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
 
-            // Resize the image to 2048x1365 pixels
+
             $image = Image::make($image)->resize(2048, 1365);
             $image->save(public_path('uploads/facilities/' . $filename));
 
-            // Save the filename to the facilities object
             $facilities->image = $filename;
         }
 
@@ -82,7 +81,7 @@ class FacilitiesController extends Controller
     public function deleteFacility($facilityID)
     {
         $facility = Facilities::find($facilityID);
-        $user = Auth::user(); // Get the authenticated user
+        $user = Auth::user(); 
 
         if (!$facility) {
             return redirect()->route('admin.facilities', ['role_id' => $user->role_id])->with('error', 'Facility not found');

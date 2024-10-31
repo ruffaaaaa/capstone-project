@@ -11,7 +11,7 @@ class AdminApprovals extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'reservation_approval_id',
-        'admin_id',  // Ensure this is fillable
+        'admin_id', 
         'approval_status',
     ];
 

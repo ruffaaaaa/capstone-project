@@ -38,6 +38,11 @@ Route::post('/facilities/save', [FacilitiesController::class, 'addFacility'])->n
 Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'editFacility'])->name('facilities.update');
 Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'deleteFacility'])->name('facilities.destroy');
 Route::get('/reservationsQuery', [CalendarController::class, 'getReservationsByRole'])->name('dashboard.reservations');
+
+Route::get('/fetchReservations', [CalendarController::class, 'getUserReservations']);
+
+
+
 Route::get('/facilitiesQuery', [CalendarController::class, 'getFacilitiesByRole'])->name('dashboard.facilities');
 
 Route::get('/confirmation/{token}', [ReservationController::class, 'confirmEndorsement'])->name('confirm.endorsement');

@@ -16,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
-<body class=" no-transition relative bg-[#E5EFE8]overflow-hidden max-h-screen "  onload="initializeSidebar()">
+<body class=" no-transition relative bg-[#E5EFE8] overflow-hidden max-h-screen "  onload="initializeSidebar()">
     <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60 " id="sidebar">
         <div class="flex flex-col justify-between h-full">
             <div class="flex-grow">

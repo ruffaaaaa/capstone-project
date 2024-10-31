@@ -11,16 +11,13 @@ function filterByFacility(facility) {
     $('#calendar').fullCalendar('rerenderEvents');
 }
 
-
-
 $(document).ready(function() {
-    // Fetch facilities on page load
     $.ajax({
         url: '/facilitiesQuery',
         method: 'GET',
         success: function(data) {
             var dropdownMenu = $('#facilityFilter');
-            dropdownMenu.empty();  // Clear existing items
+            dropdownMenu.empty();  
             dropdownMenu.append('<option value="">Select</option>');  // Add default option
     
             if (Array.isArray(data)) {
@@ -48,7 +45,7 @@ $(document).ready(function() {
 
         events: function(start, end, timezone, callback) {
             $.ajax({
-                url: '/reservationsQuery',
+                url: '/fetchReservations',
                 method: 'GET',
                 success: function(data) {
                     var events = [];

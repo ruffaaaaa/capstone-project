@@ -282,7 +282,7 @@
                     </table>
 
                     
-                    <div id="viewModal" class="modal overflow-auto  items-center ">
+                    <div id="viewModal" class="modal overflow-auto  items-center bg-gray-900 bg-opacity-50 hidden">
                         
                         <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow ">
                             <div class=" ">

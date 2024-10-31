@@ -25,7 +25,11 @@ class Reservee extends Model
     
     public function reservationDetails()
     {
-        return $this->hasMany(ReservationDetails::class, 'reserveeID', 'reserveeID');
+        return $this->belongsTo(ReservationDetails::class, 'reservedetailsID', 'reservedetailsID');
     }
     
+    public function reservationApproval()
+    {
+        return $this->hasOne(ReservationApprovals::class, 'reserveeID', 'reserveeID');
+    }
 }

@@ -33,6 +33,10 @@ class ReservationDetails extends Model
     
     public function reservee()
     {
-        return $this->belongsTo(Reservee::class, 'reserveeID', 'reserveeID');
+        return $this->hasOne(Reservee::class, 'reservedetailsID', 'reservedetailsID'); 
     }
+
+    
 }
+
+

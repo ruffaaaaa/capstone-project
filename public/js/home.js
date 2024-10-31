@@ -9,49 +9,43 @@ document.getElementById('closeReservationModal').addEventListener('click', funct
 $(document).ready(function() {
     $('#openCheckStatus').click(function() {
         $('#checkStatusModal').removeClass('hidden').addClass('flex');
-        $('#reservation-status').addClass('hidden'); // Hide the status initially when the modal opens
-        $('#admin-approvals-list').addClass('hidden'); // Hide the admin approvals list initially
-        $('#admin-approvals-header').addClass('hidden'); // Hide the admin approvals header initially
-        $('#reservation-status-header').addClass('hidden'); // Hide the reservation status header initially
+        $('#reservation-status').addClass('hidden'); 
+        $('#admin-approvals-list').addClass('hidden'); 
+        $('#admin-approvals-header').addClass('hidden'); 
+        $('#reservation-status-header').addClass('hidden'); y
     });
 
-    // Fetch status when the "Search" button is clicked
     $('#fetchStatusButton').click(function() {
-        const reserveeID = $('#reserveeID').val(); // Get the Reservee ID from the input
+        const reserveeID = $('#reserveeID').val(); 
 
-        // Ensure Reservee ID is entered
         if (!reserveeID) {
             alert('Please enter a Reservee ID');
             return;
         }
 
-        // Make AJAX request to fetch the reservation status
         $.ajax({
-            url: `/reservations/${reserveeID}/status`, // Assuming the URL is set correctly
+            url: `/reservations/${reserveeID}/status`, 
             method: 'GET',
             success: function(data) {
-                console.log(data); // Debug: Check what data is returned
+                console.log(data);
 
-                // Update the reservation status
-                $('#reservation-status').text(data.reservationStatus || 'No reservation status available').removeClass('hidden'); // Show the status now
-                $('#reservation-status-header').removeClass('hidden'); // Show the reservation status header
+                $('#reservation-status').text(data.reservationStatus || 'No reservation status available').removeClass('hidden'); 
+                $('#reservation-status-header').removeClass('hidden'); 
 
                 let adminList = $('#admin-approvals-list');
-                adminList.empty(); // Clear previous data
+                adminList.empty(); 
 
-                // Loop through the admin statuses and display role name and status
                 data.adminStatuses.forEach(function(admin) {
-                    const role = admin.admin; // Role name (from AdminRole->name)
-                    const status = admin.status ? admin.status : 'No status available'; // Handle null status
-                    adminList.append(`<li>${role} - ${status}</li>`); // Display role and status
+                    const role = admin.admin; 
+                    const status = admin.status ? admin.status : 'No status available'; 
+                    adminList.append(`<li>${role} - ${status}</li>`); 
                 });
 
-                // Show the admin approvals list and header
                 adminList.removeClass('hidden');
                 $('#admin-approvals-header').removeClass('hidden');
             },
             error: function(err) {
-                console.error(err); // Log any errors
+                console.error(err); 
                 alert('Failed to fetch status');
             }
         });

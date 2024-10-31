@@ -14,10 +14,13 @@ class ReservationApprovals extends Model
     public function reservationDetails()
     {
         return $this->belongsTo(Reservee::class, 'reserveeID', 'reserveeID');
+    
     }
 
     protected $attributes = [
         'final_status' => 'Pending',
     ];
+
+    
 
 }

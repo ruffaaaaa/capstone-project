@@ -114,9 +114,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function handleSubmit() {
         const formData = new FormData(storeReservationForm);
-
-        loadingSpinner.classList.remove('hidden'); // Show spinner
-
+    
+        loadingSpinner.classList.remove('hidden');
+    
         fetch(storeReservationForm.action, {
             method: 'POST',
             headers: {
@@ -127,23 +127,26 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            loadingSpinner.classList.add('hidden'); // Hide spinner
+            loadingSpinner.classList.add('hidden');
             if (data.message === 'Reservation saved successfully') {
-                showModal(data.reservationCode);
+                showModal(); // No need to pass the reservation code
             }
         })
         .catch(error => {
-            loadingSpinner.classList.add('hidden'); // Hide spinner
+            loadingSpinner.classList.add('hidden');
             console.error('Error:', error);
         });
     }
+    
 
     function validateForm() {
         let valid = true;
         let inputs;
-
+    
+        // Select inputs based on the current step
         switch (currentStep) {
             case 1:
+                // Check for required inputs in facilitiesForm (excluding checkboxes)
                 inputs = facilitiesForm.querySelectorAll('input[required]');
                 if (!validateCheckboxes(facilitiesForm)) {
                     facilitiesAlert.classList.remove('hidden');
@@ -152,31 +155,65 @@ document.addEventListener("DOMContentLoaded", function() {
                     facilitiesAlert.classList.add('hidden');
                 }
                 break;
+    
             case 2:
-                inputs = reservationDetailsForm.querySelectorAll('input[required]');
-                if (!validateCheckboxes(reservationDetailsForm)) {
-                    equipmentAlert.classList.remove('hidden');
+                // Check for required inputs in reservationDetailsForm (excluding checkboxes)
+                inputs = reservationDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])');
+                if (!validateInputs(inputs)) {
+                    equipmentAlert.classList.remove('hidden'); // Show the main alert
                     valid = false;
                 } else {
                     equipmentAlert.classList.add('hidden');
                 }
                 break;
+    
             case 3:
-                inputs = customerDetailsForm.querySelectorAll('input[required]');
-                if (validateInputs(inputs)) {
-                    customerDetailsAlert.classList.add('hidden');
-                } else {
+                // Check for required inputs in customerDetailsForm (excluding checkboxes)
+                inputs = customerDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])');
+                if (!validateInputs(inputs)) {
                     customerDetailsAlert.classList.remove('hidden');
                     valid = false;
+                } else {
+                    customerDetailsAlert.classList.add('hidden');
                 }
                 break;
+    
             default:
                 inputs = [];
         }
-
+    
         return valid;
     }
+    
 
+    
+    function validateInputs(inputs) {
+        let allValid = true;
+    
+        inputs.forEach(input => {
+            const requiredText = input.previousElementSibling; // Get the required text before the input
+    
+            if (!input.value.trim()) {
+                allValid = false;
+                input.classList.add('border-red-500');
+    
+                // Check if requiredText exists and is the required text element
+                if (requiredText && requiredText.classList.contains('required-text')) {
+                    requiredText.classList.remove('hidden'); // Show the required text
+                }
+            } else {
+                input.classList.remove('border-red-500');
+    
+                // Check if requiredText exists and is the required text element
+                if (requiredText && requiredText.classList.contains('required-text')) {
+                    requiredText.classList.add('hidden'); // Hide the required text
+                }
+            }
+        });
+        
+        return allValid;
+    }
+    
     function validateCheckboxes(section) {
         const checkboxes = section.querySelectorAll('input[type="checkbox"]');
         let checked = false;
@@ -189,26 +226,14 @@ document.addEventListener("DOMContentLoaded", function() {
         return checked;
     }
 
-    function validateInputs(inputs) {
-        let allFilled = true;
-        inputs.forEach(input => {
-            if (!input.value) {
-                input.classList.add('border-red-500');
-                allFilled = false;
-            } else {
-                input.classList.remove('border-red-500');
-            }
-        });
-        return allFilled;
-    }
-
-    function showModal(reservationCode) {
+    
+    function showModal() {
         var modal = document.getElementById('myModal');
-        var reservationCodeSpan = document.getElementById('reservation-code');
-        reservationCodeSpan.textContent = 'Reservation Code: ' + reservationCode;
-        reservationCodeSpan.classList.remove('hidden');
+    
+        // Set the message directly in the modal        
         modal.style.display = 'block';
     }
+    
 
     var closeBtn = document.querySelector('.close');
     if (closeBtn) {
@@ -226,7 +251,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Add event listeners to equipment checkboxes
 document.querySelectorAll('.equipment-checkbox').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {
         var inputField = this.parentNode.querySelector('.equipment-input');
@@ -250,7 +274,6 @@ document.querySelectorAll('.personnel-checkbox').forEach(function(checkbox) {
     });
 });
 
-// Add event listener to "Other, please specify" checkboxes for equipment and personnel
 document.getElementById('other-equipment').addEventListener('change', function() {
     var nameInput = document.getElementById('other-equipment-name');
     var numberInput = document.getElementById('other-equipment-number');
@@ -272,8 +295,8 @@ document.getElementById('other-equipment').addEventListener('change', function (
     } else {
         otherEquipmentName.style.display = 'none';
         otherEquipmentNumber.style.display = 'none';
-        otherEquipmentName.value = ''; // Clear the input
-        otherEquipmentNumber.value = ''; // Clear the input
+        otherEquipmentName.value = '';
+        otherEquipmentNumber.value = ''; 
     }
 });
 
@@ -289,15 +312,15 @@ document.getElementById('other-personnel').addEventListener('change', function (
     } else {
         otherPersonnelName.style.display = 'none';
         otherPersonnelNumber.style.display = 'none';
-        otherPersonnelName.value = ''; // Clear the input
-        otherPersonnelNumber.value = ''; // Clear the input
+        otherPersonnelName.value = '';
+        otherPersonnelNumber.value = ''; 
     }
 });
 
 function displayFiles() {
     const input = document.getElementById('attachments');
     const fileList = document.getElementById('fileList');
-    fileList.innerHTML = ''; // Clear the previous file list
+    fileList.innerHTML = '';
     
     for (let i = 0; i < input.files.length; i++) {
         const file = input.files[i];
@@ -306,3 +329,22 @@ function displayFiles() {
         fileList.appendChild(listItem);
     }
 }
+
+function checkRequiredFields() {
+    const requiredFields = document.querySelectorAll('.required-field');
+    let allFieldsFilled = true;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            allFieldsFilled = false;
+        }
+    });
+
+    document.getElementById('captchaSection').classList.toggle('hidden', !allFieldsFilled);
+}
+
+document.querySelectorAll('.required-field').forEach(field => {
+    field.addEventListener('input', checkRequiredFields);
+});
+
+

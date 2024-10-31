@@ -1,5 +1,5 @@
-var currentFilter = 'all';  // Default to 'all'
-var selectedFacility = '';
+var currentFilter = 'all';
+        var selectedFacility = '';
 
 function filterEvents(filter) {
     currentFilter = filter;
@@ -12,96 +12,49 @@ function filterByFacility(facility) {
 }
 
 $(document).ready(function() {
-    // Fetch facilities on page load
     $.ajax({
         url: '/facilitiesQuery',
         method: 'GET',
         success: function(data) {
             var dropdownMenu = $('#facilityFilter');
-            dropdownMenu.empty();  // Clear existing items
-            dropdownMenu.append('<option value="">Select</option>');  // Add default option
-
-            // Ensure data is an array
+            dropdownMenu.empty();
+            dropdownMenu.append('<option value="">Select</option>');
             if (Array.isArray(data)) {
                 data.forEach(function(facility) {
-                    // Use facility.facilityName instead of facility.name
-                    dropdownMenu.append(
-                        `<option value="${facility.facilityName}">${facility.facilityName}</option>`
-                    );
+                    dropdownMenu.append(`<option value="${facility.facilityName}">${facility.facilityName}</option>`);
                 });
             } else {
                 console.error('Unexpected data format:', data);
             }
         },
         error: function() {
-            alert('There was an error while fetching facilities.');
+            alert('Error fetching facilities.');
         }
     });
 
-    $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
-
-    $('#prev-btn').click(function() {
-        $('#calendar').fullCalendar('prev'); // Go to the previous month
-    });
-
-    $('#next-btn').click(function() {
-        $('#calendar').fullCalendar('next'); // Go to the next month
-    });
-
-    $('#today-btn').click(function() {
-        $('#calendar').fullCalendar('today'); // Go to today's date
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    $('#month-btn').click(function() {
-        $('#calendar').fullCalendar('changeView', 'month'); // Change to month view
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    $('#week-btn').click(function() {
-        $('#calendar').fullCalendar('changeView', 'agendaWeek'); // Change to week view
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    $('#day-btn').click(function() {
-        $('#calendar').fullCalendar('changeView', 'agendaDay'); // Change to day view
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title); // Update title
-    });
-
-    // Initialize the calendar
     $('#calendar').fullCalendar({
-        header: {
-            left: '',
-            center: '',
-            right: ''
-        },
+        header: { left: '', center: '', right: '' },
         defaultView: 'month',
         height: 'auto',
 
-        
         events: function(start, end, timezone, callback) {
             $.ajax({
                 url: '/reservationsQuery',
                 method: 'GET',
                 success: function(data) {
+                    console.log("Event data:", data); // Debugging statement
                     var events = [];
                     $(data).each(function() {
-                        var facilities = this.facilities.map(function(facility) {
-                            return facility.facilityName;  
-                        }).join(', ');
-
+                        var facilities = this.facilities ? this.facilities.map(f => f.facilityName).join(', ') : '';
                         events.push({
                             id: this.id,
                             title: this.title,
                             start: this.estart,
                             end: this.eend,
-                            max_attendees: this.max_attendees,
                             facilities: facilities,
                             color: '#3a87ad',
-                            
                             type: 'eventProper'
                         });
-
                         if (this.pstart && this.pend) {
                             events.push({
                                 id: this.id + '_prep',
@@ -113,7 +66,6 @@ $(document).ready(function() {
                                 type: 'preparation'
                             });
                         }
-
                         if (this.cstart && this.cend) {
                             events.push({
                                 id: this.id + '_cleanup',
@@ -129,26 +81,23 @@ $(document).ready(function() {
                     callback(events);
                 },
                 error: function() {
-                    alert('There was an error while fetching events.');
+                    alert('Error fetching events.');
                 }
             });
         },
         eventRender: function(event, element) {
-            // Show all events if 'all' is selected
             if (currentFilter === 'all' || event.type === currentFilter) {
                 if (selectedFacility === '' || event.facilities.includes(selectedFacility)) {
                     element.find('.fc-time').remove();
-
                     var startTime = moment(event.start).format('hh:mm A');
                     var endTime = moment(event.end).format('hh:mm A');
-
-                    element.find('.fc-title').html(
-                        "<strong>" + event.title.toUpperCase() + "</strong><br/>" +
-                        "<span class='facilities'>" + event.facilities + "<br/>" +
-                        startTime + " - " + endTime + "</span>"
-                    );
-
-                    element.find('.facilities').css('font-size', '13px');
+                    if (event.title) {
+                        element.find('.fc-title').html(
+                            `<strong>${event.title.toUpperCase()}</strong><br/>
+                            <span class='facilities'>${event.facilities || ''}<br/>
+                            ${startTime} - ${endTime}</span>`
+                        );
+                    }
                 } else {
                     return false;
                 }
@@ -156,21 +105,15 @@ $(document).ready(function() {
                 return false;
             }
         },
-
-        eventClick: function(event, jsEvent, view) {
+        eventClick: function(event) {
             $('#eventTitle').text(event.title);
-            $('#eventDescription').text(event.description || 'No additional information available.');
+            $('#eventFacilities').text(event.facilities || 'No facilities specified.');
             $('#eventStart').text(moment(event.start).format('MMMM Do YYYY, h:mm:ss a'));
             $('#eventEnd').text(moment(event.end).format('MMMM Do YYYY, h:mm:ss a'));
-
-            // Show the modal
             $('#eventModal').removeClass('hidden');
         },
-
         viewRender: function(view) {
-            $('#calendar-title').text(view.title).css('font-size', '25px');
-            $('.fc table').css('border-spacing', '10px'); // Adjust this value for more or less space
-
+            $('#calendar-title').text(view.title);
         }
     });
 
@@ -178,43 +121,9 @@ $(document).ready(function() {
         $('#eventModal').addClass('hidden');
     });
 
-
     $('#view-selector').change(function() {
         var selectedView = $(this).val();
         $('#calendar').fullCalendar('changeView', selectedView);
         $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
-    });
-    $('#today-btn').click(function() {
-        $('#calendar').fullCalendar('today');
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
-    });
-
-    $('#prev-btn').click(function() {
-        $('#calendar').fullCalendar('prev');
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
-    });
-
-    $('#next-btn').click(function() {
-        $('#calendar').fullCalendar('next');
-        $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
-    });
-    
-
-    
-});
-
-$(document).ready(function() {
-    function updateViewSelector() {
-        if (window.matchMedia("(max-width: 768px)").matches) {
-            $('#view-selector option[value="agendaWeek"]').hide();
-        } else {
-            $('#view-selector option[value="agendaWeek"]').show();
-        }
-    }
-
-    updateViewSelector();
-
-    $(window).resize(function() {
-        updateViewSelector();
     });
 });

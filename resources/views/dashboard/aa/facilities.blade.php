@@ -300,7 +300,6 @@
             </div>
         </div>
     </main>
-    <script src='js/index.js'></script>
     <script src="/js/profile.js"></script>
     <script src="/js/modal.js"></script>
 

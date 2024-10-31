@@ -9,14 +9,8 @@ use App\Models\User;
 use App\Models\AdminSignature;
 use Illuminate\Support\Facades\Auth;
 
-
-
-
 class CalendarController extends Controller
 {
-
-    
-
     private function getUserSignature()
     {
         $user = Auth::user();
@@ -41,19 +35,28 @@ class CalendarController extends Controller
                 'facilities' => $reservation->facilities->map(function ($facility) {
                     return [
                         'id' => $facility->facilityID,
-                        'facilityName' => $facility->facilityName, 
+                        'facilityName' => $facility->facilityName,
                     ];
                 }),
             ];
         });
     }
 
+    private function getCommonData()
+    {
+        $reservations = $this->getUserReservations(); 
+        $facilities = $this->getFacilities();
+
+        return [
+            'reservations' => $reservations,
+            'facilities' => $facilities,
+        ];
+    }
+
     private function getFacilities()
     {
         return Facilities::all();
     }
-
-    
 
     public function showCalendar($role_id)
     {
@@ -82,22 +85,41 @@ class CalendarController extends Controller
         return response()->json($facilities);
     }
 
-    private function getCommonData()
-    {
-        $reservations = $this->getReservations();
-        $facilities = $this->getFacilities();
-
-        return [
-            'reservations' => $reservations,
-            'facilities' => $facilities,
-        ];
-    }
-
+    
     public function showCalendarPage()
     {
         $data = $this->getCommonData();
         return view('calendar', $data);
     }
     
+    public function getUserReservations()
+    {
+        $reservations = ReservationDetails::with(['facilities', 'reservee'])
+            ->whereHas('reservee.reservationApproval', function ($query) {
+                $query->where('final_status', 'Approved');
+            })
+            ->get();
 
+        return $reservations->map(function ($reservation) {
+            return [
+                'id' => $reservation->reservedetailsID,
+                'title' => $reservation->event_name,
+                'estart' => $reservation->event_start_date,
+                'eend' => $reservation->event_end_date,
+                'pstart' => $reservation->preparation_start_date,
+                'pend' => $reservation->preparation_end_date_time,
+                'cstart' => $reservation->cleanup_start_date_time,
+                'cend' => $reservation->cleanup_end_date_time,
+                'max_attendees' => $reservation->max_attendees,
+                'facilities' => $reservation->facilities->map(function ($facility) {
+                    return [
+                        'id' => $facility->facilityID,
+                        'facilityName' => $facility->facilityName,
+                    ];
+                }),
+            ];
+        });
+    }
+
+    
 }

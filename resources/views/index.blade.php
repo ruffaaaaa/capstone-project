@@ -48,16 +48,16 @@
                     <div class="p-3 bg-white rounded max-md:px-5">RESERVE NOW</div>
                 </button> 
                 <button type="button" class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative text-decoration-line: none;" id="openCheckStatus">
-    <div class="flex flex-col justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
-        <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b"
-            class="object-contain w-full aspect-[0.94]" />
-    </div>
-    <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded">
-        Status
-    </div>
-</button>
+                    <div class="flex flex-col justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
+                        <img
+                            loading="lazy"
+                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/20c8d1dd4b05e66ab5c119b29549edc34e46b6690438dce9a1964504b5a4489b"
+                            class="object-contain w-full aspect-[0.94]" />
+                    </div>
+                    <div class="text-xs absolute inset-0 flex items-center justify-center text-white hidden group-hover:flex bg-black bg-opacity-50 rounded">
+                        Status
+                    </div>
+                </button>
                 <a href="calendar" class="group flex flex-col justify-center self-stretch my-auto rounded border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105 relative">
                     <div class="flex justify-center items-center px-3 rounded bg-white bg-opacity-90 h-[43px] w-[43px]">
                         <img

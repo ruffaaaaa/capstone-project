@@ -60,6 +60,8 @@ class ReservationController extends Controller
             'date_of_filing' => 'required|date',
             'endorsed_by' => 'required',
             'endorser_email' => 'required|email',
+            'attachments.*' => 'nullable|file' 
+
         ]);
 
         $eventStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-start-date'])->format('Y-m-d H:i:s');
@@ -74,15 +76,6 @@ class ReservationController extends Controller
         $nextNumericPart = $lastNumericPart + 1;
         $reserveeID = 'LSUFRS' . time();
 
-        if (!file_exists(public_path('uploads/endorsedby'))) {
-            mkdir(public_path('uploads/endorsedby'), 0755, true);
-        }
-
-        if ($request->hasFile('endorsement_attachment')) {
-            $file = $request->file('endorsement_attachment');
-            $filePath = $file->move(public_path('uploads/endorsedby'), $file->getClientOriginalName());
-            $validatedData['endorsement_attachment'] = 'uploads/endorsedby/' . $file->getClientOriginalName();
-        }
 
         $reservationDetails = ReservationDetails::create([
             'reservedetailsID' => $nextNumericPart,
@@ -180,25 +173,25 @@ class ReservationController extends Controller
         }
         
         if ($request->hasFile('attachments')) {
-            $files = $request->file('attachments'); 
-            $filePaths = []; 
+            $files = $request->file('attachments');
+            $filePaths = [];
         
             foreach ($files as $file) {
                 $fileName = $file->getClientOriginalName();
-                $filePath = $file->move(public_path('uploads/attachments'), $fileName);
-                $filePaths[] = 'uploads/attachments/' . $fileName; 
+                $file->move(public_path('uploads/attachments'), $fileName);
+                $filePaths[] = 'uploads/attachments/' . $fileName;
             }
         
-            $validatedData['attachments'] = $filePaths; 
-        }
+            $validatedData['attachments'] = $filePaths;
         
-        foreach ($validatedData['attachments'] as $attachmentPath) {
-            Attachment::create([
-                'reservedetailsID' => $nextNumericPart, 
-                'file' => $attachmentPath,
-            ]);
+            // Store attachment paths in the database only if attachments are present
+            foreach ($validatedData['attachments'] as $attachmentPath) {
+                Attachment::create([
+                    'reservedetailsID' => $nextNumericPart,
+                    'file' => $attachmentPath,
+                ]);
+            }
         }
-        
 
 
         $reservee = Reservee::create([
@@ -389,33 +382,33 @@ class ReservationController extends Controller
     }
     
     public function fetchStatus($reserveeID)
-{
-    $reservationApproval = ReservationApprovals::where('reserveeID', $reserveeID)->first();
+    {
+        $reservationApproval = ReservationApprovals::where('reserveeID', $reserveeID)->first();
 
-    if ($reservationApproval) {
-        $adminRoles = AdminRoles::all();
+        if ($reservationApproval) {
+            $adminRoles = AdminRoles::all();
 
-        $adminApprovals = AdminApprovals::where('reservation_approval_id', $reservationApproval->approvalID)
-            ->with('admin.adminRole') // Eager load the admin and their role
-            ->get();
+            $adminApprovals = AdminApprovals::where('reservation_approval_id', $reservationApproval->approvalID)
+                ->with('admin.adminRole') 
+                ->get();
 
-        $adminStatuses = $adminRoles->map(function ($role) use ($adminApprovals) {
-            $approval = $adminApprovals->firstWhere('admin.adminRole.id', $role->id);
+            $adminStatuses = $adminRoles->map(function ($role) use ($adminApprovals) {
+                $approval = $adminApprovals->firstWhere('admin.adminRole.id', $role->id);
 
-            return [
-                'admin' => $role->name,
-                'status' => $approval->approval_status ?? 'Pending'
-            ];
-        });
+                return [
+                    'admin' => $role->name,
+                    'status' => $approval->approval_status ?? 'Pending'
+                ];
+            });
 
-        return response()->json([
-            'reservationStatus' => $reservationApproval->final_status,
-            'adminStatuses' => $adminStatuses
-        ]);
+            return response()->json([
+                'reservationStatus' => $reservationApproval->final_status,
+                'adminStatuses' => $adminStatuses
+            ]);
+        }
+
+        return response()->json(['error' => 'No approval data found for this Reservee'], 404);
     }
-
-    return response()->json(['error' => 'No approval data found for this Reservee'], 404);
-}
 
 
 }
