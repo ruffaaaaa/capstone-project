@@ -11,9 +11,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 
 </head>
@@ -50,21 +53,27 @@
                     <div class="mb-6 flex justify-center items-center relative"> 
                         <hr class="w-12 border-green-900 border-2 absolute animate-line">
                     </div>
-                
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-5">
+
+                    <div class="mb-6 flex items-center justify-center">
+                        <input type="text" id="facilitySearch" placeholder="Search facilities..." 
+                            class="max-md:w-full w-72 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-5" id="facilityList">
                         @foreach ($facilities as $facility)
-                            <div class="mb-2 sm:col-span-1 md:col-span-1 p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" name="facility_checkbox[{{ $facility->facilityID }}]" class="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                                    <span class="text-l font-bold text-gray-700">{{ $facility->facilityName }}</span>
-                                </label>
+                            <div class="facility-item mb-2 sm:col-span-1 md:col-span-1 p-3">
+                                <div class="flex items-center space-x-2">
+                                    <input type="checkbox" name="facility_checkbox[{{ $facility->facilityID }}]" id="facility-{{ $facility->facilityID }}" value="{{ $facility->facilityID }}" class="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                    <label class="text-l font-bold text-gray-700">{{ $facility->facilityName }}</label>
+                                </div>
                             </div>
                         @endforeach
                     </div>
+                    <div id="noFacilitiesAlert" class="text-center text-red-500 mb-4 hidden">No facilities found.</div>
 
                     <div id="facilitiesAlert" class="text-center hidden text-red-500 mb-4">Please select at least one facility.</div>
-
                 </div>
+
                 <div id="reservationDetailsForm" class="hidden mx-full flex flex-col items-center justify-center">
                     <div class="mb-6 flex justify-center items-center"> 
                         <span class="text-2xl font-bold">RESERVATION DETAILS</span>
@@ -238,13 +247,6 @@
                                             <input type="number" class="px-2 py-1  border rounded personnel-input input-size" name="personnel_no[Nurse/First Aider]" autocomplete="new-personnel[Nurse/First Aider]" placeholder="No. Required" style="display: none;">
                                         </div>
                                     </div>
-                                    <div class="mb-2 flex items-center space-x-2">
-                                        <input type="checkbox" class="form-checkbox personnel-checkbox" value="Security Guards" name="personnel[Security Guards]" autocomplete="new-personnel[Nurse/First Aider]">
-                                        <div class="flex justify-between w-full items-center">
-                                            <span>Security Guards</span>
-                                            <input type="number" class="px-2 py-1  border rounded personnel-input input-size" name="personnel_no[Security Guards]" autocomplete="new-personnel[Nurse/First Aider]" placeholder="No. Required" style="display: none;">
-                                        </div>
-                                    </div>
                                     <div class="mb-2 items-center">
                                         <input type="checkbox" id="other-personnel" class="form-checkbox">
                                         <span>Other, please specify</span>
@@ -286,21 +288,33 @@
                         <span class="text-l font-bold text-white pl-4">EVENT DETAILS</span>
                     </div>
 
-                    <!-- Reservee Form Fields -->
+                    
+
                     <div class="items-center mb-5 mt-5 ml-4 mr-4">
                         <label class="w-32 text-gray-700 text-sm font-bold">Requested By:</label>
                         <span class="required-text text-red-600 text-sm hidden">(Required)</span>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="reserveeName" name="reserveeName" autocomplete="new-reserveeName" type="text" required>
                     </div>
+
                     <div class="items-center mb-5 mt-5 ml-4 mr-4">
-                        <label class="w-32 text-gray-700 text-sm font-bold">Person-in-Charge of Event:</label>
-                        <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="person_in_charge_event" name="person_in_charge_event" autocomplete="new-person_in_charge_event" type="text" required>
+                        <label class="w-32 text-gray-700 text-sm font-bold">Position:</label>
+                        <div class="flex space-x-10 mt-4">
+                            <label class="text-sm text-gray-700">
+                                <input type="radio" name="userType" value="student" id="studentRadio" required> STUDENT
+                            </label>
+                            <label class="text-sm text-gray-700">
+                                <input type="radio" name="userType" value="faculty" id="facultyRadio"> FACULTY
+                            </label>
+                            <label class="text-sm text-gray-700">
+                                <input type="radio" name="userType" value="staff" id="staffRadio"> STAFF
+                            </label>
+                        </div>
                     </div>
                     <div class="items-center mb-5 mt-5 ml-4 mr-4">
                         <label class="w-32 text-gray-700 text-sm font-bold">Email:</label>
                         <span class="required-text text-red-600 text-sm hidden">(Required)</span>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="email" name="email" autocomplete="new-email" type="email" required>
+                        <span class="email-error text-red-600 text-sm hidden">Please use your LSU email address.</span>
                     </div>
                     <div class="items-center mb-5 mt-5 ml-4 mr-4">
                         <label class="w-32 text-gray-700 text-sm font-bold">Contact Number:</label>
@@ -308,6 +322,12 @@
 
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="contact_details" name="contact_details" autocomplete="new-contact_details" type="number" required>
                     </div>
+                    <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                        <label class="w-32 text-gray-700 text-sm font-bold">Person-in-Charge of Event:</label>
+                        <span class="required-text text-red-600 text-sm hidden">(Required)</span>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="person_in_charge_event" name="person_in_charge_event" autocomplete="new-person_in_charge_event" type="text" required>
+                    </div>
+                    
                     <div class="items-center mb-5 mt-5 ml-4 mr-4">
                         <label class="w-32 text-gray-700 text-sm font-bold">Unit/Department/Company:</label>
                         <span class="required-text text-red-600 text-sm hidden">(Required)</span>
@@ -320,18 +340,17 @@
 
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="date_of_filing" name="date_of_filing" autocomplete="new-date_of_filing" type="date" required>
                     </div>
-                    <div class="items-center mb-5 mt-5 ml-4 mr-4">
+
+                    
+                    <div id="endorserFields" class="items-center mb-5 mt-5 ml-4 mr-4 hidden">
                         <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
-                        <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="endorsed_by" name="endorsed_by" autocomplete="new-endorsed_by" type="text" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" autocomplete="new-endorsed_by" type="text" disabled>
                     </div>
-                    <div class="items-center mb-5 mt-5 ml-4 mr-4">
+                    <div class="items-center mb-5 mt-5 ml-4 mr-4 hidden" id="endorserEmailField">
                         <label class="w-32 text-gray-700 text-sm font-bold">Endorser Email:</label>
-                        <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="endorser_email" name="endorser_email" autocomplete="new-endorser_email" type="email" required>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorser_email" name="endorser_email" autocomplete="new-endorser_email" type="email" disabled>
                     </div>
+
 
                     <div id="captchaSection" class="items-center mb-5 mt-5 ml-4 mr-4 hidden">
                         {!! NoCaptcha::renderJs() !!}
@@ -365,11 +384,11 @@
 
             </form>
 
-            <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden bg-gray-900 bg-opacity-60 pointer-events-none">
+            <div id="myModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center  bg-gray-900 bg-opacity-60 pointer-events-none">
                 <div class="modal-container w-full h-screen max-md:mx-10 md:max-w-md mx-auto rounded shadow-3xl z-50 overflow-y-auto flex flex-col justify-center pointer-events-auto">
-                    <div class="p-6 mb-5 flex flex-col items-center justify-center bg-green-700">
+                    <div class="p-10 mb-5 flex flex-col items-center justify-center bg-green-700">
                         <a href="/" class="m-4">
-                            <img src="/images/lsu-logo-star-white.png" class="mx-auto w-16 h-30" />
+                            <img src="/images/lsu-logo-star-white.png" class="mx-auto w-24 h-30" />
                         </a>
                         <span class="font-bold text-2xl text-white text-center">YOUR RESERVATION REQUEST IS SUBMITTED.</span>
                         <span id="modal-message" class="text-center text-white mt-2 text-xs">Please check your email for the reservation code and have your endorser confirm the endorsement.</span>
@@ -385,6 +404,9 @@
 
 <script src="/js/reservationmodal.js"></script>
 <script src="/js/date.js"></script>
+<script src="/js/fetchDate.js"></script>
+
+
 
 
 

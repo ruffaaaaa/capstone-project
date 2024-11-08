@@ -17,5 +17,5 @@ class Facilities extends Model
     {
         return $this->belongsToMany(ReservationDetails::class, 'selected_facilities', 'facilityID', 'reservedetailsID');
     }
-    
+
 }

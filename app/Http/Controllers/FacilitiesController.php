@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Facilities;
+use App\Models\ReservationDetails;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\AdminSignature;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -15,9 +17,11 @@ class FacilitiesController extends Controller
 
     public function homeFacilities()
     {
-           $facilities = Facilities::all(); 
-         return view('index', compact('facilities'));
+        $facilities = Facilities::where('facilityStatus', 'Available')->get();
+        return view('index', compact('facilities'));
     }
+
+    
 
     public function listFacilities($role_id)
     {
@@ -91,6 +95,59 @@ class FacilitiesController extends Controller
 
         return redirect()->route('admin.facilities', ['role_id' => $user->role_id])->with('success', 'Facility deleted successfully');
     }
+
+   
+
+    public function getUnavailableDates(Request $request)
+    {
+        // Get multiple facility IDs
+        $facilityIds = explode(',', $request->query('facilityIds'));
+        $eventStartDate = $request->query('eventStartDate'); // Example: '2024-11-04 02:59:00'
+
+        // Convert the event start date to a Carbon instance, ensuring it's treated as UTC
+        $eventStartDate = \Carbon\Carbon::parse($eventStartDate)->setTimezone('UTC');
+
+        // Fetch reservations for the selected facilities that overlap with the event start date
+        $unavailableReservations = ReservationDetails::whereHas('facilities', function($query) use ($facilityIds) {
+            $query->whereIn('facilities.facilityID', $facilityIds); // Specify the table name
+        })
+        ->where(function($query) use ($eventStartDate) {
+            $query->where(function($q) use ($eventStartDate) {
+                $q->where('reservation_details.event_start_date', '<=', $eventStartDate) // Specify the table name
+                ->where('reservation_details.event_end_date', '>=', $eventStartDate); // Specify the table name
+            });
+        })
+        ->pluck('event_start_date') // Retrieve only the start dates
+        ->map(function($date) {
+            return \Carbon\Carbon::parse($date)->toISOString(); // Convert to ISO format
+        })
+        ->toArray();
+
+        // Return unavailable dates as JSON response
+        return response()->json(['unavailableDates' => $unavailableReservations]);
+    }
+
+
+    public function getBlockedDates(Request $request, $facilityID)
+    {
+        $reservationDetails = new ReservationDetails();
+        $blockedDates = $reservationDetails->getBlockedDatesForFacility($facilityID);
+
+        // Format the dates in a way that the front end can easily parse (e.g., as a list of date ranges)
+        $formattedDates = $blockedDates->map(function ($reservation) {
+            return [
+                'start_date' => $reservation->event_start_date,
+                'end_date' => $reservation->event_end_date,
+            ];
+        });
+
+        return response()->json([
+            'facilityID' => $facilityID,
+            'blocked_dates' => $formattedDates,
+        ]);
+    }
+
+
 
 
 }

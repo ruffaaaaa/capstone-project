@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         if (validateForm()) {
             navigateNext();
+            console.log("Updating review on step 2...");
+                updateReview();
         }
     });
 
@@ -35,6 +37,22 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         if (validateForm()) {
             handleSubmit();
+        }
+    });
+
+    // Add this event listener to handle the Enter key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action (form submission)
+            if (currentStep < 3) { // Only navigate if not on the last step
+                if (validateForm()) {
+                    navigateNext();
+                }
+            } else {
+                if (validateForm()) {
+                    handleSubmit();
+                }
+            }
         }
     });
 
@@ -112,6 +130,66 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+
+    function updateReview() {
+        const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
+            .map(checkbox => checkbox.value) // Get facilityID from the value attribute
+            .join(', ');
+    
+        console.log("Selected Facilities IDs:", selectedFacilities);
+    }
+    
+
+    function updateDatePicker() {
+        flatpickr("#date-input", {
+            enable: [], // Allow all dates initially
+            disable: unavailableDates.map(date => new Date(date)), // Disable unavailable dates
+        });
+    }
+
+    function fetchUnavailableDates() {
+        const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
+            .map(checkbox => checkbox.value)
+            .join(',');
+        const eventStartDate = document.getElementById('event-start-date').value;
+
+        console.log("Fetching unavailable dates for facilities:", selectedFacilities, "and date:", eventStartDate);
+
+        if (selectedFacilities && eventStartDate) {
+            fetch(`/api/unavailable-dates?facilityIds=${selectedFacilities}&eventStartDate=${eventStartDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    unavailableDates = data.unavailableDates;
+                    console.log("API returned unavailable dates:", unavailableDates);
+                    updateDatePicker();
+
+                    const selectedDateObj = new Date(eventStartDate + "Z");
+                    const unavailableDateObjects = unavailableDates.map(date => new Date(date));
+                    const isDateUnavailable = unavailableDateObjects.some(unavailableDate =>
+                        unavailableDate.getTime() === selectedDateObj.getTime()
+                    );
+
+                    if (isDateUnavailable) {
+                    alert('Sorry, this date is unavailable for the selected facility. Please select another date.');
+                    document.getElementById('event-start-date').value = ''; 
+                    } else {
+                    console.log('Date is available.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching unavailable dates:', error);
+                    document.getElementById('date-error').textContent = 'An error occurred while fetching dates. Please try again later.';
+                    document.getElementById('date-error').style.display = 'block';
+                });
+        }
+    }
+
+    document.querySelectorAll('.form-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', fetchUnavailableDates);
+    });
+
+    document.getElementById('event-start-date').addEventListener('change', fetchUnavailableDates);
+
     function handleSubmit() {
         const formData = new FormData(storeReservationForm);
     
@@ -137,7 +215,8 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('Error:', error);
         });
     }
-    
+
+
 
     function validateForm() {
         let valid = true;
@@ -169,14 +248,16 @@ document.addEventListener("DOMContentLoaded", function() {
     
             case 3:
                 // Check for required inputs in customerDetailsForm (excluding checkboxes)
-                inputs = customerDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])');
-                if (!validateInputs(inputs)) {
-                    customerDetailsAlert.classList.remove('hidden');
-                    valid = false;
-                } else {
-                    customerDetailsAlert.classList.add('hidden');
-                }
-                break;
+                 inputs = Array.from(customerDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])'))
+                .filter(input => input.name !== 'endorsed_by' && input.name !== 'endorser_email');
+            
+            if (!validateInputs(inputs)) {
+                customerDetailsAlert.classList.remove('hidden');
+                valid = false;
+            } else {
+                customerDetailsAlert.classList.add('hidden');
+            }
+            break;
     
             default:
                 inputs = [];
@@ -192,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         inputs.forEach(input => {
             const requiredText = input.previousElementSibling; // Get the required text before the input
+            const emailErrorText = input.nextElementSibling; // Get the email error message (span)
     
             if (!input.value.trim()) {
                 allValid = false;
@@ -201,6 +283,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (requiredText && requiredText.classList.contains('required-text')) {
                     requiredText.classList.remove('hidden'); // Show the required text
                 }
+    
+                // Hide the email error message if the input is empty
+                if (emailErrorText) {
+                    emailErrorText.classList.add('hidden'); // Hide email error message
+                }
             } else {
                 input.classList.remove('border-red-500');
     
@@ -208,11 +295,35 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (requiredText && requiredText.classList.contains('required-text')) {
                     requiredText.classList.add('hidden'); // Hide the required text
                 }
+    
+                // Email validation
+                if (input.id === 'email' || input.id === 'endorser_email') {
+                    if (!validateEmailDomain(input.value)) {
+                        allValid = false;
+                        input.classList.add('border-red-500'); // Add a red border if the email is invalid
+                        emailErrorText.classList.remove('hidden'); // Show the custom email error message
+                    } else {
+                        emailErrorText.classList.add('hidden'); // Hide the email error message if valid
+                    }
+                } else {
+                    // Hide email error message for other inputs
+                    if (emailErrorText) {
+                        emailErrorText.classList.add('hidden'); // Ensure it is hidden for other inputs
+                    }
+                }
             }
         });
-        
+    
         return allValid;
     }
+    
+    function validateEmailDomain(email) {
+        // Check if the email ends with the allowed LSU domain
+        const domain = 'lsu.edu.ph';
+        const emailDomain = email.substring(email.lastIndexOf('@') + 1);
+        return emailDomain.toLowerCase() === domain.toLowerCase();
+    }
+    
     
     function validateCheckboxes(section) {
         const checkboxes = section.querySelectorAll('input[type="checkbox"]');
@@ -249,6 +360,8 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.style.display = 'none';
         }
     }
+
+    
 });
 
 document.querySelectorAll('.equipment-checkbox').forEach(function(checkbox) {
@@ -348,3 +461,78 @@ document.querySelectorAll('.required-field').forEach(field => {
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const emailInput = document.getElementById('email');
+
+    const endorserEmailInput = document.getElementById('endorser_email');
+
+    // Email Validation
+    emailInput.addEventListener('input', function() {
+        const emailValue = emailInput.value;
+        
+        if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(emailValue)) {
+            emailInput.setCustomValidity(''); // Reset custom validity message
+        } else {
+            emailInput.setCustomValidity('Please use your LSU email address.'); // Set custom validity message
+        }
+    });
+
+    // Endorser Email Validation
+    endorserEmailInput.addEventListener('input', function() {
+        const endorserEmailValue = endorserEmailInput.value;
+
+        if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(endorserEmailValue)) {
+            endorserEmailInput.setCustomValidity(''); // Reset custom validity message
+        } else {
+            endorserEmailInput.setCustomValidity('Please use your LSU email address.'); // Set custom validity message
+        }
+    });
+});
+
+document.getElementById('facilitySearch').addEventListener('input', function() {
+    const searchValue = this.value.toLowerCase();
+    const facilities = document.querySelectorAll('.facility-item');
+    let hasVisibleFacilities = false;
+
+    facilities.forEach(facility => {
+        const facilityName = facility.querySelector('label').textContent.toLowerCase();
+        if (facilityName.includes(searchValue)) {
+            facility.style.display = 'block';
+            hasVisibleFacilities = true;
+        } else {
+            facility.style.display = 'none';
+        }
+    });
+
+    // Show or hide the "No facilities found" message
+    document.getElementById('noFacilitiesAlert').style.display = hasVisibleFacilities ? 'none' : 'block';
+});
+
+
+function updateEndorserFields() {
+    const isStudent = document.getElementById('studentRadio').checked;
+    const endorserFields = document.getElementById('endorserFields');
+    const endorserEmailField = document.getElementById('endorserEmailField');
+    const endorserInput = document.getElementById('endorsed_by');
+    const endorserEmailInput = document.getElementById('endorser_email');
+
+    if (isStudent) {
+        endorserFields.classList.remove('hidden');
+        endorserEmailField.classList.remove('hidden');
+        endorserInput.setAttribute('required', 'required');
+        endorserEmailInput.setAttribute('required', 'required');
+        endorserInput.removeAttribute('disabled');
+        endorserEmailInput.removeAttribute('disabled');
+    } else {
+        endorserFields.classList.add('hidden');
+        endorserEmailField.classList.add('hidden');
+        endorserInput.removeAttribute('required');
+        endorserEmailInput.removeAttribute('required');
+        endorserInput.setAttribute('disabled', 'disabled');
+        endorserEmailInput.setAttribute('disabled', 'disabled');
+    }
+}
+
+document.getElementById('studentRadio').addEventListener('change', updateEndorserFields);
+document.getElementById('facultyRadio').addEventListener('change', updateEndorserFields);
+document.getElementById('staffRadio').addEventListener('change', updateEndorserFields);

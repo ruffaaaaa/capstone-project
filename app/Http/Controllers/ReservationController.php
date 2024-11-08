@@ -37,7 +37,7 @@ class ReservationController extends Controller
 {
     public function showReservationForm()
     {
-        $facilities = Facilities::all();
+        $facilities = Facilities::where('facilityStatus', 'Available')->get();
         return view('make-reservation', compact('facilities'));
     }
 
@@ -58,8 +58,8 @@ class ReservationController extends Controller
             'contact_details' => 'required',
             'unit_department_company' => 'required',
             'date_of_filing' => 'required|date',
-            'endorsed_by' => 'required',
-            'endorser_email' => 'required|email',
+            'endorsed_by' => 'nullable',
+        'endorser_email' => 'nullable|email',
             'attachments.*' => 'nullable|file' 
 
         ]);
@@ -206,30 +206,35 @@ class ReservationController extends Controller
         ]);
 
 
-        $confirmationToken = Str::random(32);
-        $endorser = Endorser::create([
-            'reserveeID' => $reserveeID,
-            'name' => $validatedData['endorsed_by'],
-            'email' => $validatedData['endorser_email'],
-            'confirmation' => false,
-            'confirmation_token' => $confirmationToken, 
-        ]);
-
+    
 
         $approval = ReservationApprovals::create([
             'reserveeID' => $reserveeID,
             'final_status' => 'Pending',
         ]);
         
-        Mail::to($validatedData['endorser_email'])->send(new EndorserNotificationMail(
-            $validatedData['endorsed_by'],  
-            $validatedData['reserveeName'], 
-            $eventStartDate,                 
-            $validatedData['nameofevent'],   
-            $chosenFacilityList,            
-            $confirmationToken                
-        ));
-        
+
+
+        if (!empty($validatedData['endorsed_by']) && !empty($validatedData['endorser_email'])) {
+            $confirmationToken = Str::random(32);
+            $endorser = Endorser::create([
+                'reserveeID' => $reserveeID,
+                'name' => $validatedData['endorsed_by'],
+                'email' => $validatedData['endorser_email'],
+                'confirmation' => false,
+                'confirmation_token' => $confirmationToken,
+            ]);
+    
+            // Send endorsement notification mail
+            Mail::to($validatedData['endorser_email'])->send(new EndorserNotificationMail(
+                $validatedData['endorsed_by'],
+                $validatedData['reserveeName'],
+                $eventStartDate,
+                $validatedData['nameofevent'],
+                $chosenFacilityList ?? '',
+                $confirmationToken
+            ));
+        }
 
 
         Mail::to($validatedData['email'])->send(new ReservationCodeMail($reserveeID));
@@ -275,6 +280,7 @@ class ReservationController extends Controller
             ->leftJoin('support_personnel', 'support_personnel.reservedetailsID', '=', 'reservation_details.reservedetailsID')
             ->leftJoin('equipment', 'equipment.reservedetailsID', '=', 'reservation_details.reservedetailsID')
             ->leftJoin('reservation_approvals', 'reservation_approvals.reserveeID', '=', 'reservee.reserveeID')
+            ->leftJoin('endorser', 'endorser.reserveeID', '=', 'reservee.reserveeID')
             ->leftJoin('admin_approvals', 'reservation_approvals.approvalID', '=', 'admin_approvals.reservation_approval_id')
             ->leftJoin('admin', 'admin_approvals.admin_id', '=', 'admin.id')
             ->leftJoin('admin_roles', 'admin.role_id', '=', 'admin_roles.id')
@@ -289,13 +295,16 @@ class ReservationController extends Controller
                 'support_personnel.ptotal_no',
                 'equipment.ename',
                 'equipment.etotal_no',
+                'endorser.name as endorser_name',
+                'endorser.confirmation',
                 'reservation_approvals.approvalID',
                 'reservation_approvals.final_status',
                 'admin_approvals.approval_status',
                 'admin_approvals.admin_id',
                 'admin_roles.name as role_name',
                 'admin_signature.signature_file',
-                'reservation_attachments.file as attachment_path'
+                'reservation_attachments.file as attachment_path',
+
             )
             ->orderBy('admin_approvals.admin_id', 'asc')
             ->distinct('reservee.reserveeID')
@@ -304,7 +313,7 @@ class ReservationController extends Controller
         $attachments = $reservationDetails->pluck('attachment_path')->filter()->unique()->toArray();
         return ['reservationDetails' => $reservationDetails, 'attachments' => $attachments];
     }
-    
+
     public function listReservations($role_id)
     {
         if (Auth::check()) {
@@ -335,6 +344,36 @@ class ReservationController extends Controller
     }
 
 
+    public function listArchiveReservations($role_id)
+    {
+        if (Auth::check()) {
+            $data = $this->getReservationDetails();
+            $user = Auth::user();
+            $signature = AdminSignature::where('admin_id', $user->id)->first();
+
+            if ($role_id == 2 || $role_id == 3)  {
+                return view('dashboard.gso&cisso.archive_reservationmgmt', [
+                    'reservationDetails' => $data['reservationDetails'],
+                    'user' => $user,
+                    'signature' => $signature,
+                    'attachments' => $data['attachments'],
+                ]);
+            } elseif ($role_id == 1) {
+                return view('dashboard.aa.archive_reservationmgmt', [
+                    'reservationDetails' => $data['reservationDetails'],
+                    'user' => $user,
+                    'signature' => $signature,
+                    'attachments' => $data['attachments'],
+                ]);
+            } else {
+                return redirect()->route('admin.archive_reservation', ['role_id' => $user->role_id])->with('error', 'Invalid role specified');
+            }
+        }
+
+        return redirect()->route('login'); 
+    }
+
+
 
     private function handleApproval(Request $request, $role_id)
     {
@@ -352,25 +391,26 @@ class ReservationController extends Controller
         $adminApproval->approval_status = $request->approval_status;
         $adminApproval->save();
 
-        // Step 2: Check if the admin_id is 3
-        if ($request->role_id == 3) {
-            $reservationApproval = ReservationApprovals::find($request->approval_id);
+        $reservationApproval = ReservationApprovals::find($request->approval_id);
 
-            if ($reservationApproval) { 
-                if ($request->approval_status === 'Approved') {
-                    $reservationApproval->final_status = 'Approved';
-                } else {
-                    $reservationApproval->final_status = 'Pending';
-                }
-
-                $reservationApproval->save();
+        if ($reservationApproval) { 
+            // Update final status based on role and approval status
+            if ($role_id == 1 && $request->approval_status === 'Denied') {
+                $reservationApproval->final_status = 'Denied';
+            } elseif ($role_id == 3 && $request->approval_status === 'Approved') {
+                $reservationApproval->final_status = 'Approved';
             } else {
-                return redirect()->back()->withErrors(['error' => 'Reservation approval not found.']);
+                $reservationApproval->final_status = 'Pending';
             }
+
+            $reservationApproval->save();
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Reservation approval not found.']);
         }
 
         return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('status', 'Approval status updated successfully.');
     }
+
 
     public function updateApproval(Request $request, $role_id)
     {
@@ -410,5 +450,10 @@ class ReservationController extends Controller
         return response()->json(['error' => 'No approval data found for this Reservee'], 404);
     }
 
+    public function showBookingForm()
+    {
+        $facilities = Facilities::all(); 
+        return view('example', compact('facilities')); 
+    }
 
 }

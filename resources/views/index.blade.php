@@ -149,7 +149,7 @@
                             Step 1
                         </div>
                         <div class="text-black text-base leading-6 mt-2 max-md:max-w-full max-md:text-xs">
-                            Click 'Reserve Now' button to access the form. Ensure your reservation complies with the 3-day rule before the event, or it will be automatically disapproved.
+                            Click 'Reserve Now' button to access the form.
                         </div>
                     </span>
                 </div>

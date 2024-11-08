@@ -39,11 +39,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
 document.getElementById('openModalBtn').addEventListener('click', function () {
     document.getElementById('addModal').classList.remove('hidden'); 
 });
-
 
 document.getElementById('closeModalBtn').addEventListener('click', function () {
     document.getElementById('addModal').classList.add('hidden'); 

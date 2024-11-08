@@ -29,11 +29,9 @@ function updateEventEndDateMin(eventStartDateTime) {
     }
 }
 
-// Update preparation constraints based on event start date
 function updatePreparationConstraints(eventStartDateTime) {
     const eventStart = new Date(eventStartDateTime);
-    eventStart.setSeconds(eventStart.getSeconds() - 1); // Block overlap for preparation
-
+    eventStart.setSeconds(eventStart.getSeconds() - 1);
     const maxPreparationDateTime = formatDate(eventStart);
     document.getElementById('preparation-start-date').setAttribute('max', maxPreparationDateTime);
     document.getElementById('preparation-end-date').setAttribute('max', maxPreparationDateTime);
@@ -42,15 +40,14 @@ function updatePreparationConstraints(eventStartDateTime) {
 
 function updatePreparationEndMin(preparationStartDateTime) {
     const preparationStart = new Date(preparationStartDateTime);
-    // Set minimum for preparation end date to be the same as preparation start date
     document.getElementById('preparation-end-date').setAttribute('min', formatDate(preparationStart));
 }
 
 // Event listeners for changes to preparation dates
 document.getElementById('preparation-start-date').addEventListener('change', function() {
     const preparationStartDateTime = this.value;
-    updatePreparationEndMin(preparationStartDateTime); // Update preparation end min based on start date
-    validatePreparationDates(); // Optionally validate preparation dates here
+    updatePreparationEndMin(preparationStartDateTime); 
+    validatePreparationDates();
 });
 
 
@@ -86,9 +83,7 @@ function validateEventEndDate() {
     }
 }
 
-// Validate preparation dates
-// Validate preparation dates
-// Validate preparation dates
+
 function validatePreparationDates() {
     const startDateInput = document.getElementById('event-start-date');
     const preparationStartInput = document.getElementById('preparation-start-date');
@@ -98,25 +93,22 @@ function validatePreparationDates() {
     const preparationStartDate = new Date(preparationStartInput.value);
     const preparationEndDate = new Date(preparationEndInput.value);
 
-    // Check if preparation start date is after event start date
     if (preparationStartDate >= eventStartDate) {
         alert("The preparation start time must occur before the event start time. Please choose a valid preparation start time.");
-        preparationStartInput.value = ''; // Reset to empty
-        updatePreparationEndMin(''); // Reset min for preparation end date
+        preparationStartInput.value = ''; 
+        updatePreparationEndMin(''); 
     }
 
-    // Check if preparation end date is before preparation start date
     if (preparationEndDate < preparationStartDate) {
         alert("The preparation end time cannot be set before the preparation start time. Please choose a valid preparation end time.");
-        preparationEndInput.value = ''; // Reset to empty
-        updatePreparationEndMin(preparationStartInput.value); // Update min for preparation end date
+        preparationEndInput.value = ''; 
+        updatePreparationEndMin(preparationStartInput.value); 
     }
 
-    // Check if preparation end date is after event start date
     if (preparationEndDate >= eventStartDate) {
         alert("The preparation end time must occur before the event start time. Please choose a valid preparation end time.");
-        preparationEndInput.value = ''; // Reset to empty
-        updatePreparationEndMin(preparationStartInput.value); // Update min for preparation end date
+        preparationEndInput.value = ''; 
+        updatePreparationEndMin(preparationStartInput.value);
     }
 }
 
@@ -132,10 +124,9 @@ function validateCleanupDates() {
 
     if (cleanupStartInput.value && cleanupStartDate < eventEndDate) {
         alert("The cleanup start time cannot be set before the event end time. Please choose a valid cleanup start time.");
-        cleanupStartInput.value = ''; // Reset to empty
+        cleanupStartInput.value = '';
     }
 
-    // Check if cleanup end date is before cleanup start date
     if (cleanupEndDate < cleanupStartDate) {
         alert("The cleanup end time cannot be set before the cleanup start time. Please choose a valid cleanup end time.");
         cleanupEndInput.value = cleanupStartInput.value; 
@@ -169,6 +160,5 @@ document.getElementById('cleanup-start-date').addEventListener('change', validat
 document.getElementById('cleanup-end-date').addEventListener('change', validateCleanupDates);
 
 window.onload = setMinEventDate;
-
 
 

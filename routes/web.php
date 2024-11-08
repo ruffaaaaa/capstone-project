@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 Route::get('/', [FacilitiesController::class, 'homeFacilities']);
 
+Route::get('/make-booking', [ReservationController::class, 'showBookingForm'])->name('booking.form');
+
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/{role_id}/admin-dashboard', [AuthenticationController::class, 'dashboard'])->name('dashboard');
@@ -27,11 +30,11 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:1,2,3'])->group(function () {
     Route::get('/{role_id}/admin-facilities', [FacilitiesController::class, 'listFacilities'])->name('admin.facilities');
     Route::get('/{role_id}/admin-reservation', [ReservationController::class, 'listReservations'])->name('admin.reservation');
+    Route::get('/{role_id}/archive-reservation', [ReservationController::class, 'listArchiveReservations'])->name('admin.archive_reservation');
     Route::delete('/{role_id}/admin-reservation/{reservedetailsID}', [ReservationController::class, 'deleteReservation'])->name('reservation.destroy');
     Route::get('/{role_id}/admin-calendar', [CalendarController::class, 'showCalendar'])->name('dashboard.calendar');
     Route::put('/profile/update/{role_id}/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::post('/{role_id}/admin-reservation/approvals', [ReservationController::class, 'updateApproval'])->name('admin.approvals.store');
-
 });
 
 Route::post('/facilities/save', [FacilitiesController::class, 'addFacility'])->name('facility.save');
@@ -59,7 +62,6 @@ Route::get('/login', [AuthenticationController::class, 'DisplayLoginForm'])->nam
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 
-//unauthorized
 Route::get('/unauthorized', function () {
     return view('errors.unauthorized');
 })->name('unauthorized');

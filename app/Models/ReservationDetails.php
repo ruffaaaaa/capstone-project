@@ -36,6 +36,16 @@ class ReservationDetails extends Model
         return $this->hasOne(Reservee::class, 'reservedetailsID', 'reservedetailsID'); 
     }
 
+    public function getBlockedDatesForFacility($facilityID)
+    {
+        return $this->whereHas('facilities', function ($query) use ($facilityID) {
+            $query->where('facilityID', $facilityID);
+        })
+        ->get(['event_start_date', 'event_end_date']);
+    }
+
+    
+
     
 }
 

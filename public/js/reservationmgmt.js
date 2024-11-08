@@ -1,10 +1,9 @@
-function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, final_status, facilityNames, event_start_date, event_end_date,
+function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing,confirmation, endorser_name,final_status, facilityNames, event_start_date, event_end_date,
     preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no,  eastSignatureUrl, cissoSignatureUrl, gsoSignatureUrl, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus,attachmentObjects
 ) {
     
     const modal = document.getElementById('viewModal');
 
-    // Set standard fields
     document.getElementById('reserveeID').innerText = reserveeID;
     document.getElementById('reserveeName').innerText = reserveeName;
     document.getElementById('person').innerText = person_in_charge_event;
@@ -15,28 +14,30 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('name').innerText = event_name;
     document.getElementById('max').innerText = max_attendees;
     document.getElementById('facilityNames').innerText = facilityNames;
+    document.getElementById('confirmation').innerText = confirmation ? '(Confirmed)' : '';
+
+    document.getElementById('endorser_name').innerText = endorser_name || '';
+
+    document.getElementById('eastSignatureImage').innerText = eastApprovalStatus === 'Approved' ? '(Approved)' : '';
+    document.getElementById('cissoSignatureImage').innerText = cissoApprovalStatus === 'Approved' ? '(Approved)' : '';
+    document.getElementById('gsoSignatureImage').innerText = gsoApprovalStatus === 'Approved' ? '(Approved)' : '';
+
+    // Hide the image elements and display text instead
+    document.getElementById('eastSignatureImage').style.display = 'block';
+
+    // Hide the image element itself, and use only the text
+    document.getElementById('eastSignatureImage').style.display = 'block';
+    document.getElementById('cissoSignatureImage').style.display = 'block';
+    document.getElementById('gsoSignatureImage').style.display = 'block';
 
 
 
-    // Fetching signature file paths and approval statuses
-
-    // Setting the source for the signature images based on approval status
-    document.getElementById('eastSignatureImage').src = eastApprovalStatus === 'Approved' ? eastSignatureUrl : '';
-    document.getElementById('cissoSignatureImage').src = cissoApprovalStatus === 'Approved' ? cissoSignatureUrl : '';
-    document.getElementById('gsoSignatureImage').src = gsoApprovalStatus === 'Approved' ? gsoSignatureUrl : '';
-
-    // Show or hide images based on approval status
-    document.getElementById('eastSignatureImage').style.display = eastApprovalStatus === 'Approved' ? 'block' : 'none';
-    document.getElementById('cissoSignatureImage').style.display = cissoApprovalStatus === 'Approved' ? 'block' : 'none';
-    document.getElementById('gsoSignatureImage').style.display = gsoApprovalStatus === 'Approved' ? 'block' : 'none';
-
-
-    let attachments = JSON.parse(attachmentObjects); // Parse the JSON string
+    let attachments = JSON.parse(attachmentObjects);
 
     const attachmentContainer = document.getElementById('attachmentContainer');
     attachmentContainer.innerHTML = ''; // Clear previous attachments
 
-    // To avoid duplicates, use a Set to track unique URLs
+
     const uniqueUrls = new Set();
 
     if (attachments && attachments.length > 0) {
@@ -80,7 +81,6 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('eventDate').innerText = `${startDateString} - ${endDateString}`;
     document.getElementById('eventTime').innerText = `${startTimeString} - ${endTimeString}`;
 
-    // Preparation date formatting
     const pformattedStartDate = new Date(preparation_start_date);
     const pstartDateString = pformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const pstartTimeString = pformattedStartDate.toLocaleTimeString('en-US');
@@ -92,7 +92,6 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('preparationDate').innerText = `${pstartDateString} - ${pendDateString}`;
     document.getElementById('preparationTime').innerText = `${pstartTimeString} - ${pendTimeString}`;
 
-    // Cleanup date formatting
     const cformattedStartDate = new Date(cleanup_start_date_time);
     const cstartDateString = cformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const cstartTimeString = cformattedStartDate.toLocaleTimeString('en-US');
