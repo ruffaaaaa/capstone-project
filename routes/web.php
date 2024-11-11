@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\Controller;
 use App\Models\Facilities;
 use App\Models\User;
 use App\Models\AdminSignature;
@@ -13,8 +14,10 @@ use App\Models\AdminSignature;
 
 Route::get('/', function () {
     return view('index');
-});
-Route::get('/', [FacilitiesController::class, 'homeFacilities']);
+})->name('index');
+
+Route::get('/', [Controller::class, 'dataforHomepage']);
+
 
 Route::get('/make-booking', [ReservationController::class, 'showBookingForm'])->name('booking.form');
 
@@ -43,7 +46,11 @@ Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'deleteF
 Route::get('/reservationsQuery', [CalendarController::class, 'getReservationsByRole'])->name('dashboard.reservations');
 
 Route::get('/fetchReservations', [CalendarController::class, 'getUserReservations']);
+Route::post('/admin/send-reservee-email', [ReservationController::class, 'sendReserveeEmail'])->name('admin.sendReserveeEmail');
 
+
+Route::get('/cancel-reservation/{reserveeID}', [ReservationController::class, 'cancelReservation'])->name('cancel.reservation');
+Route::post('/update-status', [ReservationController::class, 'updateStatus'])->name('update.status');
 
 
 Route::get('/facilitiesQuery', [CalendarController::class, 'getFacilitiesByRole'])->name('dashboard.facilities');

@@ -72,7 +72,8 @@ class AuthenticationController extends Controller
     protected function getDashboardData()
     {
         $pendingRequestsCount = ReservationApprovals::where('final_status', 'Pending')->count();
-        $reservations = ReservationDetails::with('facilities')
+
+        $reservations = ReservationDetails::with(['facilities', 'reservee.reservationApproval'])
             ->join('reservee', 'reservation_details.reservedetailsID', '=', 'reservee.reservedetailsID')
             ->select('reservation_details.*', 'reservee.*')
             ->orderBy('reservation_details.reservedetailsID', 'desc')

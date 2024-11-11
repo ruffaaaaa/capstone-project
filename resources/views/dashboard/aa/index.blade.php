@@ -125,32 +125,40 @@
                     <div class="mx-8 mt-4  border-t-2 border-green-900 ..."></div>
 
                     <div class="flex overflow-hidden flex-col justify-start text-sm font-bold text-white max-w-full px-8 pt-3">
-                        <div class="overflow-hidden  pr-36 max-w-full text-2xl text-black min-h-[55px] w-full max-md:pr-5">
+                        <div class="overflow-hidden pr-36 max-w-full text-2xl text-black min-h-[55px] w-full max-md:pr-5">
                             Upcoming Approved Reservations
                         </div>
-                        @foreach($reservations as $reservation)
-                            @if ($reservation->reservee && $reservation->reservee->status === 'Approved')
-                                <div class="flex overflow-hidden flex-col justify-center px-4 py-3  max-w-full bg-green-700 rounded-3xl min-h-[123px] w-full mb-2">
+                        @foreach($reservations
+                                ->filter(fn($reservation) => \Carbon\Carbon::parse($reservation->event_end_date)->isFuture())  // Check if end date is in the future
+                                ->sortBy('event_start_date')
+                                ->take(3) as $reservation)
+                            @if ($reservation->reservee && $reservation->reservee->reservationApproval && $reservation->reservee->reservationApproval->final_status === 'Approved')
+                                @php
+                                    // Alternate background color based on the loop index
+                                    $bgColor = ($loop->index % 3 == 0) ? 'bg-green-900' : (($loop->index % 2 == 0) ? 'bg-green-600' : 'bg-green-700');
+                                @endphp
+                                <div class="flex overflow-hidden flex-col justify-center px-4 py-3 max-w-full {{ $bgColor }} rounded min-h-[123px] w-full mb-2">
                                     <div class="overflow-hidden z-10 pb-2 w-full max-md:pr-5 max-md:max-w-full">
                                         <span class="uppercase">Event Name: {{ $reservation->event_name }}</span><br />
 
-                                        @if ($reservation->facilities->isNotEmpty())
-                                            @foreach ($reservation->facilities as $facility)
-                                                <span class="font-light">Facility Name: {{ $facility->facilityName }}</span><br />
-                                            @endforeach
-                                        @else
-                                                <span class="font-light">Facility Name: Not Found</span><br />
-                                        @endif
+                                        <span class="font-normal">
+                                            Facility Name: 
+                                            @if ($reservation->facilities->isNotEmpty())
+                                                {{ $reservation->facilities->pluck('facilityName')->implode(', ') }}
+                                            @else
+                                                Not Found
+                                            @endif
+                                        </span><br />
 
-                                        <span class="font-thin">Date: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('M d, Y') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('M d, Y') }}</span><br />
-                                        <span class="font-light">Time: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('h:i A') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('h:i A') }}</span><br />
-                                        <span class="font-light">Reservee Name: {{ $reservation->reservee->reserveeName }}</span><br />
-                                        <span class="font-light">Contact Details: {{ $reservation->reservee->contact_details }}</span><br />
-                                        <span class="font-light">Status: {{ $reservation->reservee->status }}</span><br />
+                                        <span class="font-normal">Date: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('M d, Y') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('M d, Y') }}</span><br />
+                                        <span class="font-normal">Time: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('h:i A') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('h:i A') }}</span><br />
+                                        <span class="font-normal">Reservee Name: {{ $reservation->reservee->reserveeName }}</span><br />
+                                        <span class="font-normal">Contact Details: {{ $reservation->reservee->contact_details }}</span><br />
                                     </div>
                                 </div>
                             @endif
                         @endforeach
+                    </div>
                     </div>
                 </div>
             </div>
@@ -193,21 +201,7 @@
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                 </div>
 
-                                <div>
-
-                                    @if($signature && Storage::disk('public')->exists($signature->signature_file))
-                                    <div class="mt-2 align-center justify-center text-center">
-                                        <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
-                                        <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
-                                    </div>
-
-                                    @endif
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
-                                    <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
-                                </div>
+                            
                                 <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
 
                                 </div>

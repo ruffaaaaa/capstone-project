@@ -1,5 +1,5 @@
-var currentFilter = 'all';
-        var selectedFacility = '';
+var currentFilter = 'eventProper';
+var selectedFacility = '';
 
 function filterEvents(filter) {
     currentFilter = filter;
@@ -18,7 +18,7 @@ $(document).ready(function() {
         success: function(data) {
             var dropdownMenu = $('#facilityFilter');
             dropdownMenu.empty();
-            dropdownMenu.append('<option value="">Select</option>');
+            dropdownMenu.append('<option value="">All</option>');
             if (Array.isArray(data)) {
                 data.forEach(function(facility) {
                     dropdownMenu.append(`<option value="${facility.facilityName}">${facility.facilityName}</option>`);
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 url: '/reservationsQuery',
                 method: 'GET',
                 success: function(data) {
-                    console.log("Event data:", data); // Debugging statement
+                    console.log("Event data:", data); 
                     var events = [];
                     $(data).each(function() {
                         var facilities = this.facilities ? this.facilities.map(f => f.facilityName).join(', ') : '';
@@ -58,7 +58,7 @@ $(document).ready(function() {
                         if (this.pstart && this.pend) {
                             events.push({
                                 id: this.id + '_prep',
-                                title: this.title + ' (Preparation)',
+                                title: this.title,
                                 start: this.pstart,
                                 end: this.pend,
                                 facilities: facilities,
@@ -69,7 +69,7 @@ $(document).ready(function() {
                         if (this.cstart && this.cend) {
                             events.push({
                                 id: this.id + '_cleanup',
-                                title: this.title + ' (Cleanup)',
+                                title: this.title,
                                 start: this.cstart,
                                 end: this.cend,
                                 facilities: facilities,
@@ -105,11 +105,12 @@ $(document).ready(function() {
                 return false;
             }
         },
-        eventClick: function(event) {
+        eventClick: function(event, jsEvent, view) {
             $('#eventTitle').text(event.title);
-            $('#eventFacilities').text(event.facilities || 'No facilities specified.');
+            $('#eventFacilities').text(event.facilities);
             $('#eventStart').text(moment(event.start).format('MMMM Do YYYY, h:mm:ss a'));
             $('#eventEnd').text(moment(event.end).format('MMMM Do YYYY, h:mm:ss a'));
+
             $('#eventModal').removeClass('hidden');
         },
         viewRender: function(view) {
@@ -124,6 +125,20 @@ $(document).ready(function() {
     $('#view-selector').change(function() {
         var selectedView = $(this).val();
         $('#calendar').fullCalendar('changeView', selectedView);
+        $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
+    });
+    $('#today-btn').click(function() {
+        $('#calendar').fullCalendar('today');
+        $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
+    });
+
+    $('#prev-btn').click(function() {
+        $('#calendar').fullCalendar('prev');
+        $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
+    });
+
+    $('#next-btn').click(function() {
+        $('#calendar').fullCalendar('next');
         $('#calendar-title').text($('#calendar').fullCalendar('getView').title);
     });
 });

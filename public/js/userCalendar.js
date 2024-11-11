@@ -69,7 +69,7 @@ $(document).ready(function() {
                         if (this.pstart && this.pend) {
                             events.push({
                                 id: this.id + '_prep',
-                                title: this.title + ' (Preparation)',
+                                title: this.title,
                                 start: this.pstart,
                                 end: this.pend,
                                 facilities: facilities,
@@ -82,7 +82,7 @@ $(document).ready(function() {
                         if (this.cstart && this.cend) {
                             events.push({
                                 id: this.id + '_cleanup',
-                                title: this.title + ' (Cleanup)',
+                                title: this.title,
                                 start: this.cstart,
                                 end: this.cend,
                                 facilities: facilities,

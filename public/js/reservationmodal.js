@@ -140,55 +140,86 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
 
+    function updateReview() {
+        const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
+            .map(checkbox => checkbox.value) // Get facilityID from the value attribute
+            .join(', ');
+        
+        console.log("Selected Facilities IDs:", selectedFacilities);
+    }
+    
+    let unavailableDatetimes = [];
+
+// Function to update the displayed date and time selection based on unavailable datetimes
     function updateDatePicker() {
         flatpickr("#date-input", {
-            enable: [], // Allow all dates initially
-            disable: unavailableDates.map(date => new Date(date)), // Disable unavailable dates
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            disable: unavailableDatetimes.map(dateTime => new Date(dateTime)), // Disable each unavailable datetime
+            time_24hr: true, // Use 24-hour format if needed
         });
     }
 
+    // Function to fetch unavailable dates based on selected facilities and event date range
     function fetchUnavailableDates() {
         const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
             .map(checkbox => checkbox.value)
             .join(',');
         const eventStartDate = document.getElementById('event-start-date').value;
+        const eventEndDate = document.getElementById('event-end-date').value;
 
-        console.log("Fetching unavailable dates for facilities:", selectedFacilities, "and date:", eventStartDate);
+        // console.log("Fetching unavailable dates for facilities:", selectedFacilities, "with start date:", eventStartDate, "and end date:", eventEndDate);
 
-        if (selectedFacilities && eventStartDate) {
-            fetch(`/api/unavailable-dates?facilityIds=${selectedFacilities}&eventStartDate=${eventStartDate}`)
+        // Check that both selected facilities and date range are provided
+        if (selectedFacilities && eventStartDate && eventEndDate) {
+            fetch(`/api/unavailable-dates?facilityIds=${selectedFacilities}&eventStartDate=${eventStartDate}&eventEndDate=${eventEndDate}`)
                 .then(response => response.json())
                 .then(data => {
-                    unavailableDates = data.unavailableDates;
-                    console.log("API returned unavailable dates:", unavailableDates);
+                    unavailableDatetimes = data.unavailableDatetimes;
+                    // console.log("API returned unavailable datetimes:", unavailableDatetimes);
                     updateDatePicker();
 
-                    const selectedDateObj = new Date(eventStartDate + "Z");
-                    const unavailableDateObjects = unavailableDates.map(date => new Date(date));
-                    const isDateUnavailable = unavailableDateObjects.some(unavailableDate =>
-                        unavailableDate.getTime() === selectedDateObj.getTime()
+                    const selectedStartDateObj = new Date(eventStartDate + "Z");
+                    const selectedEndDateObj = new Date(eventEndDate + "Z");
+                    const unavailableDateTimeObjects = unavailableDatetimes.map(dateTime => new Date(dateTime));
+
+                    // Check if any of the unavailable datetimes fall within the selected start and end date-time range
+                    const isDateTimeRangeUnavailable = unavailableDateTimeObjects.some(unavailableDateTime =>
+                        unavailableDateTime >= selectedStartDateObj && unavailableDateTime <= selectedEndDateObj
                     );
 
-                    if (isDateUnavailable) {
-                    alert('Sorry, this date is unavailable for the selected facility. Please select another date.');
-                    document.getElementById('event-start-date').value = ''; 
+                    if (isDateTimeRangeUnavailable) {
+                        alert('Sorry, this date and time range is unavailable for the selected facility. Please select another range.');
+                        document.getElementById('event-start-date').value = '';
+                        document.getElementById('event-end-date').value = '';
                     } else {
-                    console.log('Date is available.');
+                        // console.log('Date and time range is available.');
                     }
                 })
                 .catch(error => {
-                    console.error('Error fetching unavailable dates:', error);
+                    console.error('Error fetching unavailable datetimes:', error);
                     document.getElementById('date-error').textContent = 'An error occurred while fetching dates. Please try again later.';
                     document.getElementById('date-error').style.display = 'block';
                 });
         }
     }
 
+    // Attach event listeners to facility checkboxes and date inputs to fetch unavailable dates on change
     document.querySelectorAll('.form-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', fetchUnavailableDates);
     });
 
     document.getElementById('event-start-date').addEventListener('change', fetchUnavailableDates);
+    document.getElementById('event-end-date').addEventListener('change', fetchUnavailableDates);
+
+    
+    document.querySelectorAll('.form-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', fetchUnavailableDates);
+    });
+    
+    document.getElementById('event-start-date').addEventListener('change', fetchUnavailableDates);
+    document.getElementById('event-end-date').addEventListener('change', fetchUnavailableDates);
+    
 
     function handleSubmit() {
         const formData = new FormData(storeReservationForm);
@@ -362,6 +393,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     
+    
 });
 
 document.querySelectorAll('.equipment-checkbox').forEach(function(checkbox) {
@@ -477,14 +509,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Endorser Email Validation
     endorserEmailInput.addEventListener('input', function() {
         const endorserEmailValue = endorserEmailInput.value;
 
         if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(endorserEmailValue)) {
-            endorserEmailInput.setCustomValidity(''); // Reset custom validity message
-        } else {
-            endorserEmailInput.setCustomValidity('Please use your LSU email address.'); // Set custom validity message
+            endorserEmailInput.setCustomValidity(''); 
+            endorserEmailInput.setCustomValidity('Please use your LSU email address.');
         }
     });
 });
@@ -504,7 +534,6 @@ document.getElementById('facilitySearch').addEventListener('input', function() {
         }
     });
 
-    // Show or hide the "No facilities found" message
     document.getElementById('noFacilitiesAlert').style.display = hasVisibleFacilities ? 'none' : 'block';
 });
 
@@ -536,3 +565,25 @@ function updateEndorserFields() {
 document.getElementById('studentRadio').addEventListener('change', updateEndorserFields);
 document.getElementById('facultyRadio').addEventListener('change', updateEndorserFields);
 document.getElementById('staffRadio').addEventListener('change', updateEndorserFields);
+
+
+function checkEventFields() {
+    const eventStartDate = document.getElementById('event-start-date').value;
+    const eventEndDate = document.getElementById('event-end-date').value;
+
+    // Show preparation and cleanup fields only if both event start and end dates are filled
+    if (eventStartDate && eventEndDate) {
+        document.getElementById('preparation-fields').classList.remove('hidden');
+        document.getElementById('cleanup-fields').classList.remove('hidden');
+    } else {
+        document.getElementById('preparation-fields').classList.add('hidden');
+        document.getElementById('cleanup-fields').classList.add('hidden');
+    }
+}
+
+// Attach event listeners to the event date inputs to trigger the check
+document.getElementById('event-start-date').addEventListener('input', checkEventFields);
+document.getElementById('event-end-date').addEventListener('input', checkEventFields);
+
+// Initial check when the page loads (in case the form is pre-filled or edited)
+checkEventFields();

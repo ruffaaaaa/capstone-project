@@ -107,7 +107,7 @@
                         <label for="scheduleFilter" class="block text-sm font-medium text-gray-700 mb-1">Schedule:</label>
                         <div class="relative">
                             <select id="scheduleFilter" class="text-xs block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterEvents(this.value)">
-                                <option value="all" class="text-xs">Select</option>
+                                <option value="all" class="text-xs">All</option>
                                 <option value="eventProper" class="text-xs">Event Proper</option>
                                 <option value="preparation" class="text-xs">Preparation</option>
                                 <option value="cleanup" class="text-xs">Cleanup</option>
@@ -123,7 +123,7 @@
                     <div class="relative inline-block text-left mt-2 mb-2 w-full">
                         <label for="facilityFilter" class="block text-sm font-medium text-gray-700 mb-1">Facility:</label>
                         <select id="facilityFilter" class="block text-xs appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterByFacility(this.value)">
-                                <option value="text-xs">Select</option>
+                                <option value="text-xs">All</option>
                                 <!-- Facilities will be populated here -->
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -135,22 +135,39 @@
             
             <div class="w-full lg:w-3/3 lg:mb-0 mb-2">
                 <div class="h-full bg-white p-4 rounded drop-shadow-md">
-                    <div id="calendar-controls" class="flex flex-wrap">
+                    <div id="calendar-controls" class="flex flex-wrap ">
                         <button id="today-btn" class="flex min-h-[38px] w-[100px] items-center justify-center gap-2.5 overflow-hidden rounded bg-green-800 font-bold text-white max-md:hidden">Today</button>
-                        <button id="prev-btn" class="mx-1 flex min-h-[38px] w-[40px] items-center justify-center overflow-hidden rounded bg-green-800 px-2 text-white max-md:w-[40px]">&lt;</button>
-                        <button id="next-btn" class="flex min-h-[38px] w-[40px] items-center justify-center overflow-hidden rounded bg-green-800 px-2 text-white max-md:w-[40px]">&gt;</button>
-                        <p id="calendar-title" class="h-[38px] overflow-hidden px-2.5 text-2xl  text-black uppercase"></p>
+                        <button id="prev-btn" class="mx-1 flex min-h-[38px] w-[40px] items-center justify-center overflow-hidden rounded bg-green-800 px-2 text-white">&lt;</button>
+                        <button id="next-btn" class="flex min-h-[38px] w-[40px] items-center justify-center overflow-hidden rounded bg-green-800 px-2 text-white">&gt;</button>
+                        <span id="calendar-title" class="h-[38px] overflow-hidden px-2.5 text-3xl font-semibold tracking-tighter text-black uppercase "></span>
                         
-                        <!-- Adjusted to align these buttons to the right -->
                         <div class="flex ml-auto">
-                            <button id="month-btn" class="flex min-h-[38px] w-[95px] items-center justify-center gap-2.5 overflow-hidden  rounded bg-green-800 font-bold text-white max-md:w-[40px] max-md:text-[10px] max-md:mx-1">Month</button>
-                            <button id="week-btn" class="flex min-h-[38px] w-[95px] mx-1 items-center justify-center gap-2.5 overflow-hidden rounded bg-green-800 font-bold text-white  max-md:hidden" >Week</button>
-                            <button id="day-btn" class="flex min-h-[38px] w-[95px] items-center justify-center gap-2.5 overflow-hidden rounded bg-green-800 font-bold text-white max-md:w-[40px] max-md:text-[10px]">Day</button>
-                        </div>
+                        <select id="view-selector" class="block w-full  text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 uppercase text-sm max-md:text-xs font-bold">
+                            <option value="month">Month</option>
+                            <option value="agendaWeek">Week</option>
+                            <option value="agendaDay">Day</option>
+                        </select>
                     </div>
-                    <div id="calendar"></div>
+                    </div>
+                    <div id="calendar" class="-mt-5"></div>
                 </div>
             </div>
+            <div id="eventModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full max-md:mx-4">
+                <div class="flex gap-2 justify-between items-center font-bold mb-4 ">
+                    <div class=" pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
+                        <span id="eventTitle" class="text-3xl uppercase max-md:text-2xl"></span>
+                    </div>
+                    <button id="closeModal"class="text-lg tracking-tighter text-white ">
+                        <div class="px-4 py-2 bg-green-700 rounded ">x</div>
+                    </button>
+                </div>
+                <p><strong>Facilities:</strong> <span id="eventFacilities"></span></p>
+                <p><strong>Start Time:</strong> <span id="eventStart"></span></p>
+                <p><strong>End Time:</strong> <span id="eventEnd"></span></p>
+            </div>
+        </div>
+
         </div>
 
         <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
@@ -191,21 +208,7 @@
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                 </div>
 
-                                <div>
-
-                                    @if($signature && Storage::disk('public')->exists($signature->signature_file))
-                                    <div class="mt-2 align-center justify-center text-center">
-                                        <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
-                                        <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
-                                    </div>
-
-                                    @endif
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
-                                    <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
-                                </div>
+                            
                                 <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
 
                                 </div>
@@ -220,7 +223,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         
     </main>
     <script src="/js/profile.js"></script>

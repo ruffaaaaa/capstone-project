@@ -23,10 +23,15 @@ function fetchUnavailableDates() {
             .then(response => response.json())
             .then(data => {
                 console.log("API Response:", data);
-                unavailableDates = data.unavailableDates; // Store unavailable dates
-                console.log("Unavailable Dates:", unavailableDates); // Log the unavailable dates
+                
+                // Expecting only Approved dates
+                if (data.unavailableDates) {
+                    console.log("Received unavailable dates (Approved only):", data.unavailableDates);
+                } else {
+                    console.log("No unavailable dates found or API response format unexpected.");
+                }
 
-                // Update the date picker with the new unavailable dates
+                unavailableDates = data.unavailableDates || []; // Store unavailable dates
                 updateDatePicker();
 
                 // Convert the selected date to a Date object
@@ -39,6 +44,8 @@ function fetchUnavailableDates() {
                 const isDateUnavailable = unavailableDateObjects.some(unavailableDate =>
                     unavailableDate.getTime() === selectedDateObj.getTime()
                 );
+
+                console.log("Is selected date unavailable?", isDateUnavailable);
 
                 if (isDateUnavailable) {
                     alert('Sorry, this date is unavailable for the selected facility. Please select another date.');

@@ -15,19 +15,15 @@ use App\Models\User;
 use App\Models\AdminApprovals;
 use App\Models\ReservationApprovals;
 use App\Models\AdminRoles;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationCodeMail;
-// use App\Mail\EndorserCodeMail;
 use App\Mail\EndorserNotificationMail;
+use App\Mail\DenialNoteMail;
+use App\Mail\ReservationStatusUpdateMail;
+
 use Illuminate\Support\Str;
-
-
-
-
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -254,7 +250,7 @@ class ReservationController extends Controller
         $endorser->confirmation_token = null; 
         $endorser->save();
 
-        return view('confirmation', ['message' => 'Confirmation successful!']);
+        return view('confirmation', ['message' => 'Successfully confirmed. Thank you so much!']);
     }
     
     
@@ -303,16 +299,31 @@ class ReservationController extends Controller
                 'admin_approvals.admin_id',
                 'admin_roles.name as role_name',
                 'admin_signature.signature_file',
-                'reservation_attachments.file as attachment_path',
-
+                'reservation_attachments.file as attachment_path'
             )
             ->orderBy('admin_approvals.admin_id', 'asc')
-            ->distinct('reservee.reserveeID')
-            ->get();
+            ->get()
+            ->groupBy('reserveeID'); 
 
-        $attachments = $reservationDetails->pluck('attachment_path')->filter()->unique()->toArray();
-        return ['reservationDetails' => $reservationDetails, 'attachments' => $attachments];
+        $reservationDetailsCollection = $reservationDetails->values();
+        $currentPage = request()->get('page', 1); 
+        $perPage = 10; 
+
+        $pagedData = $reservationDetailsCollection->forPage($currentPage, $perPage)->values(); 
+        $reservationDetailsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $pagedData,
+            $reservationDetailsCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+ 
+        $attachments = $pagedData->pluck('attachment_path')->filter()->unique()->toArray();
+
+        return ['reservationDetails' => $reservationDetailsPaginated, 'attachments' => $attachments];
     }
+
 
     public function listReservations($role_id)
     {
@@ -374,7 +385,6 @@ class ReservationController extends Controller
     }
 
 
-
     private function handleApproval(Request $request, $role_id)
     {
         $request->validate([
@@ -393,23 +403,65 @@ class ReservationController extends Controller
 
         $reservationApproval = ReservationApprovals::find($request->approval_id);
 
-        if ($reservationApproval) { 
-            // Update final status based on role and approval status
+        if ($reservationApproval) {
+            $finalStatus = 'Pending';
             if ($role_id == 1 && $request->approval_status === 'Denied') {
-                $reservationApproval->final_status = 'Denied';
+                $finalStatus = 'Denied';
             } elseif ($role_id == 3 && $request->approval_status === 'Approved') {
-                $reservationApproval->final_status = 'Approved';
-            } else {
-                $reservationApproval->final_status = 'Pending';
+                $finalStatus = 'Approved';
             }
-
+            $reservationApproval->final_status = $finalStatus;
             $reservationApproval->save();
+
+            $reservee = $reservationApproval->reservee;
+            if ($reservee && $reservee->reservationDetails) {
+                $eventName = $reservee->reservationDetails->event_name;
+                $reserveeEmail = $reservee->email;
+                $note = $request->note ?? null;
+
+                $roleNames = [
+                    1 => ['role' => 'AA', 'name' => 'Ms. Jamaica Quezon'],
+                    2 => ['role' => 'CISSO', 'name' => 'Mr. Esmael Larubis'],
+                    3 => ['role' => 'GSO', 'name' => 'Ms. Leonila Dolor']
+                ];
+
+                $approvers = AdminApprovals::where('reservation_approval_id', $request->approval_id)
+                    ->with('admin')
+                    ->get();
+
+                $adminList = [];
+                foreach ($roleNames as $roleId => $roleDetails) {
+                    $approver = $approvers->firstWhere('admin.role_id', $roleId);
+                    $status = $approver ? $approver->approval_status : 'Pending';
+
+                    $adminList[] = [
+                        'name' => $roleDetails['name'],
+                        'role' => $roleDetails['role'],
+                        'status' => $status,
+                    ];
+                }
+
+                $admin = User::find($request->admin_id);
+
+                Mail::to($reserveeEmail)->send(new ReservationStatusUpdateMail(
+                    $reservationApproval,
+                    $request->approval_status,
+                    $eventName,
+                    $note,
+                    $adminList,
+                    $admin
+                ));
+            } else {
+                return redirect()->back()->withErrors(['error' => 'Reservation details or Reservee not found.']);
+            }
         } else {
             return redirect()->back()->withErrors(['error' => 'Reservation approval not found.']);
         }
 
         return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('status', 'Approval status updated successfully.');
     }
+
+
 
 
     public function updateApproval(Request $request, $role_id)
@@ -456,4 +508,55 @@ class ReservationController extends Controller
         return view('example', compact('facilities')); 
     }
 
+    public function cancelReservation($reserveeID)
+    {
+        $reservationApproval = ReservationApprovals::where('reserveeID', $reserveeID)->first();
+
+        if ($reservationApproval) {
+            $reservationApproval->final_status = 'Cancelled';
+            $reservationApproval->save();
+
+            return view('cancelled');
+        } else {
+            return abort(404, 'Reservation not found');
+        }
+    }
+
+    public function sendReserveeEmail(Request $request)
+    {
+        $note = $request->input('note');
+        $reserveeID = $request->input('reserveeID'); 
+
+        $reservee = Reservee::where('reserveeID', $reserveeID)->first();
+
+        if ($reservee && $reservee->email) {
+            Mail::to($reservee->email)->send(new DenialNoteMail($note));
+
+            return response()->json(['message' => 'Email sent successfully.']);
+        }
+
+        return response()->json(['message' => 'Failed to send email. Reservee email not found.'], 404);
+    }
+
+    public function sendApprovalEmail($reserveeID)
+    {
+        // Get the admin approval statuses for the given reserveeID
+        $detailsGroup = DB::table('admin_approvals')
+            ->join('admin_roles', 'admin_approvals.admin_id', '=', 'admin_roles.id')
+            ->where('admin_approvals.reserveeID', $reserveeID)
+            ->select('admin_approvals.approval_status', 'admin_roles.name as role_name')
+            ->get();
+
+        // Format the roles and statuses into a string
+        $formattedStatuses = $detailsGroup->map(function ($approval) {
+            return $approval->role_name . ' - ' . $approval->approval_status;
+        })->implode(', ');
+
+        // Fetch the reservee data (you can add other fields as needed)
+        $reservee = DB::table('reservee')->where('reserveeID', $reserveeID)->first();
+
+        // Send the email (using Mail facade)
+        Mail::to($reservee->email)->send(new ReservationApprovalEmail($formattedStatuses));
+    }
 }
+

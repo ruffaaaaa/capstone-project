@@ -15,13 +15,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 class FacilitiesController extends Controller
 {
 
-    public function homeFacilities()
-    {
-        $facilities = Facilities::where('facilityStatus', 'Available')->get();
-        return view('index', compact('facilities'));
-    }
 
-    
 
     public function listFacilities($role_id)
     {
@@ -99,53 +93,48 @@ class FacilitiesController extends Controller
    
 
     public function getUnavailableDates(Request $request)
-    {
-        // Get multiple facility IDs
-        $facilityIds = explode(',', $request->query('facilityIds'));
-        $eventStartDate = $request->query('eventStartDate'); // Example: '2024-11-04 02:59:00'
+{
+    // Get multiple facility IDs
+    $facilityIds = explode(',', $request->query('facilityIds'));
+    $eventStartDate = \Carbon\Carbon::parse($request->query('eventStartDate'))->setTimezone('UTC');
+    $eventEndDate = \Carbon\Carbon::parse($request->query('eventEndDate'))->setTimezone('UTC');
 
-        // Convert the event start date to a Carbon instance, ensuring it's treated as UTC
-        $eventStartDate = \Carbon\Carbon::parse($eventStartDate)->setTimezone('UTC');
+    // Fetch reservations for the selected facilities that overlap with the event date-time range
+    $unavailableReservations = ReservationDetails::whereHas('facilities', function($query) use ($facilityIds) {
+            $query->whereIn('facilities.facilityID', $facilityIds);
+        })
+        ->whereHas('reservee.reservationApproval', function($query) {
+            $query->where('final_status', 'Approved');
+        })
+        ->where(function($query) use ($eventStartDate, $eventEndDate) {
+            $query->whereBetween('reservation_details.event_start_date', [$eventStartDate, $eventEndDate])
+                  ->orWhereBetween('reservation_details.event_end_date', [$eventStartDate, $eventEndDate])
+                  ->orWhere(function($q) use ($eventStartDate, $eventEndDate) {
+                      $q->where('reservation_details.event_start_date', '<', $eventStartDate)
+                        ->where('reservation_details.event_end_date', '>', $eventEndDate);
+                  });
+        })
+        ->get(['event_start_date', 'event_end_date']);
 
-        // Fetch reservations for the selected facilities that overlap with the event start date
-        $unavailableReservations = ReservationDetails::whereHas('facilities', function($query) use ($facilityIds) {
-            $query->whereIn('facilities.facilityID', $facilityIds); // Specify the table name
-        })
-        ->where(function($query) use ($eventStartDate) {
-            $query->where(function($q) use ($eventStartDate) {
-                $q->where('reservation_details.event_start_date', '<=', $eventStartDate) // Specify the table name
-                ->where('reservation_details.event_end_date', '>=', $eventStartDate); // Specify the table name
-            });
-        })
-        ->pluck('event_start_date') // Retrieve only the start dates
-        ->map(function($date) {
-            return \Carbon\Carbon::parse($date)->toISOString(); // Convert to ISO format
-        })
-        ->toArray();
+    // Generate full range of unavailable datetimes for each reservation
+    $unavailableDatetimes = [];
+    foreach ($unavailableReservations as $reservation) {
+        $start = \Carbon\Carbon::parse($reservation->event_start_date);
+        $end = \Carbon\Carbon::parse($reservation->event_end_date);
 
-        // Return unavailable dates as JSON response
-        return response()->json(['unavailableDates' => $unavailableReservations]);
+        while ($start <= $end) {
+            $unavailableDatetimes[] = $start->toISOString(); // Add each datetime in the range
+            $start->addMinutes(30); // Add 30-minute increments
+        }
     }
 
+    // Return unavailable datetimes as JSON response
+    return response()->json(['unavailableDatetimes' => $unavailableDatetimes]);
+}
 
-    public function getBlockedDates(Request $request, $facilityID)
-    {
-        $reservationDetails = new ReservationDetails();
-        $blockedDates = $reservationDetails->getBlockedDatesForFacility($facilityID);
 
-        // Format the dates in a way that the front end can easily parse (e.g., as a list of date ranges)
-        $formattedDates = $blockedDates->map(function ($reservation) {
-            return [
-                'start_date' => $reservation->event_start_date,
-                'end_date' => $reservation->event_end_date,
-            ];
-        });
 
-        return response()->json([
-            'facilityID' => $facilityID,
-            'blocked_dates' => $formattedDates,
-        ]);
-    }
+    
 
 
 

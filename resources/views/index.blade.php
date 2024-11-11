@@ -98,37 +98,41 @@
                 </div>
                 @endforeach
             </div>
-            <div class="flex overflow-hidden relative flex-col grow shrink self-stretch text-base font-extralight text-black min-w-[240px] w-[301px] max-md:w-full max-md:mr-1  max-md:py-4 max-md:-mt-0 max-md:ml-0 max-md:min-h-auto max-md:order-3">           
+            <div class="flex overflow-hidden relative flex-col grow shrink self-stretch text-base font-extralight text-black min-w-[240px] w-[301px] max-md:w-full max-md:mr-1 max-md:py-4 max-md:-mt-0 max-md:ml-0 max-md:min-h-auto max-md:order-3">
                 <div>
-                    <div class="flex z-0 flex-col items-start max-w-full text-xl font-bold w-[345px] max-md:w-full  max-md:text-lg">
-                        <div class="flex flex-col items-start   max-w-full w-[285px] max-md:pr-0">
-                        <div class="text-[18px] max-md:text-lg ">UPCOMING RESERVATIONS</div>
-                        <div class="flex shrink-0 mt-1 h-0.5 bg-green-800 w-[200px]"></div>
+                    <div class="flex z-0 flex-col items-start max-w-full text-xl font-bold w-[345px] max-md:w-full max-md:text-lg">
+                        <div class="flex flex-col items-start max-w-full w-[285px] max-md:pr-0">
+                            <div class="text-[18px] max-md:text-lg">UPCOMING RESERVATIONS</div>
+                            <div class="flex shrink-0 mt-1 h-0.5 bg-green-800 w-[200px]"></div>
                         </div>
                     </div>
-                    <div class="flex z-0 flex-col mt-4 max-w-full max-md:w-full text-white bg-green-700 p-2 rounded">
-                        <div class="flex flex-col justify-center w-full rounded-3xl max-md:py-4">
-                        <div class="font-semibold max-md:text-base">Event Name</div>
-                        <div class=" max-md:text-sm">Facility</div>
-                        <div class=" max-md:text-sm">Date</div>
-                        </div>
-                    </div>
-                    <div class="flex z-0 flex-col mt-2 max-w-fullmax-md:w-full text-white bg-green-600 p-2 rounded">
-                        <div class="flex flex-col justify-center w-full rounded-3xl max-md:py-4 ">
-                        <div class="font-semibold max-md:text-base">Event Name</div>
-                        <div class=" max-md:text-sm">Facility</div>
-                        <div class=" max-md:text-sm">Date</div>
-                        </div>
-                    </div>
-                    <div class="flex z-0 flex-col mt-2 max-w-full max-md:w-full text-white bg-green-500 p-2 rounded">
-                        <div class="flex flex-col justify-center w-full rounded-3xl max-md:py-4">
-                        <div class="font-semibold max-md:text-base">Event Name</div>
-                        <div class=" max-md:text-sm">Facility</div>
-                        <div class=" max-md:text-sm">Date</div>
-                        </div>
-                    </div> 
-                </div> 
-                <div class="mt-2 italic	">
+
+                    @foreach($reservations->filter(fn($reservation) => \Carbon\Carbon::parse($reservation->event_end_date)->isFuture())
+                            ->sortBy('event_start_date')
+                            ->take(3) as $reservation)
+                        @if ($reservation->reservee && $reservation->reservee->reservationApproval && $reservation->reservee->reservationApproval->final_status === 'Approved')
+                            @php
+                                $bgColor = ($loop->index % 3 == 0) ? 'bg-green-700' : (($loop->index % 2 == 0) ? 'bg-green-500' : 'bg-green-600');
+                            @endphp
+                            <div class="flex z-0 flex-col mt-1 max-w-full max-md:w-full text-sm text-white {{ $bgColor }} p-2 rounded">
+                                <div class="flex flex-col justify-center w-full rounded-3xl max-md:py-4">
+                                    <div class="font-semibold max-md:text-base">Event Name: {{ $reservation->event_name }}</div>
+                                    <div class="max-md:text-sm">Facility: 
+                                        @if ($reservation->facilities->isNotEmpty())
+                                            {{ $reservation->facilities->pluck('facilityName')->implode(', ') }}
+                                        @else
+                                            Not Found
+                                        @endif
+                                    </div>
+                                    <div class="max-md:text-sm">Date: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('M d, Y') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('M d, Y') }}</div>
+                                    <div class="max-md:text-sm">Time: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('h:i A') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('h:i A') }}</div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+
+                </div>
+                <div class="mt-2 italic">
                     <a href="calendar">Click to view more.</a>
                 </div>            
             </div>
@@ -149,7 +153,7 @@
                             Step 1
                         </div>
                         <div class="text-black text-base leading-6 mt-2 max-md:max-w-full max-md:text-xs">
-                            Click 'Reserve Now' button to access the form.
+                            Click the 'Reserve Now' button to access the form. Make sure to comply with the necessary requirements before reserving a facility.
                         </div>
                     </span>
                 </div>
@@ -186,27 +190,27 @@
                 <div class="">
                     <h6 class="mt-12"></h6>
                     <div class="text-center align-center">
-                        <img src="/images/lsu-logotype-colored.png" class="-mt-12 h-9" style="justify-content: start; align-items: center;">
+                        <img src="/images/corporate-logo-new.png" class="-mt-12 h-9" style="justify-content: start; align-items: center;">
                     </div>
-                    <p class="justify-content:start">
-                        Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    <p class="justify-content:start mt-2">
+                        Plan your events at La Salle University with ease. Book your facilities in just a few clicks!                    
                     </p>
                 </div>
                 <div class="">
                     <h6 class="mb-4 flex font-semibold uppercase justify-start">
-                        Title
+                        Quick Link
                     </h6>
                     <p class="mb-4 justify-start">
-                        <a href="#!" class="text-neutral-600 dark:text-black">Link</a>
+                        <a href="https://lsu.edu.ph/" class="text-neutral-600 dark:text-black">University Page</a>
                     </p>
                     <p class="mb-4 justify-start">
-                        <a href="#!" class="text-neutral-600 dark:text-black">Link</a>
+                        <a href="https://lsu.edu.ph/mylsu" class="text-neutral-600 dark:text-black">Student Portal</a>
                     </p>
                     <p class="mb-4 justify-start">
-                        <a href="#!" class="text-neutral-600 dark:text-black">Link</a>
+                        <a href="https://lsu.edu.ph/university-registrar" class="text-neutral-600 dark:text-black">Registrar</a>
                     </p>
-                    <p class="justify-start">
-                        <a href="#!" class="text-neutral-600 dark:text-black">Link</a>
+                    <p class="mb-4 justify-start">
+                        <a href="https://lsu.edu.ph/library" class="text-neutral-600 dark:text-black">Library</a>
                     </p>
                 </div>
                 <div>
@@ -218,7 +222,7 @@
                             <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
                             <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
                         </svg>
-                        New York, NY 10012, US
+                        1F LS Bldg, La Salle St. Barangay Aguada Ozamiz City, Misamis Occidental, Philippines
                     </p>
                     <p class="mb-4 flex items-center justify-start">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mr-3 h-5 w-5">
@@ -233,75 +237,85 @@
                         </svg>
                         + 01 234 567 88
                     </p>
-                    <p class="flex items-center justify-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mr-3 h-5 w-5">
-                            <path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 003 3h.27l-.155 1.705A1.875 1.875 0 007.232 22.5h9.536a1.875 1.875 0 001.867-2.045l-.155-1.705h.27a3 3 0 003-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0018 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM16.5 6.205v-2.83A.375.375 0 0016.125 3h-8.25a.375.375 0 00-.375.375v2.83a49.353 49.353 0 019 0zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 01-.374.409H7.232a.375.375 0 01-.374-.409l.526-5.784a.373.373 0 01.333-.337 41.741 41.741 0 018.566 0zm.967-3.97a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H18a.75.75 0 01-.75-.75V10.5zM15 9.75a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V10.5a.75.75 0 00-.75-.75H15z" clip-rule="evenodd" />
-                        </svg>
-                        + 01 234 567 89
-                    </p>
+
                 </div>
             </div>
         </div>
         
         <div>
             <div class="bg-green-800 flex min-h-[70px] flex-col text-center text-white">
-                <span class="mt-6">© 2023 Copyright. <span class="font-bold">La Salle University - Ozamiz</span></span>
+                <span class="mt-6">© 2024 Copyright. <span class="font-bold">La Salle University - Ozamiz</span></span>
             </div>
         </div>
-        <div id="reservationModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div class="bg-white p-6 rounded shadow-lg w-1/3 max-md:w-full max-md:mx-4">
-                <div class="flex gap-2 justify-between items-center font-bold">
-                    <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
-                        <span class="text-4xl tracking-tighter">REQUIREMENTS</span>
-                        <span class="text-base tracking-tight">BEFORE RESERVING FACILITIES</span>
-                    
-                    </div>
-                    <button id="closeReservationModal" class="text-lg tracking-tighter text-white">
-                        <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
-                    </button>
-                </div>
-
-                <a href="make-reservation" class="block mt-4 px-5 text-base font-medium text-center text-black rounded-md border border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105">
-                    <div class="p-3 bg-white rounded max-md:px-5">RESERVE NOW</div>
-                </a>
-            </div>
-        </div>
-        <div id="checkStatusModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div class="bg-white p-6 rounded shadow-lg w-1/3 max-md:w-full max-md:mx-4">
-                <div class="flex gap-2 justify-between items-center font-bold">
-                    <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
-                        <span class="text-2xl tracking-tighter">RESERVATION TRACKING</span>
-                    </div>
-                    <button id="closeCheckStatusModal" class="text-lg tracking-tighter text-white">
-                        <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
-                    </button>
-                </div>
-                <div class="py-4">
-                    <input type="text" id="reserveeID" class="mt-2 p-2 border border-gray-300 rounded w-full" placeholder="Enter Reservation Code" />
-
-                    <div class="flex justify-center text-center">
-                        <button id="fetchStatusButton" class="mt-4 px-4 py-2 bg-green-700 text-white rounded">
-                            Search
-                        </button>
-                    </div>
-
-                    <div id="admin-approvals-header" class="mt-3 hidden"> <!-- Header hidden initially -->
-                        <h6>ADMIN APPROVALS</h6>
-                        <ul id="admin-approvals-list" class="list-disc list-inside hidden"> <!-- List hidden initially -->
-                        </ul>
-                    </div>
-
-                    <div id="reservation-status-header" class="mt-3 hidden"> <!-- Header hidden initially -->
-                        <h6>RESERVATION STATUS:
-                            <span id="reservation-status" class="font-semibold"> </span>
-                        </h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
     </footer>
+    <div id="reservationModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg w-1/3 max-md:w-full max-lg:w-full max-lg:mx-4 max-md:mx-4">
+            <div class="flex gap-2 justify-between items-center font-bold">
+                <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
+                    <span class="text-4xl tracking-tighter">REQUIREMENTS</span>
+                    <span class="text-base tracking-tight">BEFORE RESERVING A FACILITY</span>
+                
+                </div>
+                <button id="closeReservationModal" class="text-lg tracking-tighter text-white">
+                    <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
+                </button>
+            </div>
+
+            <div class="my-8">
+                <p class="mb-2 flex">1. Fill out the<a href="https://docs.google.com/forms/d/e/1FAIpQLSffrijml-jpMiRm4Bm0NVwmnLbIF3Ow6CPTdUv38FDt3oMmdg/viewform" target="_blank" class="font-bold underline underline-offset-4 text-green-900 ml-1"> Institutional LSU Waste Management Form.</a>
+                <img src="images/vector.png" class="mt-2 w-3 h-4"alt="">
+                </p>
+                <p class="mb-2">2. Prepare the following documents for reserving the Art Center:</p>
+                <ul class="list-disc ml-10">
+                    <li>Floor Plan or Venue Layout</li>
+                    <li>
+                        <p class="flex">Letter of Request - 
+                        <a href="/images/signatories.png" class="font-bold underline underline-offset-4 text-green-900 ml-1" target="_blank">Signatories.</a>
+                        <img src="images/vector.png" class="mt-2 w-3 h-4"alt="">
+                        </p>
+                    </li>
+                </ul>
+            </div>
+
+            <a href="make-reservation" class="block mt-4 px-5 text-base font-medium text-center text-black rounded-md border-2 border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105">
+                <div class="p-3 bg-white rounded max-md:px-5">RESERVE NOW</div>
+            </a>
+        </div>
+    </div>
+    <div id="checkStatusModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg w-1/3 max-md:w-full max-md:mx-4">
+            <div class="flex gap-2 justify-between items-center font-bold">
+                <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
+                    <span class="text-2xl tracking-tighter">RESERVATION TRACKING</span>
+                </div>
+                <button id="closeCheckStatusModal" class="text-lg tracking-tighter text-white">
+                    <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
+                </button>
+            </div>
+            <div class="py-4">
+                <input type="text" id="reserveeID" class="mt-2 p-2 border border-gray-300 rounded w-full" placeholder="Enter Reservation Code" />
+
+                <div class="flex justify-center text-center">
+                    <button id="fetchStatusButton" class="mt-4 px-4 py-2 bg-green-700 text-white rounded">
+                        Search
+                    </button>
+                </div>
+
+                <div id="admin-approvals-header" class="mt-3 hidden"> <!-- Header hidden initially -->
+                    <h6>ADMIN APPROVALS</h6>
+                    <ul id="admin-approvals-list" class="list-disc list-inside hidden"> <!-- List hidden initially -->
+                    </ul>
+                </div>
+
+                <div id="reservation-status-header" class="mt-3 hidden"> <!-- Header hidden initially -->
+                    <h6>RESERVATION STATUS:
+                        <span id="reservation-status" class="font-semibold"> </span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 <script src="/js/home.js"></script>

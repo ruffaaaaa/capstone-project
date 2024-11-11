@@ -15,7 +15,6 @@ class ProfileController extends Controller
             'username' => 'required|string|max:255|unique:admin,username,' . $id,
             'email' => 'required|email|max:255|unique:admin,email,' . $id,
             'password' => 'nullable|string|min:5|confirmed',
-            'signature_file' => 'nullable|file|mimes:png|max:2048',
         ]);
 
         $admin = User::findOrFail($id);
@@ -25,19 +24,6 @@ class ProfileController extends Controller
 
         if ($request->filled('password')) {
             $admin->password = bcrypt($validated['password']);
-        }
-
-        if ($request->hasFile('signature_file')) {
-            $signature = $request->file('signature_file');
-
-            $originalName = $signature->getClientOriginalName();
-
-            $signaturePath = $signature->storeAs('signatures', $originalName, 'public');
-
-            AdminSignature::updateOrCreate(
-                ['admin_id' => $admin->id],
-                ['signature_file' => $signaturePath]
-            );
         }
 
         $admin->save();

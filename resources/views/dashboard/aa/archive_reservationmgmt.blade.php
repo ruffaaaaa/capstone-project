@@ -67,58 +67,34 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 w-full">
-                        @if ($reservationDetails)
-                            @foreach($reservationDetails->groupBy('reserveeID') as $reserveeID => $detailsGroup)
-                                @php
-                                    $customOrder = ['AA', 'CISSO', 'GSO'];
+                            @if ($reservationDetails->count())
+                                @foreach($reservationDetails as $detailsGroup) {{-- Each item is a collection for a specific reserveeID --}}
+                                    @php
+                                        // Sort the detailsGroup collection by the custom order for role names
+                                        $customOrder = ['AA', 'CISSO', 'GSO'];
+                                        $sortedDetailsGroup = $detailsGroup->sortBy(function ($detail) use ($customOrder) {
+                                            return array_search($detail->role_name, $customOrder);
+                                        })->unique('role_name');
 
-                                    // Sort the detailsGroup collection
-                                    $sortedDetailsGroup = $detailsGroup->sortBy(function ($detail) use ($customOrder) {
-                                        return array_search($detail->role_name, $customOrder);
-                                    })->unique('role_name');
+                                        // Fetch specific roles
+                                        $east = $sortedDetailsGroup->where('role_name', 'AA')->first();
+                                        $cisso = $sortedDetailsGroup->where('role_name', 'CISSO')->first();
+                                        $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
+                                    @endphp
 
-                                    $east = $sortedDetailsGroup->where('role_name', 'AA')->first();
-                                    $cisso = $sortedDetailsGroup->where('role_name', 'CISSO')->first();
-                                    $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
-                                @endphp
+                                    @if(($east && $east->approval_status === 'Denied') || $detailsGroup->contains('final_status', 'Cancelled'))
 
-                                {{-- Only show records where AA status is Denied, and exclude "Confirmed" or "Pending" statuses --}}
-                                @if($east && $east->approval_status === 'Denied' || $detailsGroup->first()->final_status === 'Cancelled')
+
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $reserveeID }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->reserveeID }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->event_name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
                                             {{ $detailsGroup->pluck('facilityName')->unique()->implode(', ') }}
                                         </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            @foreach($sortedDetailsGroup as $detail)
-                                                {{ $detail->role_name }} - {{ $detail->approval_status }}<br>
-                                            @endforeach
-                                        </td>
-
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
-                                            <button class="border-solid border-1 border-gray-500  text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
-                                                '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', '{{ $detailsGroup->first()->endorser_name}}',
-                                                '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
-                                                '{{$detailsGroup->first()->event_end_date}}', '{{$detailsGroup->first()->preparation_start_date}}', '{{$detailsGroup->first()->preparation_end_date_time}}', '{{$detailsGroup->first()->cleanup_start_date_time}}', 
-                                                '{{$detailsGroup->first()->cleanup_end_date_time}}','{{$detailsGroup->first()->event_name}}', '{{$detailsGroup->first()->max_attendees}}', '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
-                                                '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
-                                                '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}',  
-                                                '{{ $east && $east->signature_file ? Storage::url($east->signature_file) : '' }}',
-                                                '{{ $cisso && $cisso->signature_file ? Storage::url($cisso->signature_file) : '' }}',
-                                                '{{ $gso && $gso->signature_file ? Storage::url($gso->signature_file) : '' }}',
-                                                '{{ $east->approval_status ?? '' }}',
-                                                '{{ $cisso->approval_status ?? '' }}',
-                                                '{{ $gso->approval_status ?? '' }}',
-                                                '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}',
-                                                )">
-                                                View
-                                            </button>
-
-                                            <button class="border-solid border-1 border-gray-500  text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
-                                                    data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $reserveeID }}"
-
+                                            <button class="border-solid border-1 border-gray-500 text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
+                                                    data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $detailsGroup->first()->reserveeID }}"
                                                     onclick="openStatus(this)">
                                                 Update
                                             </button>
@@ -132,10 +108,9 @@
                                             </form>
                                         </td>
                                     </tr>
-                                @endif
-                            @endforeach
-                        @endif
-
+                                    @endif
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
 
@@ -309,7 +284,7 @@
                     </div>
 
                     <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                        <div class="bg-white p-6  rounded shadow-md w-1/3 text-center">
+                        <div class="bg-white p-6 rounded shadow-md w-1/3 text-center">
                             <div class="flex gap-2 justify-between items-center font-bold">
                                 <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
                                     <span class="text-3xl tracking-tighter">UPDATE STATUS</span>
@@ -318,32 +293,41 @@
                                     <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
                                 </button>
                             </div>
-                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST">
+                            
+                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST" onsubmit="return handleFormSubmit(event)">
                                 @csrf
                                 <input type="hidden" name="approval_id" id="approval_id">
                                 <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
 
+                                <!-- Reservee ID Display -->
+                                <label class="block text-gray-700 font-bold text-left mt-3">Reservee ID</label>
+                                <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay">
+                                    {{ $reservee->reserveeID ?? '' }}
+                                </h1> 
 
-                                <label class="block text-gray-700 font-bold  text-left mt-3 ">Reservee ID</label>
-
-                                <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay"></h1> 
-
+                                <!-- Status Dropdown -->
                                 <div class="mb-4">
-                                    <label class="block text-gray-700 font-bold  text-left ">Status</label>
-                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2">
+                                    <label class="block text-gray-700 font-bold text-left">Status</label>
+                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2" onchange="toggleNoteField()">
                                         <option value="Pending">Pending</option>
                                         <option value="Denied">Denied</option>
                                         <option value="Approved">Approved</option>
                                     </select>
                                 </div>
 
-                                <div class="flex justify-end">
-                                    <button type="submit" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                                <!-- Note Field, hidden by default -->
+                                <div id="noteField" class="mb-4 hidden">
+                                    <label class="block text-gray-700 font-bold text-left">Note</label>
+                                    <textarea name="note" id="note" class="block w-full border border-gray-300 rounded p-2"></textarea>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="flex justify-center text-center">
+                                    <button type="submit" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>      
         </div>

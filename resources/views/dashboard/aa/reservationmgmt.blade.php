@@ -163,26 +163,10 @@
                                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
                                                 <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                             </div>
-
-                                            <div>
-
-                                                @if($signature && Storage::disk('public')->exists($signature->signature_file))
-                                                <div class="mt-2 align-center justify-center text-center">
-                                                    <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
-                                                    <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
-                                                </div>
-
-                                                @endif
-                                            </div>
-
-                                            <div class="mt-2">
-                                                <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
-                                                <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
-                                            </div>
                                             <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
 
                                             </div>
-                                    
+            
                                         </form>
                                     </div>
                                     </div>
@@ -193,7 +177,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     
 
                     <table class="min-w-full divide-y divide-gray-200">
@@ -208,119 +192,136 @@
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
+                        
                         <tbody class="bg-white divide-y divide-gray-200 w-full">
-                        @if ($reservationDetails)
-                            @foreach($reservationDetails->groupBy('reserveeID') as $reserveeID => $detailsGroup)
-                                @php
-                                    $customOrder = ['AA', 'CISSO', 'GSO'];
+                            @if ($reservationDetails->count())
+                                @foreach($reservationDetails as $detailsGroup) {{-- Each item is a collection for a specific reserveeID --}}
+                                    @php
+                                        // Sort the detailsGroup collection by the custom order for role names
+                                        $customOrder = ['AA', 'CISSO', 'GSO'];
+                                        $sortedDetailsGroup = $detailsGroup->sortBy(function ($detail) use ($customOrder) {
+                                            return array_search($detail->role_name, $customOrder);
+                                        })->unique('role_name');
 
-                                    // Sort the detailsGroup collection
-                                    $sortedDetailsGroup = $detailsGroup->sortBy(function ($detail) use ($customOrder) {
-                                        return array_search($detail->role_name, $customOrder);
-                                    })->unique('role_name'); // Use unique to ensure only one instance per role
+                                        $east = $sortedDetailsGroup->where('role_name', 'AA')->first();
+                                        $cisso = $sortedDetailsGroup->where('role_name', 'CISSO')->first();
+                                        $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
+                                    @endphp
 
-                                    $east = $sortedDetailsGroup->where('role_name', 'AA')->first();
-                                    $cisso = $sortedDetailsGroup->where('role_name', 'CISSO')->first();
-                                    $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
-                                @endphp
+                                    @if($east && $east->approval_status === 'Denied' || $detailsGroup->first()->final_status === 'Cancelled')
+                                        @continue {{-- Skip this entry if conditions are met --}}
+                                    @endif
 
-                                @if($east && $east->approval_status === 'Denied')
-                                    @continue  {{-- Skip this iteration if AA status is denied --}}
-                                @endif
-                            <tr>
-                                
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $reserveeID }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->event_name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                    {{ $detailsGroup->pluck('facilityName')->unique()->implode(', '), }}
-                                </td>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->reserveeID }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->event_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
+                                            {{ $detailsGroup->pluck('facilityName')->unique()->implode(', ') }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
+                                            @foreach($sortedDetailsGroup as $detail)
+                                                {{ $detail->role_name }} - {{ $detail->approval_status }}<br>
+                                            @endforeach
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
+                                            <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
+                                                    onclick="openModal('{{ $detailsGroup->first()->reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
+                                                        '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', 
+                                                        '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
+                                                        '{{ $detailsGroup->first()->confirmation ? 'true' : 'false' }}', '{{ $detailsGroup->first()->endorser_name }}', 
+                                                        '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
+                                                        '{{ $detailsGroup->first()->event_start_date }}', '{{ $detailsGroup->first()->event_end_date }}', 
+                                                        '{{ $detailsGroup->first()->preparation_start_date }}', '{{ $detailsGroup->first()->preparation_end_date_time }}', 
+                                                        '{{ $detailsGroup->first()->cleanup_start_date_time }}', '{{ $detailsGroup->first()->cleanup_end_date_time }}',
+                                                        '{{ $detailsGroup->first()->event_name }}', '{{ $detailsGroup->first()->max_attendees }}', 
+                                                        '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
+                                                        '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', 
+                                                        '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
+                                                        '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}',
+                                                        '{{ $east && $east->signature_file ? Storage::url($east->signature_file) : '' }}',
+                                                        '{{ $cisso && $cisso->signature_file ? Storage::url($cisso->signature_file) : '' }}',
+                                                        '{{ $gso && $gso->signature_file ? Storage::url($gso->signature_file) : '' }}',
+                                                        '{{ $east->approval_status ?? '' }}',
+                                                        '{{ $cisso->approval_status ?? '' }}',
+                                                        '{{ $gso->approval_status ?? '' }}',
+                                                        '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}'
+                                                    )">
+                                                View
+                                            </button>
 
+                                            <button class="border-solid border-1 border-gray-500 text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
+                                                    data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $detailsGroup->first()->reserveeID }}"
+                                                    onclick="openStatus(this)">
+                                                Update
+                                            </button>
 
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                    @foreach($sortedDetailsGroup as $detail)
-                                        {{ $detail->role_name }} - {{ $detail->approval_status }}<br>
-                                    @endforeach
-                                </td>
-
-                                
-
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
-   
-                                <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
-                                <button class="border-solid border-1 border-gray-500  text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton" onclick="openModal('{{ $reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
-                                    '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', '{{ $detailsGroup->first()->confirmation ? 'true' : 'false' }}', '{{ $detailsGroup->first()->endorser_name}}', 
-                                    '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', '{{$detailsGroup->first()->event_start_date}}', 
-                                    '{{$detailsGroup->first()->event_end_date}}', '{{$detailsGroup->first()->preparation_start_date}}', '{{$detailsGroup->first()->preparation_end_date_time}}', '{{$detailsGroup->first()->cleanup_start_date_time}}', 
-                                    '{{$detailsGroup->first()->cleanup_end_date_time}}','{{$detailsGroup->first()->event_name}}', '{{$detailsGroup->first()->max_attendees}}', '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
-                                    '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
-                                    '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}',  
-                                    '{{ $east && $east->signature_file ? Storage::url($east->signature_file) : '' }}',
-        '{{ $cisso && $cisso->signature_file ? Storage::url($cisso->signature_file) : '' }}',
-        '{{ $gso && $gso->signature_file ? Storage::url($gso->signature_file) : '' }}',
-        '{{ $east->approval_status ?? '' }}',
-        '{{ $cisso->approval_status ?? '' }}',
-        '{{ $gso->approval_status ?? '' }}',
-                                    '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}',
-
-                                    )">
-                                    View
-    
-                                </button>
-
-                                <button class="border-solid border-1 border-gray-500  text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
-                                        data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $reserveeID }}"
-
-                                        onclick="openStatus(this)">
-                                    Update
-                                </button>
-
-
-                                <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
-                                        Delete
-                                    </button>
-                                </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        @endif
+                                            <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
+
+                    <div class="mt-4 flex justify-center space-x-2">
+                        {{-- Previous Button --}}
+                        @if ($reservationDetails->onFirstPage())
+                            <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded"><</button>
+                        @else
+                            <a href="{{ $reservationDetails->previousPageUrl() }}">
+                                <button class="px-2 py-1 bg-gray-200 hover:text-white text-sm hover:bg-green-600 rounded"><</button>
+                            </a>
+                        @endif
+
+                        {{-- Page Number Buttons --}}
+                        @for ($page = 1; $page <= $reservationDetails->lastPage(); $page++)
+                            @if ($page == $reservationDetails->currentPage())
+                                <button class="px-2 py-1 text-sm text-white bg-green-700 rounded">{{ $page }}</button>
+                            @else
+                                <a href="{{ $reservationDetails->url($page) }}">
+                                    <button class="px-2 py-1 text-sm text-black bg-gray-200 hover:bg-green-200 rounded">{{ $page }}</button>
+                                </a>
+                            @endif
+                        @endfor
+
+                        {{-- Next Button --}}
+                        @if ($reservationDetails->hasMorePages())
+                            <a href="{{ $reservationDetails->nextPageUrl() }}">
+                                <button class="px-2 py-1 text-sm bg-gray-200 hover:text-white hover:bg-green-600 rounded">></button>
+                            </a>
+                        @else
+                            <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded">></button>
+                        @endif
+                    </div>
 
                     
                     <div id="viewModal" class="modal overflow-auto  items-center bg-gray-900 bg-opacity-50 hidden">
                         
-                        <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow ">
+                        <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow max-lg: w-full ">
                             <div class=" ">
-                                <table class=" w-full border border-black">
+                                <table class="w-full border border-black mb-1">
                                     <thead>
-                                        <tr class="border border-black bg-gray-100 ">
-                                            <th rowspan="5"  style="width:5%"><img src="/images/corporate-logo-new.png" class="mx-auto h-10" /></th>
+                                        <tr class="border border-black bg-gray-100">
+                                        <th rowspan="5" colspan="2" style="width:5%"><img src="/images/corporate-logo-new.png" class="mx-auto h-10" /></th>
+                                        <td class="border border-black bg-white text-center">
+                                            <span class="text-xs font-bold">La Salle University - Ozamiz City</span><br />
+                                            <span class="">ADMINISTRATIVE SERVICES</span>
+                                        </td>
                                         </tr>
+
                                         <tr class="border border-black">
-                                            <th rowspan="2"  style="width:20%" class="text-center border border-black">
-                                                <span class="text-xs">La Salle University - Ozamiz City</span><br>
-                                                <span>ADMINISTRATIVE SERVICES</span>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="2" style="width:10%" class="border border-black">
-                                                <div class="text-xs ">Document No: </div>
-                                                <div class="text-center font-semi"><span>ROF-VPAS-GSO-EAST-001</span></div>
-                                            </th>
-                                        </tr>
-                                        
-                                        <tr class="border border-black">
-                                            <th rowspan="2"  class="text-center border border-black">FACILITIES RESERVATION</th>
-                                            <th colspan="2">dhehehoy</th>
-                                        </tr>
-                                        <tr class="border border-black">
-                                            <th colspan="2" class="border border-black">hehehoy</th>
+                                        <th rowspan="2" style="width:20%" class="border border-black text-center font-normal">FACILITIES RESERVATION</th>
                                         </tr>
                                     </thead>
                                 </table>
+
 
                                 <table class=" w-full">
                                     <thbody>
@@ -387,9 +388,8 @@
                                         </tr>
                                             <tr class="">
                                                 <th colspan="4" class="border border-black px-2 text-sm text-sm">
-                                                   
-                                                <div id="attachmentContainer"></div>
-                                                <a id="endorsedLink" href="" target="_blank" class="font-normal	 hover:underline"></a>
+                                                 
+                                                    <div id="attachmentContainer" class="my-3"></div>
                                                 </th>
                                             </tr>
                                             <tr class="">
@@ -400,10 +400,10 @@
                                 <table class="min-w-full table-auto border border-black text-left text-sm">
                                     <thead>
                                     <tr>
-                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Requested by</td>
-                                        <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="reserveeName"></span></td>
-                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">AA</td>
-                                        <td colspan="2" class="border border-black px-2 py-2">
+                                        <td colspan="2" class="w-[20%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">Requested by</td>
+                                        <td colspan="2" class="w-[30%] border border-black px-2 py-2"><span class="uppercase" id="reserveeName"></span></td>
+                                        <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">AA</td>
+                                        <td colspan="2" class=" w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
                                                 <span class="text-xs font-bold" id=eastSignatureImage></span>
                                                 <p>Ms. JAMAICA QUEZON</p>
@@ -413,8 +413,8 @@
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
                                         <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="person"></span></td>
-                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
-                                        <td colspan="2" class="border border-black px-2 py-2">
+                                        <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
+                                        <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
                                                 <span class="text-xs font-bold" id=cissoSignatureImage></span>
                                                 <p>Mr. ESMAEL LARUBIS</p>
@@ -464,7 +464,7 @@
                     </div>
 
                     <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                        <div class="bg-white p-6  rounded shadow-md w-1/3 text-center">
+                        <div class="bg-white p-6 rounded shadow-md w-1/3 text-center">
                             <div class="flex gap-2 justify-between items-center font-bold">
                                 <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
                                     <span class="text-3xl tracking-tighter">UPDATE STATUS</span>
@@ -473,27 +473,37 @@
                                     <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
                                 </button>
                             </div>
-                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST">
+                            
+                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST" onsubmit="return handleFormSubmit(event)">
                                 @csrf
                                 <input type="hidden" name="approval_id" id="approval_id">
                                 <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
 
+                                <!-- Reservee ID Display -->
+                                <label class="block text-gray-700 font-bold text-left mt-3">Reservee ID</label>
+                                <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay">
+                                    {{ $reservee->reserveeID ?? '' }}
+                                </h1> 
 
-                                <label class="block text-gray-700 font-bold  text-left mt-3 ">Reservee ID</label>
-
-                                <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay"></h1> 
-
+                                <!-- Status Dropdown -->
                                 <div class="mb-4">
-                                    <label class="block text-gray-700 font-bold  text-left ">Status</label>
-                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2">
+                                    <label class="block text-gray-700 font-bold text-left">Status</label>
+                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2" onchange="toggleNoteField()">
                                         <option value="Pending">Pending</option>
                                         <option value="Denied">Denied</option>
                                         <option value="Approved">Approved</option>
                                     </select>
                                 </div>
 
-                                <div class="flex justify-end">
-                                    <button type="submit" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                                <!-- Note Field, hidden by default -->
+                                <div id="noteField" class="mb-4 hidden">
+                                    <label class="block text-gray-700 font-bold text-left">Note</label>
+                                    <textarea name="note" id="note" class="block w-full border border-gray-300 rounded p-2"></textarea>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="flex justify-center text-center">
+                                    <button type="submit" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                 </div>
                             </form>
                         </div>
@@ -505,10 +515,53 @@
     </main>
     
     
-    <script src="/js/index.js"></script>
     <script src="/js/reservationmgmt.js"></script>
     <script src="/js/profile.js"></script>
     <script src="/js/reservationmodal.js"></script>
+    <script>
+        function toggleNoteField() {
+        const status = document.getElementById('approval_status').value;
+        const noteField = document.getElementById('noteField');
+        if (status === 'Denied') {
+            noteField.classList.remove('hidden');
+        } else {
+            noteField.classList.add('hidden');
+        }
+    }
+
+    async function handleFormSubmit(event) {
+        event.preventDefault(); 
+
+        const form = event.target;
+        const status = document.getElementById('approval_status').value;
+        const note = document.getElementById('note').value;
+        const reserveeID = document.getElementById('reserveeIDDisplay').textContent;
+
+        if (status === 'Denied' && note) {
+            await sendEmailToReservee(note, reserveeID);
+        }
+
+
+        form.submit();
+    }
+
+    async function sendEmailToReservee(note, reserveeID) {
+        try {
+            await fetch('{{ route("admin.sendReserveeEmail") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ note, reserveeID })
+            });
+            alert('Email sent to reservee.');
+        } catch (error) {
+            console.error('Error sending email:', error);
+            alert('Failed to send email.');
+        }
+    }
+    </script>
 
 
 

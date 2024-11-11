@@ -22,10 +22,8 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('cissoSignatureImage').innerText = cissoApprovalStatus === 'Approved' ? '(Approved)' : '';
     document.getElementById('gsoSignatureImage').innerText = gsoApprovalStatus === 'Approved' ? '(Approved)' : '';
 
-    // Hide the image elements and display text instead
     document.getElementById('eastSignatureImage').style.display = 'block';
 
-    // Hide the image element itself, and use only the text
     document.getElementById('eastSignatureImage').style.display = 'block';
     document.getElementById('cissoSignatureImage').style.display = 'block';
     document.getElementById('gsoSignatureImage').style.display = 'block';
@@ -35,83 +33,86 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     let attachments = JSON.parse(attachmentObjects);
 
     const attachmentContainer = document.getElementById('attachmentContainer');
-    attachmentContainer.innerHTML = ''; // Clear previous attachments
-
-
+    attachmentContainer.innerHTML = '';
     const uniqueUrls = new Set();
 
     if (attachments && attachments.length > 0) {
         attachments.forEach((attachment) => {
             if (!uniqueUrls.has(attachment.url)) {
                 uniqueUrls.add(attachment.url);
-                
-                const link = document.createElement('a');
-                link.href = attachment.url;           
-                link.textContent = attachment.name;     
-                link.target = '_blank';                 
-                link.classList.add( 'hover:underline');
 
-                attachmentContainer.appendChild(link);   
-                attachmentContainer.appendChild(document.createElement('br')); 
+                const link = document.createElement('a');
+                link.href = attachment.url;
+                link.textContent = attachment.name;
+                link.target = '_blank';
+                link.classList.add('hover:underline');
+
+                link.addEventListener('click', (event) => {
+                    event.preventDefault(); // Stop the default action
+                    const modifiedUrl = link.href.replace(/\/\d+\//, '/'); 
+                    window.open(modifiedUrl, '_blank'); 
+                });
+
+                attachmentContainer.appendChild(link);
+                attachmentContainer.appendChild(document.createElement('br'));
             }
         });
-    } else {
-        attachmentContainer.textContent = "No attachments available";
+        } else {
+            attachmentContainer.textContent = "No attachments available";
+        }
+
+        const pnames = pname.split(', ');
+        const ptotalNos = ptotal_no.split(', ');
+        let personnelOutput = pnames.map((pname, index) => `${pname.trim()} - ${ptotalNos[index].trim()}`).join(', ');
+        document.getElementById('pname').innerText = personnelOutput;
+
+        const enames = ename.split(', ');
+        const etotalNos = etotal_no.split(', ');
+        let equipmentOutput = enames.map((ename, index) => `${ename.trim()} - ${etotalNos[index].trim()}`).join(', ');
+        document.getElementById('ename').innerText = equipmentOutput;
+
+        const formattedStartDate = new Date(event_start_date);
+        const startDateString = formattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const startTimeString = formattedStartDate.toLocaleTimeString('en-US');
+
+        const formattedEndDate = new Date(event_end_date);
+        const endDateString = formattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const endTimeString = formattedEndDate.toLocaleTimeString('en-US');
+
+        document.getElementById('eventDate').innerText = `${startDateString} - ${endDateString}`;
+        document.getElementById('eventTime').innerText = `${startTimeString} - ${endTimeString}`;
+
+        const pformattedStartDate = new Date(preparation_start_date);
+        const pstartDateString = pformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const pstartTimeString = pformattedStartDate.toLocaleTimeString('en-US');
+
+        const pformattedEndDate = new Date(preparation_end_date_time);
+        const pendDateString = pformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const pendTimeString = pformattedEndDate.toLocaleTimeString('en-US');
+
+        document.getElementById('preparationDate').innerText = `${pstartDateString} - ${pendDateString}`;
+        document.getElementById('preparationTime').innerText = `${pstartTimeString} - ${pendTimeString}`;
+
+        const cformattedStartDate = new Date(cleanup_start_date_time);
+        const cstartDateString = cformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const cstartTimeString = cformattedStartDate.toLocaleTimeString('en-US');
+
+        const cformattedEndDate = new Date(cleanup_end_date_time);
+        const cendDateString = cformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const cendTimeString = cformattedEndDate.toLocaleTimeString('en-US');
+
+        document.getElementById('cleanupDate').innerText = `${cstartDateString} - ${cendDateString}`;
+        document.getElementById('cleanupTime').innerText = `${cstartTimeString} - ${cendTimeString}`;
+
+
+        modal.style.display = 'block';
+        const closeModalButton = document.getElementById('closeButton');
+        closeModalButton.addEventListener('click', function() {
+            modal.style.display = 'none'; 
+        });
     }
-    
-    
-    const pnames = pname.split(', ');
-    const ptotalNos = ptotal_no.split(', ');
-    let personnelOutput = pnames.map((pname, index) => `${pname.trim()} - ${ptotalNos[index].trim()}`).join(', ');
-    document.getElementById('pname').innerText = personnelOutput;
 
-    const enames = ename.split(', ');
-    const etotalNos = etotal_no.split(', ');
-    let equipmentOutput = enames.map((ename, index) => `${ename.trim()} - ${etotalNos[index].trim()}`).join(', ');
-    document.getElementById('ename').innerText = equipmentOutput;
-
-    const formattedStartDate = new Date(event_start_date);
-    const startDateString = formattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const startTimeString = formattedStartDate.toLocaleTimeString('en-US');
-
-    const formattedEndDate = new Date(event_end_date);
-    const endDateString = formattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const endTimeString = formattedEndDate.toLocaleTimeString('en-US');
-
-    document.getElementById('eventDate').innerText = `${startDateString} - ${endDateString}`;
-    document.getElementById('eventTime').innerText = `${startTimeString} - ${endTimeString}`;
-
-    const pformattedStartDate = new Date(preparation_start_date);
-    const pstartDateString = pformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const pstartTimeString = pformattedStartDate.toLocaleTimeString('en-US');
-
-    const pformattedEndDate = new Date(preparation_end_date_time);
-    const pendDateString = pformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const pendTimeString = pformattedEndDate.toLocaleTimeString('en-US');
-
-    document.getElementById('preparationDate').innerText = `${pstartDateString} - ${pendDateString}`;
-    document.getElementById('preparationTime').innerText = `${pstartTimeString} - ${pendTimeString}`;
-
-    const cformattedStartDate = new Date(cleanup_start_date_time);
-    const cstartDateString = cformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const cstartTimeString = cformattedStartDate.toLocaleTimeString('en-US');
-
-    const cformattedEndDate = new Date(cleanup_end_date_time);
-    const cendDateString = cformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const cendTimeString = cformattedEndDate.toLocaleTimeString('en-US');
-
-    document.getElementById('cleanupDate').innerText = `${cstartDateString} - ${cendDateString}`;
-    document.getElementById('cleanupTime').innerText = `${cstartTimeString} - ${cendTimeString}`;
-
-
-    modal.style.display = 'block';
-    const closeModalButton = document.getElementById('closeButton');
-    closeModalButton.addEventListener('click', function() {
-        modal.style.display = 'none'; 
-    });
-}
-
-
+//print button
 function openAndPrintModal() {
     document.getElementById('viewModal').style.display = 'block';
     window.print();
@@ -138,4 +139,6 @@ function openStatus(button) {
 function closeStatus() {
     document.getElementById('updateModal').classList.add('hidden');
 }
+
+//email
 

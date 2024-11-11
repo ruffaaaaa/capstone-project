@@ -23,4 +23,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/unavailable-dates', [FacilitiesController::class, 'getUnavailableDates']);
 
-Route::get('/facilities/{facilityID}/blocked-dates', [FacilitiesController::class, 'getBlockedDates']);

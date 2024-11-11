@@ -158,7 +158,7 @@
             </div>  
         </div>
         <div id="addModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div class="bg-white px-2 py-2 rounded-lg shadow-lg w-1/3">
+            <div class="bg-white px-2 py-2 rounded-lg shadow-lg w-1/3 max-md:w-full">
                 <div class="sm:flex sm:items-start">
                     <div class="mt-3 text-center  w-full ">
                         <div class="flex gap-2 px-3 justify-between items-center font-bold mb-4 ">
@@ -189,13 +189,13 @@
                         </form>
                     </div>
                 </div>
-                <div class=" py-3 flex text-center justify-center bg-gray-50">
+                <div class=" py-3 flex text-center justify-center">
                     <button type="submit" form="addForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2.5 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
                 </div>
             </div>
         </div>
         <div id="editModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div class="inline-block align-bottom bg-white rounded-lg w-1/3  text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-white rounded-lg w-1/3   max-md:w-full text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 py-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="justify text-center sm:mt-0 sm:text-left w-full">
@@ -226,7 +226,7 @@
                         </div>
                     </div>
                 </div>
-                <div class=" px-4 py-3 flex text-center justify-center bg-gray-50">
+                <div class=" px-4 py-3 flex text-center justify-center">
                     <button type="submit" form="editForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2.5 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                 </div>
             </div>
@@ -268,22 +268,7 @@
                                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                 </div>
-
-                                <div>
-
-                                    @if($signature && Storage::disk('public')->exists($signature->signature_file))
-                                    <div class="mt-2 align-center justify-center text-center">
-                                        <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
-                                        <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
-                                    </div>
-
-                                    @endif
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
-                                    <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
-                                </div>
+                                
                                 <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
 
                                 </div>

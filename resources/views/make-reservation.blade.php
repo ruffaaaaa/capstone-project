@@ -115,38 +115,42 @@
                             </div>
                         </div>
 
-                        <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="preparation-start-date">Start and End Date-Time for Event Preparation</label>
-                        <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
-                            <div class="mb-2 md:mb-0 md:mr-2 w-full">
-                                <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="preparation-start-date-label" for="preparation-start-date">Start Date-Time for Event Preparation:</label>
-                                <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local" required>
-                            </div>
-                            <div class="hidden md:block mr-4 ml-4">
-                                <h1>-</h1>
-                            </div>
-                            <div class="mb-2 md:mb-0 md:ml-2 w-full">
-                                <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="preparation-end-date-label" for="preparation-end-date">End Date-Time for Event Preparation:</label>
-                                <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local" required>
+                        <div id="preparation-fields" class="hidden">
+                            <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="preparation-start-date">Start and End Date-Time for Event Preparation</label>
+                            <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
+                                <div class="mb-2 md:mb-0 md:mr-2 w-full">
+                                    <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="preparation-start-date-label" for="preparation-start-date">Start Date-Time for Event Preparation:</label>
+                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local" required>
+                                </div>
+                                <div class="hidden md:block mr-4 ml-4">
+                                    <h1>-</h1>
+                                </div>
+                                <div class="mb-2 md:mb-0 md:ml-2 w-full">
+                                    <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="preparation-end-date-label" for="preparation-end-date">End Date-Time for Event Preparation:</label>
+                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local" required>
+                                </div>
                             </div>
                         </div>
 
-                        <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="cleanup-start-date">Start and End Date-Time for Cleanup</label>
-                        <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
-                            <div class="mb-2 md:mb-0 md:mr-2 w-full">
-                                <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="cleanup-start-date-label" for="cleanup-start-date">Start Date-Time of Cleanup:</label>
-                                <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local" required>
-                            </div>
-                            <div class="hidden md:block mr-4 ml-4">
-                                <h1>-</h1>
-                            </div>
-                            <div class="mb-2 md:mb-0 md:ml-2 w-full">
-                                <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="cleanup-end-date-label" for="cleanup-end-date">End Date-Time of Cleanup:</label>
-                                <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date" type="datetime-local" required>
+                        <!-- Cleanup Date-Time Fields (Initially hidden) -->
+                        <div id="cleanup-fields" class="hidden">
+                            <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="cleanup-start-date">Start and End Date-Time for Cleanup</label>
+                            <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
+                                <div class="mb-2 md:mb-0 md:mr-2 w-full">
+                                    <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="cleanup-start-date-label" for="cleanup-start-date">Start Date-Time of Cleanup:</label>
+                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local" required>
+                                </div>
+                                <div class="hidden md:block mr-4 ml-4">
+                                    <h1>-</h1>
+                                </div>
+                                <div class="mb-2 md:mb-0 md:ml-2 w-full">
+                                    <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="cleanup-end-date-label" for="cleanup-end-date">End Date-Time of Cleanup:</label>
+                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date" type="datetime-local" required>
+                                </div>
                             </div>
                         </div>
 
@@ -258,7 +262,7 @@
                         </div>
                         <div class="mt-5">
                             <div class="bg-[#076334] p-2">
-                                <span class="text-l font-bold text-white pl-4">B5. ATTACHMENTS</span>
+                                <span class="text-l font-bold text-white pl-4">B5. ATTACHMENTS <p class="text-xs font-normal ml-4 max-md:text-[9px]">(Venue Layout, Letter of Request, Signed Activity Proposal for Art Center)</p></span>
                             </div>
                             <div class="flex pt-5">
                             <input type="file" id="attachments" name="attachments[]" accept=".png, application/pdf" multiple class="hidden" onchange="displayFiles()">
@@ -384,8 +388,8 @@
 
             </form>
 
-            <div id="myModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center  bg-gray-900 bg-opacity-60 pointer-events-none">
-                <div class="modal-container w-full h-screen max-md:mx-10 md:max-w-md mx-auto rounded shadow-3xl z-50 overflow-y-auto flex flex-col justify-center pointer-events-auto">
+            <div id="myModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center  bg-gray-800 bg-opacity-50 pointer-events-none">
+                <div class="modal-container  w-full h-screen max-md:mx-10 md:max-w-md mx-auto rounded shadow-3xl z-50 overflow-y-auto flex flex-col justify-center pointer-events-auto">
                     <div class="p-10 mb-5 flex flex-col items-center justify-center bg-green-700">
                         <a href="/" class="m-4">
                             <img src="/images/lsu-logo-star-white.png" class="mx-auto w-24 h-30" />
@@ -398,16 +402,10 @@
             </div>
         </div>
     </div>
-    
-
 </body>
 
 <script src="/js/reservationmodal.js"></script>
 <script src="/js/date.js"></script>
-<script src="/js/fetchDate.js"></script>
-
-
-
 
 
 </html>

@@ -17,11 +17,13 @@ class AdminApprovals extends Model
 
     public function admin()
     {
+        // Belongs to a User with admin_id as the foreign key
         return $this->belongsTo(User::class, 'admin_id', 'id');
     }
 
     public function approval()
     {
+        // Belongs to a ReservationApproval with reservation_approval_id as the foreign key
         return $this->belongsTo(ReservationApprovals::class, 'reservation_approval_id', 'approvalID');
     }
 

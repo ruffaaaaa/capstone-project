@@ -53,14 +53,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+
+
     public function role()
     {
-        return $this->belongsTo(Roles::class);
+        // Belongs to a specific AdminRole with role_id as the foreign key
+        return $this->belongsTo(AdminRoles::class, 'role_id', 'id');
     }
-
-
-    public function adminRole()
+    public function approvals()
     {
-        return $this->belongsTo(AdminRoles::class, 'role_id', 'id'); // Assuming 'role_id' links to AdminRole
+        // One user (admin) can have many approvals
+        return $this->hasMany(AdminApprovals::class, 'admin_id', 'id');
     }
 }

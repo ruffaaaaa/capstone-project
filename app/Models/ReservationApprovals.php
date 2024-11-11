@@ -11,7 +11,7 @@ class ReservationApprovals extends Model
     protected $primaryKey = 'approvalID';
     protected $fillable = ['reserveeID', 'final_status'];
 
-    public function reservationDetails()
+    public function reservee()
     {
         return $this->belongsTo(Reservee::class, 'reserveeID', 'reserveeID');
     
@@ -20,6 +20,14 @@ class ReservationApprovals extends Model
     protected $attributes = [
         'final_status' => 'Pending',
     ];
+
+    // In ReservationApprovals Model
+    public function adminRole()
+    {
+        return $this->belongsTo(AdminRoles::class, 'admin_id', 'id');
+    }
+
+    
 
     
 

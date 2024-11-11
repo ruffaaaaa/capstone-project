@@ -117,7 +117,7 @@
                         <label for="scheduleFilter" class="block text-sm font-medium text-gray-700 mb-1">Schedule:</label>
                         <div class="relative">
                             <select id="scheduleFilter" class="text-xs block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterEvents(this.value)">
-                                <option value="all" class="text-xs">Select</option>
+                                <option value="all" class="text-xs">All</option>
                                 <option value="eventProper" class="text-xs">Event Proper</option>
                                 <option value="preparation" class="text-xs">Preparation</option>
                                 <option value="cleanup" class="text-xs">Cleanup</option>
@@ -133,7 +133,7 @@
                     <div class="relative inline-block text-left mt-2 mb-2 w-full">
                         <label for="facilityFilter" class="block text-sm font-medium text-gray-700 mb-1">Facility:</label>
                         <select id="facilityFilter" class="block text-xs appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterByFacility(this.value)">
-                                <option value="text-xs">Select</option>
+                                <option value="text-xs">All</option>
                                 <!-- Facilities will be populated here -->
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -172,6 +172,7 @@
                         <div class="px-4 py-2 bg-green-700 rounded ">x</div>
                     </button>
                 </div>
+                <p><strong>Facilities:</strong> <span id="eventFacilities"></span></p>
                 <p><strong>Start Time:</strong> <span id="eventStart"></span></p>
                 <p><strong>End Time:</strong> <span id="eventEnd"></span></p>
             </div>
@@ -217,21 +218,7 @@
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                 </div>
 
-                                <div>
-
-                                    @if($signature && Storage::disk('public')->exists($signature->signature_file))
-                                    <div class="mt-2 align-center justify-center text-center">
-                                        <label class="block text-sm font-medium text-gray-700 text-left">Current Signature</label>
-                                        <img src="{{ Storage::url($signature->signature_file) }}" alt="Signature" class="mt-2 w-32 h-auto border rounded-md">
-                                    </div>
-
-                                    @endif
-                                </div>
-
-                                <div class="mt-2">
-                                    <label for="signature_file" class="block text-sm font-medium text-gray-700 text-left">Upload Signature (PNG only)</label>
-                                    <input type="file" name="signature_file" id="signature_file" accept="image/png" class="mt-1  rounded-md border border-gray-300 px-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:m-2 file:rounded-xs file:border-0 file:text-sm file:bg-green-50 file:text-green-700">
-                                </div>
+                            
                                 <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
 
                                 </div>
@@ -246,7 +233,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         
     </main>
     <script src="/js/profile.js"></script>

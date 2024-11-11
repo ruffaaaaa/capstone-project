@@ -19,7 +19,12 @@ class CalendarController extends Controller
 
     private function getReservations()
     {
-        $reservations = ReservationDetails::with('facilities')->get();
+        $reservations = ReservationDetails::with(['facilities', 'reservee'])
+        ->whereHas('reservee.reservationApproval', function ($query) {
+            $query->whereIn('final_status', ['Pending', 'Approved']);
+        })
+        ->get();
+
 
         return $reservations->map(function ($reservation) {
             return [
