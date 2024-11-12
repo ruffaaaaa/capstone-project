@@ -134,7 +134,6 @@
                             </div>
                         </div>
 
-                        <!-- Cleanup Date-Time Fields (Initially hidden) -->
                         <div id="cleanup-fields" class="hidden">
                             <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="cleanup-start-date">Start and End Date-Time for Cleanup</label>
                             <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
@@ -301,16 +300,18 @@
                     </div>
 
                     <div class="items-center mb-5 mt-5 ml-4 mr-4">
-                        <label class="w-32 text-gray-700 text-sm font-bold">Position:</label>
+                        <label class="w-32 text-gray-700 text-sm font-bold">Role:</label>
+                        <span id="radioErrorText" class="text-red-600 text-sm hidden">(Please select a role)</span>
+
                         <div class="flex space-x-10 mt-4">
                             <label class="text-sm text-gray-700">
                                 <input type="radio" name="userType" value="student" id="studentRadio" required> STUDENT
                             </label>
                             <label class="text-sm text-gray-700">
-                                <input type="radio" name="userType" value="faculty" id="facultyRadio"> FACULTY
+                                <input type="radio" name="userType" value="faculty" id="facultyRadio" required> FACULTY
                             </label>
                             <label class="text-sm text-gray-700">
-                                <input type="radio" name="userType" value="staff" id="staffRadio"> STAFF
+                                <input type="radio" name="userType" value="staff" id="staffRadio" required> STAFF
                             </label>
                         </div>
                     </div>
@@ -318,7 +319,7 @@
                         <label class="w-32 text-gray-700 text-sm font-bold">Email:</label>
                         <span class="required-text text-red-600 text-sm hidden">(Required)</span>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required-field" id="email" name="email" autocomplete="new-email" type="email" required>
-                        <span class="email-error text-red-600 text-sm hidden">Please use your LSU email address.</span>
+                        <span id="emailErrorText" class="email-error text-red-600 text-sm hidden">Please use your LSU email address.</span>
                     </div>
                     <div class="items-center mb-5 mt-5 ml-4 mr-4">
                         <label class="w-32 text-gray-700 text-sm font-bold">Contact Number:</label>
@@ -348,17 +349,23 @@
                     
                     <div id="endorserFields" class="items-center mb-5 mt-5 ml-4 mr-4 hidden">
                         <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
+                        <span id="endorserError" class="text-red-600 text-sm hidden">(Required).</span> <!-- Error message -->
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" autocomplete="new-endorsed_by" type="text" disabled>
                     </div>
                     <div class="items-center mb-5 mt-5 ml-4 mr-4 hidden" id="endorserEmailField">
                         <label class="w-32 text-gray-700 text-sm font-bold">Endorser Email:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorser_email" name="endorser_email" autocomplete="new-endorser_email" type="email" disabled>
+                        <span id="endorserEmailError" class="text-red-600 text-sm hidden">(Required).</span> 
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorser_email" name="endorser_email" autocomplete="new-endorser_email" type="email" disabled required>
+                        <span id="endorserEmailErrorText" class="email-error text-red-600 text-sm hidden">Please use your LSU email address.</span>
                     </div>
+
 
 
                     <div id="captchaSection" class="items-center mb-5 mt-5 ml-4 mr-4 hidden">
                         {!! NoCaptcha::renderJs() !!}
                         {!! NoCaptcha::display() !!}
+                        <span id="captchaErrorText" class="text-red-600 text-sm hidden">Please complete the CAPTCHA.</span>
+
                     </div>
 
                     <div id="customerDetailsAlert" class="text-center hidden text-red-500 mb-4">Please fill all required fields.</div>
@@ -406,6 +413,8 @@
 
 <script src="/js/reservationmodal.js"></script>
 <script src="/js/date.js"></script>
+<script src="/js/search.js"></script>
+
 
 
 </html>

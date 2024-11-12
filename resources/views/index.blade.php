@@ -12,11 +12,6 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
     <link href="/css/custom.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
      
@@ -86,17 +81,25 @@
                 </div>
             </div>
             <div class="flex z-0 gap-6 justify-center items-center self-stretch min-h-[373px] min-w-[240px] w-[485px] max-md:w-full max-md:order-2 max-md:flex-col max-md:items-center">
-                @foreach ($facilities->random(2) as $facility)
-                <div class="flex overflow-hidden flex-col rounded-md border border-solid border-black border-opacity-10 min-h-[305px] min-w-[240px] w-[242px] max-md:w-full ">
-                    <div class="flex overflow-hidden w-full min-h-[240px] max-md:mr-5">
-                        <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-[250px] w-full object-cover object-center inset-0" />
-                    </div>
-                    <div class="flex flex-col p-3 w-full text-black">
-                        <div class="text-base font-bold">{{ $facility->facilityName }}</div>
-                        <div class="mt-1 text-sm leading-none">{{ $facility->facilityStatus }}</div>
-                    </div>
-                </div>
-                @endforeach
+    
+                @if ($facilities->count() > 0)
+                    @foreach ($facilities->random(min(2, $facilities->count())) as $facility)
+                        <div class="flex overflow-hidden flex-col rounded-md border border-solid border-black border-opacity-10 min-h-[305px] min-w-[240px] w-[242px] max-md:w-full ">
+                            
+                            <div class="flex overflow-hidden w-full min-h-[240px] max-md:mr-5">
+                                <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-[250px] w-full object-cover object-center inset-0" />
+                            </div>
+                            
+                            <div class="flex flex-col p-3 w-full text-black">
+                                <div class="text-base font-bold">{{ $facility->facilityName }}</div>
+                                <div class="mt-1 text-sm leading-none">{{ $facility->facilityStatus }}</div>
+                            </div>
+                            
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-center text-gray-500">No facilities available at the moment.</p>
+                @endif
             </div>
             <div class="flex overflow-hidden relative flex-col grow shrink self-stretch text-base font-extralight text-black min-w-[240px] w-[301px] max-md:w-full max-md:mr-1 max-md:py-4 max-md:-mt-0 max-md:ml-0 max-md:min-h-auto max-md:order-3">
                 <div>
@@ -107,29 +110,43 @@
                         </div>
                     </div>
 
-                    @foreach($reservations->filter(fn($reservation) => \Carbon\Carbon::parse($reservation->event_end_date)->isFuture())
-                            ->sortBy('event_start_date')
-                            ->take(3) as $reservation)
-                        @if ($reservation->reservee && $reservation->reservee->reservationApproval && $reservation->reservee->reservationApproval->final_status === 'Approved')
-                            @php
-                                $bgColor = ($loop->index % 3 == 0) ? 'bg-green-700' : (($loop->index % 2 == 0) ? 'bg-green-500' : 'bg-green-600');
-                            @endphp
-                            <div class="flex z-0 flex-col mt-1 max-w-full max-md:w-full text-sm text-white {{ $bgColor }} p-2 rounded">
-                                <div class="flex flex-col justify-center w-full rounded-3xl max-md:py-4">
-                                    <div class="font-semibold max-md:text-base">Event Name: {{ $reservation->event_name }}</div>
-                                    <div class="max-md:text-sm">Facility: 
-                                        @if ($reservation->facilities->isNotEmpty())
-                                            {{ $reservation->facilities->pluck('facilityName')->implode(', ') }}
-                                        @else
-                                            Not Found
-                                        @endif
-                                    </div>
-                                    <div class="max-md:text-sm">Date: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('M d, Y') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('M d, Y') }}</div>
-                                    <div class="max-md:text-sm">Time: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('h:i A') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('h:i A') }}</div>
+                    @php
+                        $filteredReservations = $reservations->filter(function ($reservation) {
+                            return \Carbon\Carbon::parse($reservation->event_end_date)->isFuture() &&
+                                $reservation->reservee &&
+                                $reservation->reservee->reservationApproval &&
+                                $reservation->reservee->reservationApproval->final_status === 'Approved';
+                        })->sortBy('event_start_date')->take(3);
+                    @endphp
+
+                    @foreach($filteredReservations as $reservation)
+                        @php
+                            // Dynamic background color based on index
+                            $bgColor = ($loop->index % 3 == 0) ? 'bg-green-700' : (($loop->index % 2 == 0) ? 'bg-green-500' : 'bg-green-600');
+                        @endphp
+
+                        <div class="flex z-0 flex-col mt-1 max-w-full max-md:w-full text-sm text-white {{ $bgColor }} p-2 rounded">
+                            <div class="flex flex-col justify-center w-full rounded-3xl max-md:py-4">
+                                <div class="font-semibold max-md:text-base">Event Name: {{ $reservation->event_name }}</div>
+                                <div class="max-md:text-sm">Facility: 
+                                    @if ($reservation->facilities->isNotEmpty())
+                                        {{ $reservation->facilities->pluck('facilityName')->implode(', ') }}
+                                    @else
+                                        Not Found
+                                    @endif
+                                </div>
+                                <div class="max-md:text-sm">Date: 
+                                    {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('M d, Y') }} - 
+                                    {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('M d, Y') }}
+                                </div>
+                                <div class="max-md:text-sm">Time: 
+                                    {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('h:i A') }} - 
+                                    {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('h:i A') }}
                                 </div>
                             </div>
-                        @endif
+                        </div>
                     @endforeach
+
 
                 </div>
                 <div class="mt-2 italic">

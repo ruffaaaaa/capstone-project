@@ -65,9 +65,9 @@ Route::post('', [ReservationController::class, 'storeReservations'])->name('rese
 
 Route::match(['get', 'post'], '/insert-admin-user', [AuthenticationController::class, 'insertAdmin']);
 
-Route::get('/login', [AuthenticationController::class, 'DisplayLoginForm'])->name('login');
+Route::get('/door', [AuthenticationController::class, 'DisplayLoginForm'])->name('login');
 
-Route::post('/login', [AuthenticationController::class, 'login']);
+Route::post('/door', [AuthenticationController::class, 'login']);
 
 Route::get('/unauthorized', function () {
     return view('errors.unauthorized');

@@ -40,11 +40,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Add this event listener to handle the Enter key
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent the default action (form submission)
-            if (currentStep < 3) { // Only navigate if not on the last step
+            event.preventDefault(); 
+            if (currentStep < 3) { 
                 if (validateForm()) {
                     navigateNext();
                 }
@@ -142,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function updateReview() {
         const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
-            .map(checkbox => checkbox.value) // Get facilityID from the value attribute
+            .map(checkbox => checkbox.value) 
             .join(', ');
         
         console.log("Selected Facilities IDs:", selectedFacilities);
@@ -150,17 +149,15 @@ document.addEventListener("DOMContentLoaded", function() {
     
     let unavailableDatetimes = [];
 
-// Function to update the displayed date and time selection based on unavailable datetimes
     function updateDatePicker() {
         flatpickr("#date-input", {
             enableTime: true,
             dateFormat: "Y-m-d H:i",
-            disable: unavailableDatetimes.map(dateTime => new Date(dateTime)), // Disable each unavailable datetime
-            time_24hr: true, // Use 24-hour format if needed
+            disable: unavailableDatetimes.map(dateTime => new Date(dateTime)), 
+            time_24hr: true, 
         });
     }
 
-    // Function to fetch unavailable dates based on selected facilities and event date range
     function fetchUnavailableDates() {
         const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
             .map(checkbox => checkbox.value)
@@ -168,22 +165,18 @@ document.addEventListener("DOMContentLoaded", function() {
         const eventStartDate = document.getElementById('event-start-date').value;
         const eventEndDate = document.getElementById('event-end-date').value;
 
-        // console.log("Fetching unavailable dates for facilities:", selectedFacilities, "with start date:", eventStartDate, "and end date:", eventEndDate);
 
-        // Check that both selected facilities and date range are provided
         if (selectedFacilities && eventStartDate && eventEndDate) {
             fetch(`/api/unavailable-dates?facilityIds=${selectedFacilities}&eventStartDate=${eventStartDate}&eventEndDate=${eventEndDate}`)
                 .then(response => response.json())
                 .then(data => {
                     unavailableDatetimes = data.unavailableDatetimes;
-                    // console.log("API returned unavailable datetimes:", unavailableDatetimes);
                     updateDatePicker();
 
                     const selectedStartDateObj = new Date(eventStartDate + "Z");
                     const selectedEndDateObj = new Date(eventEndDate + "Z");
                     const unavailableDateTimeObjects = unavailableDatetimes.map(dateTime => new Date(dateTime));
 
-                    // Check if any of the unavailable datetimes fall within the selected start and end date-time range
                     const isDateTimeRangeUnavailable = unavailableDateTimeObjects.some(unavailableDateTime =>
                         unavailableDateTime >= selectedStartDateObj && unavailableDateTime <= selectedEndDateObj
                     );
@@ -193,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         document.getElementById('event-start-date').value = '';
                         document.getElementById('event-end-date').value = '';
                     } else {
-                        // console.log('Date and time range is available.');
+
                     }
                 })
                 .catch(error => {
@@ -204,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Attach event listeners to facility checkboxes and date inputs to fetch unavailable dates on change
     document.querySelectorAll('.form-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', fetchUnavailableDates);
     });
@@ -238,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             loadingSpinner.classList.add('hidden');
             if (data.message === 'Reservation saved successfully') {
-                showModal(); // No need to pass the reservation code
+                showModal(); 
             }
         })
         .catch(error => {
@@ -247,48 +239,90 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-
-
     function validateForm() {
         let valid = true;
         let inputs;
     
-        // Select inputs based on the current step
+        // Hide all alerts initially
+        facilitiesAlert.classList.add('hidden');
+        equipmentAlert.classList.add('hidden');
+        customerDetailsAlert.classList.add('hidden');
+        radioErrorText.classList.add('hidden');
+        captchaErrorText.classList.add('hidden');
+        endorserError.classList.add('hidden');
+        endorserEmailError.classList.add('hidden');
+    
+        // Helper function to add focus and input event listeners to show alerts
+        function addAlertListeners(input, alertElement) {
+            input.addEventListener('focus', () => alertElement.classList.remove('hidden'));
+            input.addEventListener('input', () => {
+                if (input.value.trim()) {
+                    alertElement.classList.add('hidden');
+                }
+            });
+        }
+    
         switch (currentStep) {
             case 1:
-                // Check for required inputs in facilitiesForm (excluding checkboxes)
                 inputs = facilitiesForm.querySelectorAll('input[required]');
-                if (!validateCheckboxes(facilitiesForm)) {
+                if (inputs.length && !validateCheckboxes(facilitiesForm)) {
                     facilitiesAlert.classList.remove('hidden');
                     valid = false;
-                } else {
-                    facilitiesAlert.classList.add('hidden');
+                    inputs.forEach(input => addAlertListeners(input, facilitiesAlert));
                 }
                 break;
     
             case 2:
-                // Check for required inputs in reservationDetailsForm (excluding checkboxes)
                 inputs = reservationDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])');
-                if (!validateInputs(inputs)) {
-                    equipmentAlert.classList.remove('hidden'); // Show the main alert
+                if (inputs.length && !validateInputs(inputs)) {
+                    equipmentAlert.classList.remove('hidden');
                     valid = false;
-                } else {
-                    equipmentAlert.classList.add('hidden');
+                    inputs.forEach(input => addAlertListeners(input, equipmentAlert));
                 }
                 break;
     
             case 3:
-                // Check for required inputs in customerDetailsForm (excluding checkboxes)
-                 inputs = Array.from(customerDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])'))
-                .filter(input => input.name !== 'endorsed_by' && input.name !== 'endorser_email');
-            
-            if (!validateInputs(inputs)) {
-                customerDetailsAlert.classList.remove('hidden');
-                valid = false;
-            } else {
-                customerDetailsAlert.classList.add('hidden');
-            }
-            break;
+                inputs = Array.from(customerDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])'))
+                    .filter(input => input.name !== 'endorsed_by' && input.name !== 'endorser_email');
+                
+                if (inputs.length && !validateInputs(inputs)) {
+                    customerDetailsAlert.classList.remove('hidden');
+                    valid = false;
+                    inputs.forEach(input => addAlertListeners(input, customerDetailsAlert));
+                }
+    
+                // Additional validations for student-specific inputs
+                const isStudent = document.getElementById('studentRadio').checked;
+                const endorserInput = document.getElementById('email');
+                const endorserEmailInput = document.getElementById('endorser_email');
+    
+                if (isStudent) {
+                    if (!endorserInput.value.trim()) {
+                        endorserError.classList.remove('hidden');
+                        valid = false;
+                        addAlertListeners(endorserInput, endorserError);
+                    }
+    
+                    if (!endorserEmailInput.value.trim()) {
+                        endorserEmailError.classList.remove('hidden');
+                        valid = false;
+                        addAlertListeners(endorserEmailInput, endorserEmailError);
+                    }
+    
+                    if (endorserInput.value.trim() === endorserEmailInput.value.trim()) {
+                        alert("Endorser email cannot be the same as your email.");
+                        endorserEmailError.classList.remove('hidden');
+                        valid = false;
+                    }
+                }
+    
+                // Validate CAPTCHA
+                if (grecaptcha.getResponse().length === 0) {
+                    captchaErrorText.classList.remove('hidden');
+                    valid = false;
+                }
+    
+                break;
     
             default:
                 inputs = [];
@@ -297,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return valid;
     }
     
-
+    
     
     function validateInputs(inputs) {
         let allValid = true;
@@ -347,9 +381,37 @@ document.addEventListener("DOMContentLoaded", function() {
     
         return allValid;
     }
+
+    function updateEndorserFields() {
+        const isStudent = document.getElementById('studentRadio').checked;
+        const endorserFields = document.getElementById('endorserFields');
+        const endorserEmailField = document.getElementById('endorserEmailField');
+        const endorserInput = document.getElementById('endorsed_by');
+        const endorserEmailInput = document.getElementById('endorser_email');
+    
+        if (isStudent) {
+            endorserFields.classList.remove('hidden');
+            endorserEmailField.classList.remove('hidden');
+            endorserInput.setAttribute('required', 'required');
+            endorserEmailInput.setAttribute('required', 'required');
+            endorserInput.removeAttribute('disabled');
+            endorserEmailInput.removeAttribute('disabled');
+        } else {
+            endorserFields.classList.add('hidden');
+            endorserEmailField.classList.add('hidden');
+            endorserInput.removeAttribute('required');
+            endorserEmailInput.removeAttribute('required');
+            endorserInput.setAttribute('disabled', 'disabled');
+            endorserEmailInput.setAttribute('disabled', 'disabled');
+        }
+    }
+    
+    document.getElementById('studentRadio').addEventListener('change', updateEndorserFields);
+    document.getElementById('facultyRadio').addEventListener('change', updateEndorserFields);
+    document.getElementById('staffRadio').addEventListener('change', updateEndorserFields);
+    
     
     function validateEmailDomain(email) {
-        // Check if the email ends with the allowed LSU domain
         const domain = 'lsu.edu.ph';
         const emailDomain = email.substring(email.lastIndexOf('@') + 1);
         return emailDomain.toLowerCase() === domain.toLowerCase();
@@ -395,6 +457,52 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
 });
+document.addEventListener('DOMContentLoaded', function() {
+    // Validate Email Domain for Reservee and Endorser Email
+    const emailInput = document.getElementById('email');
+    const endorserEmailInput = document.getElementById('endorser_email');
+    
+    // Email Validation for Reservee
+    emailInput.addEventListener('input', function() {
+        const emailValue = emailInput.value;
+        
+        if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(emailValue)) {
+            emailInput.setCustomValidity(''); // Reset custom validity message
+        } else {
+            emailInput.setCustomValidity('Please use your LSU email address.'); // Set custom validity message
+        }
+    });
+
+    // Email Validation for Endorser Email
+    endorserEmailInput.addEventListener('input', function() {
+        const endorserEmailValue = endorserEmailInput.value;
+        const emailErrorText = endorserEmailInput.nextElementSibling; // Get the error message span
+        
+        if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(endorserEmailValue)) {
+            endorserEmailInput.setCustomValidity('');  // Reset custom validity message
+            emailErrorText.classList.add('hidden');  // Hide the error message
+        } else {
+            endorserEmailInput.setCustomValidity('Please use your LSU email address.');
+            emailErrorText.classList.remove('hidden');  // Show the error message
+        }
+    });
+});
+
+function validateEmails() {
+    const emailValue = emailInput.value.trim();
+    const endorserEmailValue = endorserEmailInput.value.trim();
+    let valid = true;
+
+    // Check if email and endorser email are the same
+    if (emailValue && endorserEmailValue && emailValue === endorserEmailValue) {
+        valid = false;
+        // Display alert message
+        alert("Email and Endorser Email must be different.");
+    }
+
+    return valid;
+}
+
 
 document.querySelectorAll('.equipment-checkbox').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {
@@ -406,7 +514,6 @@ document.querySelectorAll('.equipment-checkbox').forEach(function(checkbox) {
         }
     });
 });
-
 
 document.querySelectorAll('.personnel-checkbox').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {
@@ -444,8 +551,6 @@ document.getElementById('other-equipment').addEventListener('change', function (
         otherEquipmentNumber.value = ''; 
     }
 });
-
-
 
 document.getElementById('other-personnel').addEventListener('change', function () {
     const otherPersonnelName = document.getElementById('other-personnel-name');
@@ -493,97 +598,6 @@ document.querySelectorAll('.required-field').forEach(field => {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const emailInput = document.getElementById('email');
-
-    const endorserEmailInput = document.getElementById('endorser_email');
-
-    // Email Validation
-    emailInput.addEventListener('input', function() {
-        const emailValue = emailInput.value;
-        
-        if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(emailValue)) {
-            emailInput.setCustomValidity(''); // Reset custom validity message
-        } else {
-            emailInput.setCustomValidity('Please use your LSU email address.'); // Set custom validity message
-        }
-    });
-
-    endorserEmailInput.addEventListener('input', function() {
-        const endorserEmailValue = endorserEmailInput.value;
-
-        if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(endorserEmailValue)) {
-            endorserEmailInput.setCustomValidity(''); 
-            endorserEmailInput.setCustomValidity('Please use your LSU email address.');
-        }
-    });
-});
-
-document.getElementById('facilitySearch').addEventListener('input', function() {
-    const searchValue = this.value.toLowerCase();
-    const facilities = document.querySelectorAll('.facility-item');
-    let hasVisibleFacilities = false;
-
-    facilities.forEach(facility => {
-        const facilityName = facility.querySelector('label').textContent.toLowerCase();
-        if (facilityName.includes(searchValue)) {
-            facility.style.display = 'block';
-            hasVisibleFacilities = true;
-        } else {
-            facility.style.display = 'none';
-        }
-    });
-
-    document.getElementById('noFacilitiesAlert').style.display = hasVisibleFacilities ? 'none' : 'block';
-});
 
 
-function updateEndorserFields() {
-    const isStudent = document.getElementById('studentRadio').checked;
-    const endorserFields = document.getElementById('endorserFields');
-    const endorserEmailField = document.getElementById('endorserEmailField');
-    const endorserInput = document.getElementById('endorsed_by');
-    const endorserEmailInput = document.getElementById('endorser_email');
 
-    if (isStudent) {
-        endorserFields.classList.remove('hidden');
-        endorserEmailField.classList.remove('hidden');
-        endorserInput.setAttribute('required', 'required');
-        endorserEmailInput.setAttribute('required', 'required');
-        endorserInput.removeAttribute('disabled');
-        endorserEmailInput.removeAttribute('disabled');
-    } else {
-        endorserFields.classList.add('hidden');
-        endorserEmailField.classList.add('hidden');
-        endorserInput.removeAttribute('required');
-        endorserEmailInput.removeAttribute('required');
-        endorserInput.setAttribute('disabled', 'disabled');
-        endorserEmailInput.setAttribute('disabled', 'disabled');
-    }
-}
-
-document.getElementById('studentRadio').addEventListener('change', updateEndorserFields);
-document.getElementById('facultyRadio').addEventListener('change', updateEndorserFields);
-document.getElementById('staffRadio').addEventListener('change', updateEndorserFields);
-
-
-function checkEventFields() {
-    const eventStartDate = document.getElementById('event-start-date').value;
-    const eventEndDate = document.getElementById('event-end-date').value;
-
-    // Show preparation and cleanup fields only if both event start and end dates are filled
-    if (eventStartDate && eventEndDate) {
-        document.getElementById('preparation-fields').classList.remove('hidden');
-        document.getElementById('cleanup-fields').classList.remove('hidden');
-    } else {
-        document.getElementById('preparation-fields').classList.add('hidden');
-        document.getElementById('cleanup-fields').classList.add('hidden');
-    }
-}
-
-// Attach event listeners to the event date inputs to trigger the check
-document.getElementById('event-start-date').addEventListener('input', checkEventFields);
-document.getElementById('event-end-date').addEventListener('input', checkEventFields);
-
-// Initial check when the page loads (in case the form is pre-filled or edited)
-checkEventFields();

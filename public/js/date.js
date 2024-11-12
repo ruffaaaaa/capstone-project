@@ -162,3 +162,29 @@ document.getElementById('cleanup-end-date').addEventListener('change', validateC
 window.onload = setMinEventDate;
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0'); 
+    const day = today.getDate().toString().padStart(2, '0'); 
+    const formattedDate = `${year}-${month}-${day}`;
+    document.getElementById('date_of_filing').value = formattedDate;
+});
+
+function checkEventFields() {
+    const eventStartDate = document.getElementById('event-start-date').value;
+    const eventEndDate = document.getElementById('event-end-date').value;
+
+    if (eventStartDate && eventEndDate) {
+        document.getElementById('preparation-fields').classList.remove('hidden');
+        document.getElementById('cleanup-fields').classList.remove('hidden');
+    } else {
+        document.getElementById('preparation-fields').classList.add('hidden');
+        document.getElementById('cleanup-fields').classList.add('hidden');
+    }
+}
+
+document.getElementById('event-start-date').addEventListener('input', checkEventFields);
+document.getElementById('event-end-date').addEventListener('input', checkEventFields);
+
+checkEventFields();

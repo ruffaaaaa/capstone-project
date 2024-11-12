@@ -97,12 +97,10 @@
                 <div>
                 <div class="mb-3">
                     <div class="relative flex justify-between items-center mt-2 mb-2 w-full">
-                        <!-- Archive Button on the left -->
                         <a href = "archive-reservation"class="flex gap-2 p-2 px-3 bg-white rounded border-solid border-2 border-gray-300 " aria-label="Archive">
                             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/002265686784543f1653a3744b2bedab124eb9aad785ad545f64dfd889a255bc?placeholderIfAbsent=true&apiKey=a25d9352c0e24748b58ba2c7e0217b4a" class="object-contain shrink-0 aspect-square w-[14px]" alt="Archive icon" />
                             <span class="my-auto text-xs font-bold">ARCHIVE</span>
                         </a>
-                        <!-- Search Bar on the right -->
                         <div class="relative inline-block flex justify-end">
                             <div class="mr-2 relative">
                                 <input type="search" id="searchInput" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" placeholder="Search..." />
@@ -153,12 +151,8 @@
                                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
                                                 <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                             </div>
-
-                                        
                                             <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
-
                                             </div>
-                                    
                                         </form>
                                     </div>
                                     </div>
@@ -195,7 +189,6 @@
                                             return array_search($detail->role_name, $customOrder);
                                         })->unique('role_name');
 
-                                        // Fetch specific roles
                                         $east = $sortedDetailsGroup->where('role_name', 'AA')->first();
                                         $cisso = $sortedDetailsGroup->where('role_name', 'CISSO')->first();
                                         $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
@@ -222,7 +215,7 @@
                                                     onclick="openModal('{{ $detailsGroup->first()->reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
                                                         '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', 
                                                         '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
-                                                        '{{ $detailsGroup->first()->confirmation ? 'true' : 'false' }}', '{{ $detailsGroup->first()->endorser_name }}', 
+                                                        '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', '{{ $detailsGroup->first()->endorser_name }}', 
                                                         '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
                                                         '{{ $detailsGroup->first()->event_start_date }}', '{{ $detailsGroup->first()->event_end_date }}', 
                                                         '{{ $detailsGroup->first()->preparation_start_date }}', '{{ $detailsGroup->first()->preparation_end_date_time }}', 
@@ -291,33 +284,22 @@
                         
                         <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow max-lg: w-full ">
                             <div class=" ">
-                                <table class=" w-full border border-black">
+                                <table class="w-full border border-black mb-1">
                                     <thead>
-                                        <tr class="border border-black bg-gray-100 ">
-                                            <th rowspan="5"  style="width:5%"><img src="/images/corporate-logo-new.png" class="mx-auto h-10" /></th>
+                                        <tr class="border border-black bg-gray-100">
+                                        <th rowspan="5" colspan="2" style="width:5%"><img src="/images/corporate-logo-new.png" class="mx-auto h-10" /></th>
+                                        <td class="border border-black bg-white text-center">
+                                            <span class="text-xs font-bold">La Salle University - Ozamiz City</span><br />
+                                            <span class="">ADMINISTRATIVE SERVICES</span>
+                                        </td>
                                         </tr>
+
                                         <tr class="border border-black">
-                                            <th rowspan="2"  style="width:20%" class="text-center border border-black">
-                                                <span class="text-xs">La Salle University - Ozamiz City</span><br>
-                                                <span>ADMINISTRATIVE SERVICES</span>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="2" style="width:10%" class="border border-black">
-                                                <div class="text-xs ">Document No: </div>
-                                                <div class="text-center font-semi"><span>ROF-VPAS-GSO-EAST-001</span></div>
-                                            </th>
-                                        </tr>
-                                        
-                                        <tr class="border border-black">
-                                            <th rowspan="2"  class="text-center border border-black">FACILITIES RESERVATION</th>
-                                            <th colspan="2">dhehehoy</th>
-                                        </tr>
-                                        <tr class="border border-black">
-                                            <th colspan="2" class="border border-black">hehehoy</th>
+                                        <th rowspan="2" style="width:20%" class="border border-black text-center font-normal">FACILITIES RESERVATION</th>
                                         </tr>
                                     </thead>
                                 </table>
+
 
                                 <table class=" w-full">
                                     <thbody>
@@ -413,7 +395,7 @@
                                         <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
                                                 <span class="text-xs font-bold" id=cissoSignatureImage></span>
-                                                <p>Mr. ESMAEL LARUBIS</p>
+                                                <p>Engr. ESMAEL LARUBIS</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -460,7 +442,7 @@
                     </div>
 
                     <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                        <div class="bg-white p-6  rounded shadow-md w-1/3 text-center">
+                        <div class="bg-white p-6 rounded shadow-md w-1/3 text-center">
                             <div class="flex gap-2 justify-between items-center font-bold">
                                 <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
                                     <span class="text-3xl tracking-tighter">UPDATE STATUS</span>
@@ -469,26 +451,32 @@
                                     <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
                                 </button>
                             </div>
-                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST">
+                            
+                            <form id="updateApprovalForm" action="{{ route('admin.approvals.store', ['role_id' => $user->role_id]) }}" method="POST" onsubmit="return handleFormSubmit(event)">
                                 @csrf
                                 <input type="hidden" name="approval_id" id="approval_id">
                                 <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
 
-
-                                <label class="block text-gray-700 font-bold  text-left mt-3 ">Reservee ID</label>
-
-                                <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay"></h1> 
+                                <label class="block text-gray-700 font-bold text-left mt-3">Reservee ID</label>
+                                <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay">
+                                    {{ $reservee->reserveeID ?? '' }}
+                                </h1> 
 
                                 <div class="mb-4">
-                                    <label class="block text-gray-700 font-bold  text-left ">Status</label>
-                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2">
+                                    <label class="block text-gray-700 font-bold text-left">Status</label>
+                                    <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2" onchange="toggleNoteField()">
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
                                     </select>
                                 </div>
 
-                                <div class="flex justify-end">
-                                    <button type="submit" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2 bg-green-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                                <div id="noteField" class="mb-4 hidden">
+                                    <label class="block text-gray-700 font-bold text-left">Note</label>
+                                    <textarea name="note" id="note" class="block w-full border border-gray-300 rounded p-2"></textarea>
+                                </div>
+
+                                <div class="flex justify-center text-center">
+                                    <button type="submit" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                 </div>
                             </form>
                         </div>
@@ -500,10 +488,53 @@
     </main>
     
     
-    <script src="/js/index.js"></script>
     <script src="/js/reservationmgmt.js"></script>
     <script src="/js/profile.js"></script>
     <script src="/js/reservationmodal.js"></script>
+    <script>
+        function toggleNoteField() {
+        const status = document.getElementById('approval_status').value;
+        const noteField = document.getElementById('noteField');
+        if (status === 'Denied') {
+            noteField.classList.remove('hidden');
+        } else {
+            noteField.classList.add('hidden');
+        }
+    }
+
+    async function handleFormSubmit(event) {
+        event.preventDefault(); 
+
+        const form = event.target;
+        const status = document.getElementById('approval_status').value;
+        const note = document.getElementById('note').value;
+        const reserveeID = document.getElementById('reserveeIDDisplay').textContent;
+
+        if (status === 'Denied' && note) {
+            await sendEmailToReservee(note, reserveeID);
+        }
+
+
+        form.submit();
+    }
+
+    async function sendEmailToReservee(note, reserveeID) {
+        try {
+            await fetch('{{ route("admin.sendReserveeEmail") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ note, reserveeID })
+            });
+            alert('Email sent to reservee.');
+        } catch (error) {
+            console.error('Error sending email:', error);
+            alert('Failed to send email.');
+        }
+    }
+    </script>
 
 
 

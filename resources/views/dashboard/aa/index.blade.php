@@ -128,35 +128,39 @@
                         <div class="overflow-hidden pr-36 max-w-full text-2xl text-black min-h-[55px] w-full max-md:pr-5">
                             Upcoming Approved Reservations
                         </div>
-                        @foreach($reservations
-                                ->filter(fn($reservation) => \Carbon\Carbon::parse($reservation->event_end_date)->isFuture())  // Check if end date is in the future
-                                ->sortBy('event_start_date')
-                                ->take(3) as $reservation)
-                            @if ($reservation->reservee && $reservation->reservee->reservationApproval && $reservation->reservee->reservationApproval->final_status === 'Approved')
-                                @php
-                                    // Alternate background color based on the loop index
-                                    $bgColor = ($loop->index % 3 == 0) ? 'bg-green-900' : (($loop->index % 2 == 0) ? 'bg-green-600' : 'bg-green-700');
-                                @endphp
-                                <div class="flex overflow-hidden flex-col justify-center px-4 py-3 max-w-full {{ $bgColor }} rounded min-h-[123px] w-full mb-2">
-                                    <div class="overflow-hidden z-10 pb-2 w-full max-md:pr-5 max-md:max-w-full">
-                                        <span class="uppercase">Event Name: {{ $reservation->event_name }}</span><br />
+                        @php
+                            $filteredReservations = $reservations->filter(function ($reservation) {
+                                return \Carbon\Carbon::parse($reservation->event_end_date)->isFuture() &&
+                                    $reservation->reservee &&
+                                    $reservation->reservee->reservationApproval &&
+                                    $reservation->reservee->reservationApproval->final_status === 'Approved';
+                            })->sortBy('event_start_date')->take(3);
+                        @endphp
 
-                                        <span class="font-normal">
-                                            Facility Name: 
-                                            @if ($reservation->facilities->isNotEmpty())
-                                                {{ $reservation->facilities->pluck('facilityName')->implode(', ') }}
-                                            @else
-                                                Not Found
-                                            @endif
-                                        </span><br />
+                        @foreach($filteredReservations as $reservation)
+                            @php
+                                // Dynamic background color based on index
+                                $bgColor = ($loop->index % 3 == 0) ? 'bg-green-700' : (($loop->index % 2 == 0) ? 'bg-green-500' : 'bg-green-600');
+                            @endphp
+                            <div class="flex overflow-hidden flex-col justify-center px-4 py-3 max-w-full {{ $bgColor }} rounded min-h-[123px] w-full mb-2">
+                                <div class="overflow-hidden z-10 pb-2 w-full max-md:pr-5 max-md:max-w-full">
+                                    <span class="uppercase">Event Name: {{ $reservation->event_name }}</span><br />
 
-                                        <span class="font-normal">Date: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('M d, Y') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('M d, Y') }}</span><br />
-                                        <span class="font-normal">Time: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('h:i A') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('h:i A') }}</span><br />
-                                        <span class="font-normal">Reservee Name: {{ $reservation->reservee->reserveeName }}</span><br />
-                                        <span class="font-normal">Contact Details: {{ $reservation->reservee->contact_details }}</span><br />
-                                    </div>
+                                    <span class="font-normal">
+                                        Facility Name: 
+                                        @if ($reservation->facilities->isNotEmpty())
+                                            {{ $reservation->facilities->pluck('facilityName')->implode(', ') }}
+                                        @else
+                                            Not Found
+                                        @endif
+                                    </span><br />
+
+                                    <span class="font-normal">Date: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('M d, Y') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('M d, Y') }}</span><br />
+                                    <span class="font-normal">Time: {{ \Carbon\Carbon::parse($reservation->event_start_date)->format('h:i A') }} - {{ \Carbon\Carbon::parse($reservation->event_end_date)->format('h:i A') }}</span><br />
+                                    <span class="font-normal">Reservee Name: {{ $reservation->reservee->reserveeName }}</span><br />
+                                    <span class="font-normal">Contact Details: {{ $reservation->reservee->contact_details }}</span><br />
                                 </div>
-                            @endif
+                            </div>
                         @endforeach
                     </div>
                     </div>

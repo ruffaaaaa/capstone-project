@@ -461,9 +461,6 @@ class ReservationController extends Controller
         return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('status', 'Approval status updated successfully.');
     }
 
-
-
-
     public function updateApproval(Request $request, $role_id)
     {
         if (Auth::check()) {
@@ -481,11 +478,11 @@ class ReservationController extends Controller
             $adminRoles = AdminRoles::all();
 
             $adminApprovals = AdminApprovals::where('reservation_approval_id', $reservationApproval->approvalID)
-                ->with('admin.adminRole') 
+                ->with('admin.role') 
                 ->get();
 
             $adminStatuses = $adminRoles->map(function ($role) use ($adminApprovals) {
-                $approval = $adminApprovals->firstWhere('admin.adminRole.id', $role->id);
+                $approval = $adminApprovals->firstWhere('admin.role.id', $role->id);
 
                 return [
                     'admin' => $role->name,
@@ -538,24 +535,21 @@ class ReservationController extends Controller
         return response()->json(['message' => 'Failed to send email. Reservee email not found.'], 404);
     }
 
+
     public function sendApprovalEmail($reserveeID)
     {
-        // Get the admin approval statuses for the given reserveeID
         $detailsGroup = DB::table('admin_approvals')
             ->join('admin_roles', 'admin_approvals.admin_id', '=', 'admin_roles.id')
             ->where('admin_approvals.reserveeID', $reserveeID)
             ->select('admin_approvals.approval_status', 'admin_roles.name as role_name')
             ->get();
 
-        // Format the roles and statuses into a string
         $formattedStatuses = $detailsGroup->map(function ($approval) {
             return $approval->role_name . ' - ' . $approval->approval_status;
         })->implode(', ');
 
-        // Fetch the reservee data (you can add other fields as needed)
         $reservee = DB::table('reservee')->where('reserveeID', $reserveeID)->first();
 
-        // Send the email (using Mail facade)
         Mail::to($reservee->email)->send(new ReservationApprovalEmail($formattedStatuses));
     }
 }

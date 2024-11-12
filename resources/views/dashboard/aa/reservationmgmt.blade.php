@@ -107,18 +107,16 @@
                 <div>
                 <div class="mb-3">
                     <div class="relative flex justify-between items-center mt-2 mb-2 w-full">
-                        <!-- Archive Button on the left -->
                         <a href = "archive-reservation"class="flex gap-2 p-2 px-3 bg-white rounded border-solid border-2 border-gray-300 " aria-label="Archive">
                             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/002265686784543f1653a3744b2bedab124eb9aad785ad545f64dfd889a255bc?placeholderIfAbsent=true&apiKey=a25d9352c0e24748b58ba2c7e0217b4a" class="object-contain shrink-0 aspect-square w-[14px]" alt="Archive icon" />
                             <span class="my-auto text-xs font-bold">ARCHIVE</span>
                         </a>
-                        <!-- Search Bar on the right -->
                         <div class="relative inline-block flex justify-end">
                             <div class="mr-2 relative">
-                                <input type="search" id="searchInput" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" placeholder="Search..." />
+                                <input type="search" id="searchInput" onkeyup="searchTable()" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" placeholder="Search..." />
                                 <div class="absolute inset-y-0 right-2 flex items-center pl-3 pointer-events-none">
                                     <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.8029 11.7612L9.53693 9.31367C10.268 8.30465 10.6647 7.05865 10.6632 5.77592C10.6632 4.63355 10.3505 3.51684 9.76469 2.56699C9.17885 1.61715 8.34616 0.876833 7.37194 0.439668C6.39771 0.0025026 5.3257 -0.11188 4.29147 0.110985C3.25724 0.33385 2.30724 0.883953 1.5616 1.69173C0.815957 2.49951 0.308169 3.52868 0.102448 4.64909C-0.103274 5.76951 0.00231009 6.93086 0.405847 7.98627C0.809385 9.04168 1.49275 9.94375 2.36953 10.5784C3.24631 11.2131 4.27712 11.5518 5.33162 11.5518C6.51567 11.5534 7.66583 11.1237 8.59723 10.3317L10.8565 12.7864C10.9185 12.8541 10.9922 12.9078 11.0734 12.9445C11.1546 12.9811 11.2417 13 11.3297 13C11.4177 13 11.5048 12.9811 11.586 12.9445C11.6672 12.9078 11.7409 12.8541 11.8029 12.7864C11.8653 12.7193 11.9149 12.6395 11.9487 12.5515C11.9826 12.4635 12 12.3691 12 12.2738C12 12.1785 11.9826 12.0841 11.9487 11.9962C11.9149 11.9082 11.8653 11.8283 11.8029 11.7612ZM1.33291 5.77592C1.33291 4.91914 1.56743 4.08161 2.00681 3.36922C2.44619 2.65684 3.07071 2.1016 3.80138 1.77373C4.53205 1.44586 5.33605 1.36007 6.11173 1.52722C6.8874 1.69437 7.5999 2.10694 8.15913 2.71278C8.71836 3.31861 9.0992 4.09049 9.25349 4.9308C9.40779 5.77111 9.3286 6.64212 9.02594 7.43368C8.72329 8.22524 8.21077 8.90179 7.55318 9.37779C6.8956 9.85379 6.12249 10.1079 5.33162 10.1079C4.27109 10.1079 3.25401 9.65146 2.5041 8.83906C1.7542 8.02666 1.33291 6.92482 1.33291 5.77592Z" fill="black"/>
+                                        <path d="..." fill="black"/>
                                     </svg>
                                 </div>
                             </div>
@@ -180,7 +178,7 @@
                     </div>
                     
 
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table  id="reservationTable" class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">ID</th>
@@ -229,7 +227,7 @@
                                                     onclick="openModal('{{ $detailsGroup->first()->reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
                                                         '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', 
                                                         '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
-                                                        '{{ $detailsGroup->first()->confirmation ? 'true' : 'false' }}', '{{ $detailsGroup->first()->endorser_name }}', 
+                                                        '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', '{{ $detailsGroup->first()->endorser_name }}', 
                                                         '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
                                                         '{{ $detailsGroup->first()->event_start_date }}', '{{ $detailsGroup->first()->event_end_date }}', 
                                                         '{{ $detailsGroup->first()->preparation_start_date }}', '{{ $detailsGroup->first()->preparation_end_date_time }}', 
@@ -270,7 +268,7 @@
                         </tbody>
                     </table>
 
-                    <div class="mt-4 flex justify-center space-x-2">
+                     <div class="mt-4 flex justify-center space-x-2">
                         {{-- Previous Button --}}
                         @if ($reservationDetails->onFirstPage())
                             <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded"><</button>
@@ -281,15 +279,38 @@
                         @endif
 
                         {{-- Page Number Buttons --}}
-                        @for ($page = 1; $page <= $reservationDetails->lastPage(); $page++)
-                            @if ($page == $reservationDetails->currentPage())
-                                <button class="px-2 py-1 text-sm text-white bg-green-700 rounded">{{ $page }}</button>
-                            @else
-                                <a href="{{ $reservationDetails->url($page) }}">
-                                    <button class="px-2 py-1 text-sm text-black bg-gray-200 hover:bg-green-200 rounded">{{ $page }}</button>
-                                </a>
+                        @if ($reservationDetails->lastPage() > 1)
+                            {{-- Show first page --}}
+                            <a href="{{ $reservationDetails->url(1) }}">
+                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == 1 ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">1</button>
+                            </a>
+
+                            {{-- Show ellipsis if needed --}}
+                            @if ($reservationDetails->currentPage() > 4)
+                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
                             @endif
-                        @endfor
+
+                            {{-- Show pages around the current page --}}
+                            @for ($page = max(2, $reservationDetails->currentPage() - 2); $page <= min($reservationDetails->lastPage() - 1, $reservationDetails->currentPage() + 2); $page++)
+                                @if ($page == $reservationDetails->currentPage())
+                                    <button class="px-2 py-1 text-sm text-white bg-green-700 rounded">{{ $page }}</button>
+                                @else
+                                    <a href="{{ $reservationDetails->url($page) }}">
+                                        <button class="px-2 py-1 text-sm text-black bg-gray-200 hover:bg-green-200 rounded">{{ $page }}</button>
+                                    </a>
+                                @endif
+                            @endfor
+
+                            {{-- Show ellipsis if needed --}}
+                            @if ($reservationDetails->currentPage() < $reservationDetails->lastPage() - 3)
+                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
+                            @endif
+
+                            {{-- Show last page --}}
+                            <a href="{{ $reservationDetails->url($reservationDetails->lastPage()) }}">
+                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == $reservationDetails->lastPage() ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">{{ $reservationDetails->lastPage() }}</button>
+                            </a>
+                        @endif
 
                         {{-- Next Button --}}
                         @if ($reservationDetails->hasMorePages())
@@ -417,7 +438,7 @@
                                         <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
                                                 <span class="text-xs font-bold" id=cissoSignatureImage></span>
-                                                <p>Mr. ESMAEL LARUBIS</p>
+                                                <p>Engr. ESMAEL LARUBIS</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -517,7 +538,6 @@
     
     <script src="/js/reservationmgmt.js"></script>
     <script src="/js/profile.js"></script>
-    <script src="/js/reservationmodal.js"></script>
     <script>
         function toggleNoteField() {
         const status = document.getElementById('approval_status').value;

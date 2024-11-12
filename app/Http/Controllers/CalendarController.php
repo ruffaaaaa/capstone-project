@@ -19,12 +19,11 @@ class CalendarController extends Controller
 
     private function getReservations()
     {
-        $reservations = ReservationDetails::with(['facilities', 'reservee'])
-        ->whereHas('reservee.reservationApproval', function ($query) {
-            $query->whereIn('final_status', ['Pending', 'Approved']);
-        })
-        ->get();
-
+        $reservations = ReservationDetails::with(['facilities', 'reservee.reservationApproval'])
+            ->whereHas('reservee.reservationApproval', function ($query) {
+                $query->whereIn('final_status', ['Pending', 'Approved']);
+            })
+            ->get();
 
         return $reservations->map(function ($reservation) {
             return [
@@ -43,9 +42,11 @@ class CalendarController extends Controller
                         'facilityName' => $facility->facilityName,
                     ];
                 }),
+                'status' => optional($reservation->reservee->reservationApproval)->final_status, // Include status here
             ];
         });
     }
+
 
     private function getCommonData()
     {
@@ -99,9 +100,9 @@ class CalendarController extends Controller
     
     public function getUserReservations()
     {
-        $reservations = ReservationDetails::with(['facilities', 'reservee'])
+        $reservations = ReservationDetails::with(['facilities', 'reservee.reservationApproval'])
             ->whereHas('reservee.reservationApproval', function ($query) {
-                $query->where('final_status', 'Approved');
+                $query->whereIn('final_status', ['Pending', 'Approved']);
             })
             ->get();
 
@@ -122,6 +123,7 @@ class CalendarController extends Controller
                         'facilityName' => $facility->facilityName,
                     ];
                 }),
+                'status' => optional($reservation->reservee->reservationApproval)->final_status, // Include status here
             ];
         });
     }

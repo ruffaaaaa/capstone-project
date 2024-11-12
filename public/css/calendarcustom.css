@@ -3,30 +3,26 @@
     background-color: #087830;
     color:white; 
     padding: 8px !important;
-    border-radius: 4px;  /* Tailwind: border-gray-200 */
+    border-radius: 4px; 
 }
 
 .fc-day, .fc-widget-content {
-    background-color: #DDDEDD !important;  /* Tailwind: bg-gray-100 */
+    background-color: #DDDEDD !important;  
     border: 1px solid #ffffff !important; 
 
 }
 
-.fc-day-number {
-    font-weight: normal;  /* Make the date numbers bold */
+.white-text {
+    color: #FFFFFF !important;
 }
 
 
-
-
-
-/* Change background color of cells on hover */
-/* .fc-day:hover {
-    background-color: #e5e7eb;  
-} */
+.fc-day-number {
+    font-weight: normal;  
+}
 
 #calendar-title {
-    font-size: 2rem; /* Adjust as needed */
+    font-size: 2rem; 
 }
 
 .today-btn {

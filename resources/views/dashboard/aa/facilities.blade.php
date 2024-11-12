@@ -106,12 +106,20 @@
         <div class="max-h-screen overflow-y-auto">
             <div class=" mx-auto">
                 <div class="bg-white rounded shadow-md p-8 mb-5">
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div class="relative flex justify-between items-center mt-2 mb-2 w-full">
                         <button type="button" class="bg-green-700 mb-3 text-white font-bold py-2 px-4 rounded" id="openModalBtn">
                             Add Facility
                         </button>
-                        
+                        <div class="relative inline-block flex justify-end">
+                            <div class="mr-2 relative">
+                                <input type="search" id="searchInput" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" placeholder="Search..." />
+                                <div class="absolute inset-y-0 right-2 flex items-center pl-3 pointer-events-none">
+                                    <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.8029 11.7612L9.53693 9.31367C10.268 8.30465 10.6647 7.05865 10.6632 5.77592C10.6632 4.63355 10.3505 3.51684 9.76469 2.56699C9.17885 1.61715 8.34616 0.876833 7.37194 0.439668C6.39771 0.0025026 5.3257 -0.11188 4.29147 0.110985C3.25724 0.33385 2.30724 0.883953 1.5616 1.69173C0.815957 2.49951 0.308169 3.52868 0.102448 4.64909C-0.103274 5.76951 0.00231009 6.93086 0.405847 7.98627C0.809385 9.04168 1.49275 9.94375 2.36953 10.5784C3.24631 11.2131 4.27712 11.5518 5.33162 11.5518C6.51567 11.5534 7.66583 11.1237 8.59723 10.3317L10.8565 12.7864C10.9185 12.8541 10.9922 12.9078 11.0734 12.9445C11.1546 12.9811 11.2417 13 11.3297 13C11.4177 13 11.5048 12.9811 11.586 12.9445C11.6672 12.9078 11.7409 12.8541 11.8029 12.7864C11.8653 12.7193 11.9149 12.6395 11.9487 12.5515C11.9826 12.4635 12 12.3691 12 12.2738C12 12.1785 11.9826 12.0841 11.9487 11.9962C11.9149 11.9082 11.8653 11.8283 11.8029 11.7612ZM1.33291 5.77592C1.33291 4.91914 1.56743 4.08161 2.00681 3.36922C2.44619 2.65684 3.07071 2.1016 3.80138 1.77373C4.53205 1.44586 5.33605 1.36007 6.11173 1.52722C6.8874 1.69437 7.5999 2.10694 8.15913 2.71278C8.71836 3.31861 9.0992 4.09049 9.25349 4.9308C9.40779 5.77111 9.3286 6.64212 9.02594 7.43368C8.72329 8.22524 8.21077 8.90179 7.55318 9.37779C6.8956 9.85379 6.12249 10.1079 5.33162 10.1079C4.27109 10.1079 3.25401 9.65146 2.5041 8.83906C1.7542 8.02666 1.33291 6.92482 1.33291 5.77592Z" fill="black"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 <div>
                 <div class="mb-3">
@@ -154,6 +162,59 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-4 flex justify-center space-x-2">
+                        {{-- Previous Button --}}
+                        @if ($facilities->onFirstPage())
+                            <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded"><</button>
+                        @else
+                            <a href="{{ $facilities->previousPageUrl() }}">
+                                <button class="px-2 py-1 bg-gray-200 hover:text-white text-sm hover:bg-green-600 rounded"><</button>
+                            </a>
+                        @endif
+
+                        {{-- Page Number Buttons --}}
+                        @if ($facilities->lastPage() > 1)
+                            {{-- Show first page --}}
+                            <a href="{{ $facilities->url(1) }}">
+                                <button class="px-2 py-1 text-sm {{ $facilities->currentPage() == 1 ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">1</button>
+                            </a>
+
+                            {{-- Show ellipsis if needed --}}
+                            @if ($facilities->currentPage() > 4)
+                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
+                            @endif
+
+                            {{-- Show pages around the current page --}}
+                            @for ($page = max(2, $facilities->currentPage() - 2); $page <= min($facilities->lastPage() - 1, $facilities->currentPage() + 2); $page++)
+                                @if ($page == $facilities->currentPage())
+                                    <button class="px-2 py-1 text-sm text-white bg-green-700 rounded">{{ $page }}</button>
+                                @else
+                                    <a href="{{ $facilities->url($page) }}">
+                                        <button class="px-2 py-1 text-sm text-black bg-gray-200 hover:bg-green-200 rounded">{{ $page }}</button>
+                                    </a>
+                                @endif
+                            @endfor
+
+                            {{-- Show ellipsis if needed --}}
+                            @if ($facilities->currentPage() < $facilities->lastPage() - 3)
+                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
+                            @endif
+
+                            {{-- Show last page --}}
+                            <a href="{{ $facilities->url($facilities->lastPage()) }}">
+                                <button class="px-2 py-1 text-sm {{ $facilities->currentPage() == $facilities->lastPage() ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">{{ $facilities->lastPage() }}</button>
+                            </a>
+                        @endif
+
+                        {{-- Next Button --}}
+                        @if ($facilities->hasMorePages())
+                            <a href="{{ $facilities->nextPageUrl() }}">
+                                <button class="px-2 py-1 text-sm bg-gray-200 hover:text-white hover:bg-green-600 rounded">></button>
+                            </a>
+                        @else
+                            <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded">></button>
+                        @endif
+                    </div>
                 </div>
             </div>  
         </div>
@@ -286,7 +347,7 @@
         </div>
     </main>
     <script src="/js/profile.js"></script>
-    <script src="/js/modal.js"></script>
+    <script src="/js/facilities.js"></script>
 
 </body>
 </html>

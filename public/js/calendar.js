@@ -1,5 +1,7 @@
-var currentFilter = 'eventProper';
+var currentFilter = 'all';
 var selectedFacility = '';
+var currentStatus = 'Approved';
+
 
 function filterEvents(filter) {
     currentFilter = filter;
@@ -8,6 +10,11 @@ function filterEvents(filter) {
 
 function filterByFacility(facility) {
     selectedFacility = facility;
+    $('#calendar').fullCalendar('rerenderEvents');
+}
+
+function filterByStatus(status) {
+    currentStatus = status;
     $('#calendar').fullCalendar('rerenderEvents');
 }
 
@@ -46,14 +53,16 @@ $(document).ready(function() {
                     var events = [];
                     $(data).each(function() {
                         var facilities = this.facilities ? this.facilities.map(f => f.facilityName).join(', ') : '';
+                        var eventStatus = this.status; // Assuming status is provided in the API response
                         events.push({
                             id: this.id,
                             title: this.title,
                             start: this.estart,
                             end: this.eend,
                             facilities: facilities,
-                            color: '#3a87ad',
-                            type: 'eventProper'
+                            color: '#f51161',
+                            type: 'eventProper',
+                            status: eventStatus
                         });
                         if (this.pstart && this.pend) {
                             events.push({
@@ -62,8 +71,9 @@ $(document).ready(function() {
                                 start: this.pstart,
                                 end: this.pend,
                                 facilities: facilities,
-                                color: '#f0ad4e',
-                                type: 'preparation'
+                                color: '#38baa2',
+                                type: 'preparation',
+                                status: eventStatus
                             });
                         }
                         if (this.cstart && this.cend) {
@@ -73,8 +83,9 @@ $(document).ready(function() {
                                 start: this.cstart,
                                 end: this.cend,
                                 facilities: facilities,
-                                color: '#d9534f',
-                                type: 'cleanup'
+                                color: '#2792b0',
+                                type: 'cleanup',
+                                status: eventStatus
                             });
                         }
                     });
@@ -86,25 +97,25 @@ $(document).ready(function() {
             });
         },
         eventRender: function(event, element) {
-            if (currentFilter === 'all' || event.type === currentFilter) {
-                if (selectedFacility === '' || event.facilities.includes(selectedFacility)) {
-                    element.find('.fc-time').remove();
-                    var startTime = moment(event.start).format('hh:mm A');
-                    var endTime = moment(event.end).format('hh:mm A');
-                    if (event.title) {
-                        element.find('.fc-title').html(
-                            `<strong>${event.title.toUpperCase()}</strong><br/>
-                            <span class='facilities'>${event.facilities || ''}<br/>
-                            ${startTime} - ${endTime}</span>`
-                        );
-                    }
-                } else {
-                    return false;
+            if ((currentFilter === 'all' || event.type === currentFilter) &&
+                (selectedFacility === '' || event.facilities.includes(selectedFacility)) &&
+                (currentStatus === 'all' || (event.status && event.status.trim().toLowerCase() === currentStatus.trim().toLowerCase()))) {
+                
+                element.find('.fc-time').remove();
+                var startTime = moment(event.start).format('hh:mm A');
+                var endTime = moment(event.end).format('hh:mm A');
+                if (event.title) {
+                    element.find('.fc-title').html(
+                        `<strong>${event.title.toUpperCase()}</strong><br/>
+                        <span class='facilities'>${event.facilities || ''}<br/>
+                        ${startTime} - ${endTime}</span>`
+                    );
                 }
             } else {
                 return false;
             }
         },
+        
         eventClick: function(event, jsEvent, view) {
             $('#eventTitle').text(event.title);
             $('#eventFacilities').text(event.facilities);

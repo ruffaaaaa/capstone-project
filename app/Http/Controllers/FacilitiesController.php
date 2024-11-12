@@ -19,18 +19,18 @@ class FacilitiesController extends Controller
 
     public function listFacilities($role_id)
     {
-        
         $user = Auth::user();
 
         if ($user->role_id != $role_id) {
             abort(403, 'Unauthorized action.');
         }
 
-        $facilities = Facilities::all();
+        $facilities = Facilities::paginate(10);
         $signature = AdminSignature::where('admin_id', $user->id)->first();
 
         return view('dashboard.aa.facilities', compact('facilities', 'user', 'signature', 'role_id'));
     }
+
 
     public function addFacility(Request $request)
     {
@@ -93,44 +93,40 @@ class FacilitiesController extends Controller
    
 
     public function getUnavailableDates(Request $request)
-{
-    // Get multiple facility IDs
-    $facilityIds = explode(',', $request->query('facilityIds'));
-    $eventStartDate = \Carbon\Carbon::parse($request->query('eventStartDate'))->setTimezone('UTC');
-    $eventEndDate = \Carbon\Carbon::parse($request->query('eventEndDate'))->setTimezone('UTC');
+    {
+        $facilityIds = explode(',', $request->query('facilityIds'));
+        $eventStartDate = \Carbon\Carbon::parse($request->query('eventStartDate'))->setTimezone('UTC');
+        $eventEndDate = \Carbon\Carbon::parse($request->query('eventEndDate'))->setTimezone('UTC');
 
-    // Fetch reservations for the selected facilities that overlap with the event date-time range
-    $unavailableReservations = ReservationDetails::whereHas('facilities', function($query) use ($facilityIds) {
-            $query->whereIn('facilities.facilityID', $facilityIds);
-        })
-        ->whereHas('reservee.reservationApproval', function($query) {
-            $query->where('final_status', 'Approved');
-        })
-        ->where(function($query) use ($eventStartDate, $eventEndDate) {
-            $query->whereBetween('reservation_details.event_start_date', [$eventStartDate, $eventEndDate])
-                  ->orWhereBetween('reservation_details.event_end_date', [$eventStartDate, $eventEndDate])
-                  ->orWhere(function($q) use ($eventStartDate, $eventEndDate) {
-                      $q->where('reservation_details.event_start_date', '<', $eventStartDate)
-                        ->where('reservation_details.event_end_date', '>', $eventEndDate);
-                  });
-        })
-        ->get(['event_start_date', 'event_end_date']);
+        $unavailableReservations = ReservationDetails::whereHas('facilities', function($query) use ($facilityIds) {
+                $query->whereIn('facilities.facilityID', $facilityIds);
+            })
+            ->whereHas('reservee.reservationApproval', function($query) {
+                $query->where('final_status', 'Approved');
+            })
+            ->where(function($query) use ($eventStartDate, $eventEndDate) {
+                $query->whereBetween('reservation_details.event_start_date', [$eventStartDate, $eventEndDate])
+                    ->orWhereBetween('reservation_details.event_end_date', [$eventStartDate, $eventEndDate])
+                    ->orWhere(function($q) use ($eventStartDate, $eventEndDate) {
+                        $q->where('reservation_details.event_start_date', '<', $eventStartDate)
+                            ->where('reservation_details.event_end_date', '>', $eventEndDate);
+                    });
+            })
+            ->get(['event_start_date', 'event_end_date']);
 
-    // Generate full range of unavailable datetimes for each reservation
-    $unavailableDatetimes = [];
-    foreach ($unavailableReservations as $reservation) {
-        $start = \Carbon\Carbon::parse($reservation->event_start_date);
-        $end = \Carbon\Carbon::parse($reservation->event_end_date);
+        $unavailableDatetimes = [];
+        foreach ($unavailableReservations as $reservation) {
+            $start = \Carbon\Carbon::parse($reservation->event_start_date);
+            $end = \Carbon\Carbon::parse($reservation->event_end_date);
 
-        while ($start <= $end) {
-            $unavailableDatetimes[] = $start->toISOString(); // Add each datetime in the range
-            $start->addMinutes(30); // Add 30-minute increments
+            while ($start <= $end) {
+                $unavailableDatetimes[] = $start->toISOString(); 
+                $start->addMinutes(30); 
+            }
         }
-    }
 
-    // Return unavailable datetimes as JSON response
-    return response()->json(['unavailableDatetimes' => $unavailableDatetimes]);
-}
+        return response()->json(['unavailableDatetimes' => $unavailableDatetimes]);
+    }
 
 
 

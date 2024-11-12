@@ -13,7 +13,7 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
     <link href="/css/calendarcustom.css" rel="stylesheet">
-    <link href="fullcalendar.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -38,6 +38,20 @@
             </div>
             <div >
                 <div class="relative inline-block mt-2 mb-2 w-full">
+                    <div class="relative inline-block text-left mt-2 mb-2">
+                        <div>
+                            <span class="bg-[#f51161] rounded-full h-3 w-3 inline-block"></span>
+                            <span>Event</span>
+                        </div>
+                        <div>
+                            <span class="bg-[#38baa2] rounded-full h-3 w-3 inline-block"></span>
+                            <span>Preparation</span>
+                        </div>
+                        <div>
+                            <span class="bg-[#2792b0] rounded-full h-3 w-3 inline-block"></span>
+                            <span>Clean-up</span>
+                        </div>
+                    </div>
                     <label for="scheduleFilter" class="block text-sm font-medium text-gray-700 mb-1">Schedule:</label>
                     <div class="relative">
                         <select id="scheduleFilter" class="text-xs block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterEvents(this.value)">
@@ -87,7 +101,6 @@
             </div>
         </div>
 
-        <!-- Modal -->
         <div id="eventModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full max-md:mx-4">
                 <div class="flex gap-2 justify-between items-center font-bold mb-4 ">
@@ -110,6 +123,6 @@
 
    
 </body>
-    <script src="/js/userCalendar.js"></script>
+    <script src="/js/calendar.js"></script>
 </html>
 

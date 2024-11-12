@@ -82,7 +82,7 @@ class AuthenticationController extends Controller
         $user = Auth::user();
         $signature = AdminSignature::where('admin_id', $user->id)->first();
 
-        return compact('pendingRequestsCount', 'reservations', 'user', 'signature');
+        return compact('pendingRequestsCount', 'reservations', 'user');
     }
 
 

@@ -2,8 +2,8 @@ let unavailableDates = [];
 
 function updateDatePicker() {
     flatpickr("#date-input", {
-        enable: [], // Allow all dates initially
-        disable: unavailableDates.map(date => new Date(date)), // Disable unavailable dates
+        enable: [],
+        disable: unavailableDates.map(date => new Date(date)), 
     });
 }
 
@@ -14,7 +14,7 @@ function fetchUnavailableDates() {
         .map(checkbox => checkbox.value)
         .join(',');
 
-    const eventStartDate = document.getElementById('event-start-date').value; // Capture the selected date
+    const eventStartDate = document.getElementById('event-start-date').value; 
     console.log("Selected Facilities:", selectedFacilities);
     console.log("Event Start Date:", eventStartDate);
 
@@ -24,23 +24,19 @@ function fetchUnavailableDates() {
             .then(data => {
                 console.log("API Response:", data);
                 
-                // Expecting only Approved dates
                 if (data.unavailableDates) {
                     console.log("Received unavailable dates (Approved only):", data.unavailableDates);
                 } else {
                     console.log("No unavailable dates found or API response format unexpected.");
                 }
 
-                unavailableDates = data.unavailableDates || []; // Store unavailable dates
+                unavailableDates = data.unavailableDates || []; 
                 updateDatePicker();
 
-                // Convert the selected date to a Date object
-                const selectedDateObj = new Date(eventStartDate + "Z"); // Treat as UTC by appending 'Z'
+                const selectedDateObj = new Date(eventStartDate + "Z"); 
 
-                // Convert unavailable dates to Date objects
                 const unavailableDateObjects = unavailableDates.map(date => new Date(date));
 
-                // Check if the selected date matches any unavailable date
                 const isDateUnavailable = unavailableDateObjects.some(unavailableDate =>
                     unavailableDate.getTime() === selectedDateObj.getTime()
                 );
@@ -49,7 +45,7 @@ function fetchUnavailableDates() {
 
                 if (isDateUnavailable) {
                     alert('Sorry, this date is unavailable for the selected facility. Please select another date.');
-                    document.getElementById('event-start-date').value = ''; // Clear the date input
+                    document.getElementById('event-start-date').value = '';
                 } else {
                     console.log('Date is available.');
                 }
@@ -63,8 +59,8 @@ document.querySelectorAll('.facility-checkbox').forEach(checkbox => {
 });
 
 document.getElementById('event-start-date').addEventListener('change', function() {
-    const eventStartDate = this.value; // Capture the selected date
-    console.log("Event Start Date Selected:", eventStartDate); // Log it for debugging
-    fetchUnavailableDates(); // Fetch unavailable dates when the date changes
+    const eventStartDate = this.value; 
+    console.log("Event Start Date Selected:", eventStartDate);
+    fetchUnavailableDates(); 
 });
 

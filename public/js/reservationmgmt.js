@@ -14,7 +14,7 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('name').innerText = event_name;
     document.getElementById('max').innerText = max_attendees;
     document.getElementById('facilityNames').innerText = facilityNames;
-    document.getElementById('confirmation').innerText = confirmation ? '(Confirmed)' : '';
+    document.getElementById('confirmation').innerText = (confirmation === '1') ? '(Confirmed)' : '';
 
     document.getElementById('endorser_name').innerText = endorser_name || '';
 
@@ -139,6 +139,4 @@ function openStatus(button) {
 function closeStatus() {
     document.getElementById('updateModal').classList.add('hidden');
 }
-
-//email
 
