@@ -1,5 +1,5 @@
-function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing,confirmation, endorser_name,final_status, facilityNames, event_start_date, event_end_date,
-    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no,  eastSignatureUrl, cissoSignatureUrl, gsoSignatureUrl, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus,attachmentObjects
+function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, confirmation, endorser_name, final_status, facilityNames, event_start_date, event_end_date,
+    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus, attachmentObjects
 ) {
     
     const modal = document.getElementById('viewModal');
@@ -18,15 +18,10 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
 
     document.getElementById('endorser_name').innerText = endorser_name || '';
 
-    document.getElementById('eastSignatureImage').innerText = eastApprovalStatus === 'Approved' ? '(Approved)' : '';
-    document.getElementById('cissoSignatureImage').innerText = cissoApprovalStatus === 'Approved' ? '(Approved)' : '';
-    document.getElementById('gsoSignatureImage').innerText = gsoApprovalStatus === 'Approved' ? '(Approved)' : '';
+    document.getElementById('eastSignatureStatus').innerText = eastApprovalStatus === 'Approved' ? '(Approved)' : '';
+    document.getElementById('cissoSignatureStatus').innerText = cissoApprovalStatus === 'Approved' ? '(Approved)' : '';
+    document.getElementById('gsoSignatureStatus').innerText = gsoApprovalStatus === 'Approved' ? '(Approved)' : '';
 
-    document.getElementById('eastSignatureImage').style.display = 'block';
-
-    document.getElementById('eastSignatureImage').style.display = 'block';
-    document.getElementById('cissoSignatureImage').style.display = 'block';
-    document.getElementById('gsoSignatureImage').style.display = 'block';
 
 
 

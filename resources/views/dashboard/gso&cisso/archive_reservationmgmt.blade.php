@@ -114,8 +114,6 @@
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Event Name</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Facility</th>
-                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Status</th>
-
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Final Status</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
@@ -144,11 +142,6 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
                                             {{ $detailsGroup->pluck('facilityName')->unique()->implode(', ') }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            @foreach($sortedDetailsGroup as $detail)
-                                                {{ $detail->role_name }} - {{ $detail->approval_status }}<br>
-                                            @endforeach
-                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
                                             <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
@@ -165,9 +158,6 @@
                                                         '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', 
                                                         '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
                                                         '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}',
-                                                        '{{ $east && $east->signature_file ? Storage::url($east->signature_file) : '' }}',
-                                                        '{{ $cisso && $cisso->signature_file ? Storage::url($cisso->signature_file) : '' }}',
-                                                        '{{ $gso && $gso->signature_file ? Storage::url($gso->signature_file) : '' }}',
                                                         '{{ $east->approval_status ?? '' }}',
                                                         '{{ $cisso->approval_status ?? '' }}',
                                                         '{{ $gso->approval_status ?? '' }}',
@@ -181,6 +171,14 @@
                                                     onclick="openStatus(this)">
                                                 Update
                                             </button>
+
+                                            <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
+                                                    Delete
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     @endif
@@ -348,7 +346,7 @@
                                         <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">AA</td>
                                         <td colspan="2" class=" w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
-                                                <span class="text-xs font-bold" id=eastSignatureImage></span>
+                                                <span class="text-xs font-bold" id=eastSignatureStatus></span>
                                                 <p>Ms. JAMAICA QUEZON</p>
                                             </div>
                                         </td>
@@ -359,7 +357,7 @@
                                         <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
                                         <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
-                                                <span class="text-xs font-bold" id=cissoSignatureImage></span>
+                                                <span class="text-xs font-bold" id=cissoSignatureStatus></span>
                                                 <p>Engr. ESMAEL LARUBIS</p>
                                             </div>
                                         </td>
@@ -370,7 +368,7 @@
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">GSO Director</td>
                                         <td colspan="2" class="border border-black px-2 py-2">
                                             <div class="text-center">
-                                                <span class="text-xs font-bold" id=gsoSignatureImage></span>
+                                                <span class="text-xs font-bold" id=gsoSignatureStatus></span>
                                                 <p>Ms. LEONILA DOLOR</p>
                                             </div>
                                         </td>

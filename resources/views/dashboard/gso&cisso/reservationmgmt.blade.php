@@ -211,30 +211,38 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
-                                            <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
-                                                    onclick="openModal('{{ $detailsGroup->first()->reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
-                                                        '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', 
-                                                        '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
-                                                        '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', '{{ $detailsGroup->first()->endorser_name }}', 
-                                                        '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
-                                                        '{{ $detailsGroup->first()->event_start_date }}', '{{ $detailsGroup->first()->event_end_date }}', 
-                                                        '{{ $detailsGroup->first()->preparation_start_date }}', '{{ $detailsGroup->first()->preparation_end_date_time }}', 
-                                                        '{{ $detailsGroup->first()->cleanup_start_date_time }}', '{{ $detailsGroup->first()->cleanup_end_date_time }}',
-                                                        '{{ $detailsGroup->first()->event_name }}', '{{ $detailsGroup->first()->max_attendees }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}',
-                                                        '{{ $east && $east->signature_file ? Storage::url($east->signature_file) : '' }}',
-                                                        '{{ $cisso && $cisso->signature_file ? Storage::url($cisso->signature_file) : '' }}',
-                                                        '{{ $gso && $gso->signature_file ? Storage::url($gso->signature_file) : '' }}',
-                                                        '{{ $east->approval_status ?? '' }}',
-                                                        '{{ $cisso->approval_status ?? '' }}',
-                                                        '{{ $gso->approval_status ?? '' }}',
-                                                        '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}'
-                                                    )">
-                                                View
-                                            </button>
+                                        <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
+                                            onclick="openModal(
+                                                '{{ $detailsGroup->first()->reserveeID }}', 
+                                                '{{ addslashes($detailsGroup->first()->reserveeName) }}', 
+                                                '{{ addslashes($detailsGroup->first()->person_in_charge_event) }}', 
+                                                '{{ addslashes($detailsGroup->first()->contact_details) }}', 
+                                                '{{ addslashes($detailsGroup->first()->unit_department_company) }}', 
+                                                '{{ $detailsGroup->first()->date_of_filing }}', 
+                                                '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', 
+                                                '{{ addslashes($detailsGroup->first()->endorser_name) }}', 
+                                                '{{ addslashes($detailsGroup->first()->final_status) }}', 
+                                                '{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
+                                                '{{ $detailsGroup->first()->event_start_date }}', 
+                                                '{{ $detailsGroup->first()->event_end_date }}', 
+                                                '{{ $detailsGroup->first()->preparation_start_date }}', 
+                                                '{{ $detailsGroup->first()->preparation_end_date_time }}', 
+                                                '{{ $detailsGroup->first()->cleanup_start_date_time }}', 
+                                                '{{ $detailsGroup->first()->cleanup_end_date_time }}',
+                                                '{{ addslashes($detailsGroup->first()->event_name) }}', 
+                                                '{{ $detailsGroup->first()->max_attendees }}', 
+                                                '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
+                                                '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', 
+                                                '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
+                                                '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}', 
+                                                '{{ $east->approval_status ?? '' }}', 
+                                                '{{ $cisso->approval_status ?? '' }}', 
+                                                '{{ $gso->approval_status ?? '' }}', 
+                                                '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}'
+                                            )">
+                                            View
+                                        </button>
+
 
                                             <button class="border-solid border-1 border-gray-500 text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
                                                     data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $detailsGroup->first()->reserveeID }}"
@@ -383,7 +391,7 @@
                                         <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">AA</td>
                                         <td colspan="2" class=" w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
-                                                <span class="text-xs font-bold" id=eastSignatureImage></span>
+                                                <span class="text-xs font-bold" id=eastSignatureStatus></span>
                                                 <p>Ms. JAMAICA QUEZON</p>
                                             </div>
                                         </td>
@@ -394,7 +402,7 @@
                                         <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
                                         <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
-                                                <span class="text-xs font-bold" id=cissoSignatureImage></span>
+                                                <span class="text-xs font-bold" id=cissoSignatureStatus></span>
                                                 <p>Engr. ESMAEL LARUBIS</p>
                                             </div>
                                         </td>
@@ -405,7 +413,7 @@
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">GSO Director</td>
                                         <td colspan="2" class="border border-black px-2 py-2">
                                             <div class="text-center">
-                                                <span class="text-xs font-bold" id=gsoSignatureImage></span>
+                                                <span class="text-xs font-bold" id=gsoSignatureStatus></span>
                                                 <p>Ms. LEONILA DOLOR</p>
                                             </div>
                                         </td>

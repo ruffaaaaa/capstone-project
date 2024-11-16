@@ -80,7 +80,6 @@ class AuthenticationController extends Controller
             ->get();
 
         $user = Auth::user();
-        $signature = AdminSignature::where('admin_id', $user->id)->first();
 
         return compact('pendingRequestsCount', 'reservations', 'user');
     }

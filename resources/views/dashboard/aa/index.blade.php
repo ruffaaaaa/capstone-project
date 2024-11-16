@@ -130,12 +130,13 @@
                         </div>
                         @php
                             $filteredReservations = $reservations->filter(function ($reservation) {
-                                return \Carbon\Carbon::parse($reservation->event_end_date)->isFuture() &&
+                                return \Carbon\Carbon::parse($reservation->event_end_date)->isAfter(\Carbon\Carbon::now()) &&
                                     $reservation->reservee &&
                                     $reservation->reservee->reservationApproval &&
                                     $reservation->reservee->reservationApproval->final_status === 'Approved';
                             })->sortBy('event_start_date')->take(3);
                         @endphp
+
 
                         @foreach($filteredReservations as $reservation)
                             @php

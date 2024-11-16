@@ -243,7 +243,6 @@ document.addEventListener("DOMContentLoaded", function() {
         let valid = true;
         let inputs;
     
-        // Hide all alerts initially
         facilitiesAlert.classList.add('hidden');
         equipmentAlert.classList.add('hidden');
         customerDetailsAlert.classList.add('hidden');
@@ -252,7 +251,6 @@ document.addEventListener("DOMContentLoaded", function() {
         endorserError.classList.add('hidden');
         endorserEmailError.classList.add('hidden');
     
-        // Helper function to add focus and input event listeners to show alerts
         function addAlertListeners(input, alertElement) {
             input.addEventListener('focus', () => alertElement.classList.remove('hidden'));
             input.addEventListener('input', () => {
@@ -265,10 +263,11 @@ document.addEventListener("DOMContentLoaded", function() {
         switch (currentStep) {
             case 1:
                 inputs = facilitiesForm.querySelectorAll('input[required]');
-                if (inputs.length && !validateCheckboxes(facilitiesForm)) {
+                if (!validateCheckboxes(facilitiesForm)) {
                     facilitiesAlert.classList.remove('hidden');
                     valid = false;
-                    inputs.forEach(input => addAlertListeners(input, facilitiesAlert));
+                } else {
+                    facilitiesAlert.classList.add('hidden');
                 }
                 break;
     
@@ -291,10 +290,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     inputs.forEach(input => addAlertListeners(input, customerDetailsAlert));
                 }
     
-                // Additional validations for student-specific inputs
                 const isStudent = document.getElementById('studentRadio').checked;
                 const endorserInput = document.getElementById('email');
                 const endorserEmailInput = document.getElementById('endorser_email');
+
+                const radioErrorText = document.getElementById('radioErrorText');
+                if (!document.querySelector('input[name="userType"]:checked')) {
+                    radioErrorText.classList.remove('hidden');
+                    valid = false;
+                } else {
+                    radioErrorText.classList.add('hidden');
+                }
     
                 if (isStudent) {
                     if (!endorserInput.value.trim()) {
@@ -316,7 +322,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
     
-                // Validate CAPTCHA
                 if (grecaptcha.getResponse().length === 0) {
                     captchaErrorText.classList.remove('hidden');
                     valid = false;
@@ -337,43 +342,38 @@ document.addEventListener("DOMContentLoaded", function() {
         let allValid = true;
     
         inputs.forEach(input => {
-            const requiredText = input.previousElementSibling; // Get the required text before the input
-            const emailErrorText = input.nextElementSibling; // Get the email error message (span)
+            const requiredText = input.previousElementSibling; 
+            const emailErrorText = input.nextElementSibling; 
     
             if (!input.value.trim()) {
                 allValid = false;
                 input.classList.add('border-red-500');
     
-                // Check if requiredText exists and is the required text element
                 if (requiredText && requiredText.classList.contains('required-text')) {
-                    requiredText.classList.remove('hidden'); // Show the required text
+                    requiredText.classList.remove('hidden'); 
                 }
     
-                // Hide the email error message if the input is empty
                 if (emailErrorText) {
-                    emailErrorText.classList.add('hidden'); // Hide email error message
+                    emailErrorText.classList.add('hidden'); 
                 }
             } else {
                 input.classList.remove('border-red-500');
     
-                // Check if requiredText exists and is the required text element
                 if (requiredText && requiredText.classList.contains('required-text')) {
-                    requiredText.classList.add('hidden'); // Hide the required text
+                    requiredText.classList.add('hidden'); 
                 }
     
-                // Email validation
                 if (input.id === 'email' || input.id === 'endorser_email') {
                     if (!validateEmailDomain(input.value)) {
                         allValid = false;
-                        input.classList.add('border-red-500'); // Add a red border if the email is invalid
-                        emailErrorText.classList.remove('hidden'); // Show the custom email error message
+                        input.classList.add('border-red-500'); 
+                        emailErrorText.classList.remove('hidden'); 
                     } else {
-                        emailErrorText.classList.add('hidden'); // Hide the email error message if valid
+                        emailErrorText.classList.add('hidden'); 
                     }
                 } else {
-                    // Hide email error message for other inputs
                     if (emailErrorText) {
-                        emailErrorText.classList.add('hidden'); // Ensure it is hidden for other inputs
+                        emailErrorText.classList.add('hidden'); 
                     }
                 }
             }
@@ -434,7 +434,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function showModal() {
         var modal = document.getElementById('myModal');
     
-        // Set the message directly in the modal        
         modal.style.display = 'block';
     }
     
@@ -458,32 +457,29 @@ document.addEventListener("DOMContentLoaded", function() {
     
 });
 document.addEventListener('DOMContentLoaded', function() {
-    // Validate Email Domain for Reservee and Endorser Email
     const emailInput = document.getElementById('email');
     const endorserEmailInput = document.getElementById('endorser_email');
     
-    // Email Validation for Reservee
     emailInput.addEventListener('input', function() {
         const emailValue = emailInput.value;
         
         if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(emailValue)) {
-            emailInput.setCustomValidity(''); // Reset custom validity message
+            emailInput.setCustomValidity(''); 
         } else {
-            emailInput.setCustomValidity('Please use your LSU email address.'); // Set custom validity message
+            emailInput.setCustomValidity('Please use your LSU email address.'); 
         }
     });
 
-    // Email Validation for Endorser Email
     endorserEmailInput.addEventListener('input', function() {
         const endorserEmailValue = endorserEmailInput.value;
-        const emailErrorText = endorserEmailInput.nextElementSibling; // Get the error message span
+        const emailErrorText = endorserEmailInput.nextElementSibling; 
         
         if (/^[a-zA-Z0-9._%+-]+@lsu\.edu\.ph$/.test(endorserEmailValue)) {
-            endorserEmailInput.setCustomValidity('');  // Reset custom validity message
-            emailErrorText.classList.add('hidden');  // Hide the error message
+            endorserEmailInput.setCustomValidity(''); 
+            emailErrorText.classList.add('hidden');  
         } else {
             endorserEmailInput.setCustomValidity('Please use your LSU email address.');
-            emailErrorText.classList.remove('hidden');  // Show the error message
+            emailErrorText.classList.remove('hidden'); 
         }
     });
 });
@@ -493,10 +489,8 @@ function validateEmails() {
     const endorserEmailValue = endorserEmailInput.value.trim();
     let valid = true;
 
-    // Check if email and endorser email are the same
     if (emailValue && endorserEmailValue && emailValue === endorserEmailValue) {
         valid = false;
-        // Display alert message
         alert("Email and Endorser Email must be different.");
     }
 

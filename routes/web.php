@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ReservationMgmtController;
+
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\Controller;
+
 use App\Models\Facilities;
 use App\Models\User;
 use App\Models\AdminSignature;
@@ -34,10 +37,10 @@ Route::middleware(['auth', 'role:1,2,3'])->group(function () {
     Route::get('/{role_id}/admin-facilities', [FacilitiesController::class, 'listFacilities'])->name('admin.facilities');
     Route::get('/{role_id}/admin-reservation', [ReservationController::class, 'listReservations'])->name('admin.reservation');
     Route::get('/{role_id}/archive-reservation', [ReservationController::class, 'listArchiveReservations'])->name('admin.archive_reservation');
-    Route::delete('/{role_id}/admin-reservation/{reservedetailsID}', [ReservationController::class, 'deleteReservation'])->name('reservation.destroy');
+    Route::delete('/{role_id}/admin-reservation/{reservedetailsID}', [ReservationMgmtController::class, 'deleteReservation'])->name('reservation.destroy');
     Route::get('/{role_id}/admin-calendar', [CalendarController::class, 'showCalendar'])->name('dashboard.calendar');
     Route::put('/profile/update/{role_id}/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update');
-    Route::post('/{role_id}/admin-reservation/approvals', [ReservationController::class, 'updateApproval'])->name('admin.approvals.store');
+    Route::post('/{role_id}/admin-reservation/approvals', [ReservationMgmtController::class, 'updateApproval'])->name('admin.approvals.store');
 });
 
 Route::post('/facilities/save', [FacilitiesController::class, 'addFacility'])->name('facility.save');
@@ -46,7 +49,7 @@ Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'deleteF
 Route::get('/reservationsQuery', [CalendarController::class, 'getReservationsByRole'])->name('dashboard.reservations');
 
 Route::get('/fetchReservations', [CalendarController::class, 'getUserReservations']);
-Route::post('/admin/send-reservee-email', [ReservationController::class, 'sendReserveeEmail'])->name('admin.sendReserveeEmail');
+Route::post('/admin/send-reservee-email', [ReservationMgmtController::class, 'sendReserveeEmail'])->name('admin.sendReserveeEmail');
 
 
 Route::get('/cancel-reservation/{reserveeID}', [ReservationController::class, 'cancelReservation'])->name('cancel.reservation');
@@ -55,7 +58,7 @@ Route::post('/update-status', [ReservationController::class, 'updateStatus'])->n
 
 Route::get('/facilitiesQuery', [CalendarController::class, 'getFacilitiesByRole'])->name('dashboard.facilities');
 
-Route::get('/confirmation/{token}', [ReservationController::class, 'confirmEndorsement'])->name('confirm.endorsement');
+Route::get('/confirmation/{token}', [ReservationMgmtController::class, 'confirmEndorsement'])->name('confirm.endorsement');
 
 Route::get('/calendar', [CalendarController::class, 'showCalendarPage'])->name('calendar');
 

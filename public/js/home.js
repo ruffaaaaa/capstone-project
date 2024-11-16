@@ -38,7 +38,7 @@ $(document).ready(function() {
                 data.adminStatuses.forEach(function(admin) {
                     const role = admin.admin; 
                     const status = admin.status ? admin.status : 'No status available'; 
-                    adminList.append(`<li>${role} - ${status}</li>`); 
+                    adminList.append(`<li style="margin-left:15px;">${role} - ${status}</li>`);
                 });
 
                 adminList.removeClass('hidden');

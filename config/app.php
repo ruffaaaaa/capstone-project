@@ -214,4 +214,7 @@ return [
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
     ])->toArray(),
 
+    'timezone' => 'Asia/Manila',
+
+
 ];

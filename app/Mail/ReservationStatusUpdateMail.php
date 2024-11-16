@@ -12,30 +12,30 @@ class ReservationStatusUpdateMail extends Mailable
     use Queueable, SerializesModels;
 
     public $reservationApproval;
-    public $status;
+    public $approval_status; // Add this line
     public $eventName;
     public $note;
     public $adminList;
-    public $admin; // The admin who updated the status
+    public $admin; 
 
     /**
-     * Create a new message instance.
      *
-     * @param  mixed  $reservationApproval
-     * @param  string $status
-     * @param  string $eventName
-     * @param  string|null $note
-     * @param  array $adminList
-     * @param  Admin $admin
+     * @param  mixed 
+     * @param  string 
+     * @param  string
+     * @param  string|null 
+     * @param  array 
+     * @param  Admin 
      */
-    public function __construct($reservationApproval, $status, $eventName, $note = null, $adminList, $admin)
+    public function __construct($reservationApproval, $approval_status, $eventName, $note = null, $adminList, $admin)
     {
         $this->reservationApproval = $reservationApproval;
-        $this->status = $status;
+        $this->approval_status = $approval_status; // Pass the status here
+        $this->eventName = $eventName;
+        $this->note = $note;
         $this->adminList = $adminList;
-        $this->admin = $admin;  // Store the admin who updated the status
+        $this->admin = $admin;
     }
-
     /**
      * Build the message.
      *
@@ -46,9 +46,11 @@ class ReservationStatusUpdateMail extends Mailable
         return $this->view('emails.reservation_status_update')
                     ->with([
                         'reservationApproval' => $this->reservationApproval,
-                        'status' => $this->status,
+                        'approval_status' => $this->approval_status,
+                        'eventName' => $this->eventName,
                         'adminList' => $this->adminList,
-                        'admin' => $this->admin,  // Pass the admin who updated the status to the view
+                        'admin' => $this->admin,  
                     ]);
     }
+
 }

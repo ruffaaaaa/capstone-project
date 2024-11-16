@@ -57,12 +57,10 @@ class User extends Authenticatable
 
     public function role()
     {
-        // Belongs to a specific AdminRole with role_id as the foreign key
         return $this->belongsTo(AdminRoles::class, 'role_id', 'id');
     }
     public function approvals()
     {
-        // One user (admin) can have many approvals
         return $this->hasMany(AdminApprovals::class, 'admin_id', 'id');
     }
 }

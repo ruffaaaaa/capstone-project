@@ -14,7 +14,7 @@ class CalendarController extends Controller
     private function getUserSignature()
     {
         $user = Auth::user();
-        return ['user' => $user, 'signature' => AdminSignature::where('admin_id', $user->id)->first()];
+        return ['user' => $user];
     }
 
     private function getReservations()

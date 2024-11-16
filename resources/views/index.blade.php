@@ -112,12 +112,13 @@
 
                     @php
                         $filteredReservations = $reservations->filter(function ($reservation) {
-                            return \Carbon\Carbon::parse($reservation->event_end_date)->isFuture() &&
+                            return \Carbon\Carbon::parse($reservation->event_end_date)->isAfter(\Carbon\Carbon::now()) &&
                                 $reservation->reservee &&
                                 $reservation->reservee->reservationApproval &&
                                 $reservation->reservee->reservationApproval->final_status === 'Approved';
                         })->sortBy('event_start_date')->take(3);
                     @endphp
+
 
                     @foreach($filteredReservations as $reservation)
                         @php
@@ -319,13 +320,13 @@
                     </button>
                 </div>
 
-                <div id="admin-approvals-header" class="mt-3 hidden"> <!-- Header hidden initially -->
+                <div id="admin-approvals-header" class="mt-3 hidden"> 
                     <h6>ADMIN APPROVALS</h6>
-                    <ul id="admin-approvals-list" class="list-disc list-inside hidden"> <!-- List hidden initially -->
+                    <ul id="admin-approvals-list" class="list-disc list-inside hidden"> 
                     </ul>
                 </div>
 
-                <div id="reservation-status-header" class="mt-3 hidden"> <!-- Header hidden initially -->
+                <div id="reservation-status-header" class="mt-3 hidden"> 
                     <h6>RESERVATION STATUS:
                         <span id="reservation-status" class="font-semibold"> </span>
                     </h6>

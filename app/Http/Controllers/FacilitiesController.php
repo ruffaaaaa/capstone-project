@@ -26,9 +26,8 @@ class FacilitiesController extends Controller
         }
 
         $facilities = Facilities::paginate(10);
-        $signature = AdminSignature::where('admin_id', $user->id)->first();
 
-        return view('dashboard.aa.facilities', compact('facilities', 'user', 'signature', 'role_id'));
+        return view('dashboard.aa.facilities', compact('facilities', 'user', 'role_id'));
     }
 
 
