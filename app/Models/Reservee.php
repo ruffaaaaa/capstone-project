@@ -32,8 +32,4 @@ class Reservee extends Model
     {
         return $this->hasOne(ReservationApprovals::class, 'reserveeID', 'reserveeID');
     }
-
-    
-
-    
 }

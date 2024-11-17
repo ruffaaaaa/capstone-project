@@ -319,21 +319,37 @@
                         Search
                     </button>
                 </div>
+                <div class=" p-2">
+                    <div id="event-details" class="mt-3 hidden">
+                        <div class="text-center font-bold "><p class="font-sm">EVENT DETAILS</p></div>
+                        <p>Event Name: <span id="event-name" class="font-semibold"></span></p>
+                        <p>Event Dates: <span id="event-start-date" class="font-semibold"></span></p>
+                        <p>Event Time: <span id="event-start-time" class="font-semibold"></span></p>
+                    </div>
 
-                <div id="admin-approvals-header" class="mt-3 hidden"> 
-                    <h6>ADMIN APPROVALS</h6>
-                    <ul id="admin-approvals-list" class="list-disc list-inside hidden"> 
-                    </ul>
-                </div>
+                    <div id="chosen-facilities-header" class="hidden flex">
+                        <h6>Facility:</h6>
+                        <p id="chosen-facilities" class="font-semibold ml-2"></p>
+                    </div>
 
-                <div id="reservation-status-header" class="mt-3 hidden"> 
-                    <h6>RESERVATION STATUS:
-                        <span id="reservation-status" class="font-semibold"> </span>
-                    </h6>
+                    <div id="admin-approvals-header" class="mt-3 hidden">
+                        <div class="text-center font-md font-bold">APPROVALS</div>
+                        <ul id="admin-approvals-list" class="list-disc list-inside hidden">
+                        </ul>
+                    </div>
+
+                    <div id="reservation-status-header" class="mt-3 hidden">
+                        <h6>RESERVATION STATUS:
+                            <span id="reservation-status" class="font-semibold"> </span>
+                        </h6>
+                    </div>
                 </div>
             </div>
+            <div id="error-message" class="text-red-500 hidden text-center flex justify-center font-bold"></div>
+
         </div>
     </div>
+
 </body>
 
 <script src="/js/home.js"></script>

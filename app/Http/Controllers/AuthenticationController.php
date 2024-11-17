@@ -4,13 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\AdminSignature;
-
 use App\Models\ReservationDetails;
 use App\Models\ReservationApprovals;
 use App\Models\Reservee;
-
-
 
 class AuthenticationController extends Controller
 {

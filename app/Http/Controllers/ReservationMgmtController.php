@@ -1,33 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\ReservationDetails;
 use App\Models\SelectedFacilities;
-use App\Models\SupportPersonnels;
-use App\Models\Attachment;
-use App\Models\Facilities;
 use App\Models\Reservee;
 use App\Models\Endorser;
-use App\Models\Equipment;
-use App\Models\AdminSignature;
-use App\Models\User;
 use App\Models\AdminApprovals;
 use App\Models\ReservationApprovals;
-use App\Models\AdminRoles;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ReservationCodeMail;
-use App\Mail\EndorserNotificationMail;
 use App\Mail\ReservationStatusUpdateMail;
 use App\Mail\DenialNoteMail;
-
-
-
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+
 
 
 class ReservationMgmtController extends Controller

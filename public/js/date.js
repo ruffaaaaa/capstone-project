@@ -188,3 +188,43 @@ document.getElementById('event-start-date').addEventListener('input', checkEvent
 document.getElementById('event-end-date').addEventListener('input', checkEventFields);
 
 checkEventFields();
+
+function areSameDateTime(dateTime1, dateTime2) {
+    return new Date(dateTime1).getTime() === new Date(dateTime2).getTime();
+}
+
+function validateUniqueDateTimes() {
+    const eventStartDate = document.getElementById('event-start-date').value;
+    const eventEndDate = document.getElementById('event-end-date').value;
+    const preparationStartDate = document.getElementById('preparation-start-date').value;
+    const preparationEndDate = document.getElementById('preparation-end-date').value;
+    const cleanupStartDate = document.getElementById('cleanup-start-date').value;
+    const cleanupEndDate = document.getElementById('cleanup-end-date').value;
+
+    const fields = [
+        { id: 'event-start-date', value: eventStartDate, label: 'Event Start Date' },
+        { id: 'event-end-date', value: eventEndDate, label: 'Event End Date' },
+        { id: 'preparation-start-date', value: preparationStartDate, label: 'Preparation Start Date' },
+        { id: 'preparation-end-date', value: preparationEndDate, label: 'Preparation End Date' },
+        { id: 'cleanup-start-date', value: cleanupStartDate, label: 'Cleanup Start Date' },
+        { id: 'cleanup-end-date', value: cleanupEndDate, label: 'Cleanup End Date' }
+    ];
+
+    for (let i = 0; i < fields.length; i++) {
+        for (let j = i + 1; j < fields.length; j++) {
+            if (fields[i].value && fields[j].value && areSameDateTime(fields[i].value, fields[j].value)) {
+                alert(`${fields[i].label} cannot have the same date and time as ${fields[j].label}. Please update the values.`);
+                document.getElementById(fields[j].id).value = '';
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+document.getElementById('event-start-date').addEventListener('change', validateUniqueDateTimes);
+document.getElementById('event-end-date').addEventListener('change', validateUniqueDateTimes);
+document.getElementById('preparation-start-date').addEventListener('change', validateUniqueDateTimes);
+document.getElementById('preparation-end-date').addEventListener('change', validateUniqueDateTimes);
+document.getElementById('cleanup-start-date').addEventListener('change', validateUniqueDateTimes);
+document.getElementById('cleanup-end-date').addEventListener('change', validateUniqueDateTimes);

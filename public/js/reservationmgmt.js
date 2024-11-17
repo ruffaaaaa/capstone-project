@@ -9,7 +9,7 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('person').innerText = person_in_charge_event;
     document.getElementById('contact').innerText = contact_details;
     document.getElementById('unit').innerText = unit_department_company;
-    document.getElementById('date').innerText = date_of_filing;
+    document.getElementById('date').innerText = formatDate(date_of_filing);
     document.getElementById('status1').innerText = final_status;
     document.getElementById('name').innerText = event_name;
     document.getElementById('max').innerText = max_attendees;
@@ -56,6 +56,12 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
             attachmentContainer.textContent = "No attachments available";
         }
 
+        function formatDate(dateString) {
+            if (!dateString) return ''; 
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Intl.DateTimeFormat('en-US', options).format(date);
+        }
         const pnames = pname.split(', ');
         const ptotalNos = ptotal_no.split(', ');
         let personnelOutput = pnames.map((pname, index) => `${pname.trim()} - ${ptotalNos[index].trim()}`).join(', ');
@@ -107,17 +113,30 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
         });
     }
 
-//print button
 function openAndPrintModal() {
-    document.getElementById('viewModal').style.display = 'block';
-    window.print();
-    }
+    const modal = document.getElementById('viewModal');
+    const printButton = document.getElementById('printButton');
+    const closeButton = document.getElementById('closeButton');
 
-    document.getElementById('printButton').addEventListener('click', openAndPrintModal);
+    printButton.style.display = 'none';
+    closeButton.style.display = 'none';
 
-    document.getElementById('closeButton').addEventListener('click', function() {
+    modal.style.display = 'block';
+
+    setTimeout(() => {
+        window.print();
+
+        printButton.style.display = 'block';
+        closeButton.style.display = 'block';
+    }, 100);
+}
+
+document.getElementById('printButton').addEventListener('click', openAndPrintModal);
+
+document.getElementById('closeButton').addEventListener('click', function () {
     document.getElementById('viewModal').style.display = 'none';
-    });
+});
+
 
     
 function openStatus(button) {

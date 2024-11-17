@@ -8,21 +8,16 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationMgmtController;
 
 use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 
 use App\Models\Facilities;
 use App\Models\User;
 use App\Models\AdminSignature;
 
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
 
-Route::get('/', [Controller::class, 'dataforHomepage']);
+Route::get('/', [HomeController::class, 'homepage']);
 
-
-Route::get('/make-booking', [ReservationController::class, 'showBookingForm'])->name('booking.form');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -35,8 +30,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'role:1,2,3'])->group(function () {
     Route::get('/{role_id}/admin-facilities', [FacilitiesController::class, 'listFacilities'])->name('admin.facilities');
-    Route::get('/{role_id}/admin-reservation', [ReservationController::class, 'listReservations'])->name('admin.reservation');
-    Route::get('/{role_id}/archive-reservation', [ReservationController::class, 'listArchiveReservations'])->name('admin.archive_reservation');
+    Route::get('/{role_id}/admin-reservation/{isArchived?}', [ReservationController::class, 'listReservations'])
+    ->name('admin.reservation');
     Route::delete('/{role_id}/admin-reservation/{reservedetailsID}', [ReservationMgmtController::class, 'deleteReservation'])->name('reservation.destroy');
     Route::get('/{role_id}/admin-calendar', [CalendarController::class, 'showCalendar'])->name('dashboard.calendar');
     Route::put('/profile/update/{role_id}/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update');
@@ -48,7 +43,6 @@ Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'editFacili
 Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'deleteFacility'])->name('facilities.destroy');
 Route::get('/reservationsQuery', [CalendarController::class, 'getReservationsByRole'])->name('dashboard.reservations');
 
-Route::get('/fetchReservations', [CalendarController::class, 'getUserReservations']);
 Route::post('/admin/send-reservee-email', [ReservationMgmtController::class, 'sendReserveeEmail'])->name('admin.sendReserveeEmail');
 
 

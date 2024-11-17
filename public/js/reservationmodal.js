@@ -215,8 +215,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function handleSubmit() {
         const formData = new FormData(storeReservationForm);
+        const controller = new AbortController();
+        const signal = controller.signal;
     
         loadingSpinner.classList.remove('hidden');
+    
+        // Set a timeout to abort the fetch request if it takes too long
+        const timeout = setTimeout(() => {
+            controller.abort(); // Abort the fetch request
+            loadingSpinner.classList.add('hidden');
+            alert('The request took too long. Please try again.');
+        }, 15000); // Timeout set to 15 seconds
     
         fetch(storeReservationForm.action, {
             method: 'POST',
@@ -225,19 +234,36 @@ document.addEventListener("DOMContentLoaded", function() {
                 'Accept': 'application/json',
             },
             body: formData,
+            signal, 
         })
-        .then(response => response.json())
+        .then(response => {
+            clearTimeout(timeout); 
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             loadingSpinner.classList.add('hidden');
             if (data.message === 'Reservation saved successfully') {
-                showModal(); 
+                showModal();
+            } else {
+                alert('An error occurred: ' + (data.message || 'Unknown error'));
             }
         })
         .catch(error => {
+            clearTimeout(timeout); 
             loadingSpinner.classList.add('hidden');
-            console.error('Error:', error);
+    
+            if (error.name === 'AbortError') {
+                console.error('Fetch request was aborted:', error);
+            } else {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request. Please try again.');
+            }
         });
     }
+    
 
     function validateForm() {
         let valid = true;
@@ -452,10 +478,8 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.style.display = 'none';
         }
     }
-
-    
-    
 });
+
 document.addEventListener('DOMContentLoaded', function() {
     const emailInput = document.getElementById('email');
     const endorserEmailInput = document.getElementById('endorser_email');

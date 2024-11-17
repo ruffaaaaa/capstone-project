@@ -27,8 +27,6 @@ class ReservationApprovals extends Model
         return $this->belongsTo(AdminRoles::class, 'admin_id', 'id');
     }
 
-    
 
-    
 
 }

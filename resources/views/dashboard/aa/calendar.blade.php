@@ -264,7 +264,6 @@
     </main>
     <script src="/js/profile.js"></script>
     <script src="/js/calendar.js"></script>
-    <script src="/js/index.js"></script>
 
    
 </body>

@@ -49,7 +49,6 @@ $(document).ready(function() {
                 url: '/reservationsQuery',
                 method: 'GET',
                 success: function(data) {
-                    console.log("Event data:", data); 
                     var events = [];
                     $(data).each(function() {
                         var facilities = this.facilities ? this.facilities.map(f => f.facilityName).join(', ') : '';

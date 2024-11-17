@@ -28,7 +28,7 @@
                 <div class="mb-3">
                     <div class="relative flex justify-between items-center mt-2 mb-2 w-full">
                         <div class="flex gap-1.5 ">
-                            <a href="admin-reservation" class="mt-1.5">
+                        <a href="{{ route('admin.reservation', ['role_id' => $user->role_id, 'isArchived' => false]) }}" class="mt-1.5">
                                 <svg width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000">
 
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"/>
@@ -467,6 +467,8 @@
     
     <script src="/js/reservationmgmt.js"></script>
     <script src="/js/profile.js"></script>
+    <script src="/js/search.js"></script>
+
     <script>
         function toggleNoteField() {
         const status = document.getElementById('approval_status').value;

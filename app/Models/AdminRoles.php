@@ -16,7 +16,6 @@ class AdminRoles extends Model
     ];
     public function users()
     {
-        // One role can have many users
         return $this->hasMany(User::class, 'role_id', 'id');
     }
 

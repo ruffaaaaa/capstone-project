@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FacilitiesController;
+use App\Http\Controllers\CalendarController;
 
 
 /*
@@ -21,5 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/unavailable-dates', [FacilitiesController::class, 'getUnavailableDates']);
+Route::get('/unavailable-dates', [CalendarController::class, 'getUnavailableDates']);
 

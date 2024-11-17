@@ -10,7 +10,6 @@ use App\Models\Facilities;
 use App\Models\Reservee;
 use App\Models\Endorser;
 use App\Models\Equipment;
-use App\Models\AdminSignature;
 use App\Models\User;
 use App\Models\AdminApprovals;
 use App\Models\ReservationApprovals;
@@ -22,9 +21,6 @@ use App\Mail\ReservationCodeMail;
 use App\Mail\EndorserNotificationMail;
 use App\Mail\ReservationStatusUpdateMail;
 use App\Mail\DenialNoteMail;
-
-
-
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,204 +35,193 @@ class ReservationController extends Controller
         return view('make-reservation', compact('facilities'));
     }
 
+
     public function storeReservations(Request $request)
     {
-        $validatedData = $request->validate([
-            'nameofevent' => 'required',
-            'max-attendees' => 'required|numeric',
-            'event-start-date' => 'required|date_format:Y-m-d\TH:i',
-            'event-end-date' => 'required|date_format:Y-m-d\TH:i',
-            'preparation-start-date' => 'required|date_format:Y-m-d\TH:i',
-            'preparation-end-date' => 'required|date_format:Y-m-d\TH:i',
-            'cleanup-start-date' => 'required|date_format:Y-m-d\TH:i',
-            'cleanup-end-date' => 'required|date_format:Y-m-d\TH:i',
-            'reserveeName' => 'required',
-            'email' => 'required|email',
-            'person_in_charge_event' => 'required',
-            'contact_details' => 'required',
-            'unit_department_company' => 'required',
-            'date_of_filing' => 'required|date',
-            'endorsed_by' => 'nullable',
-        'endorser_email' => 'nullable|email',
-            'attachments.*' => 'nullable|file' 
+        DB::beginTransaction();
 
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'nameofevent' => 'required',
+                'max-attendees' => 'required|numeric',
+                'event-start-date' => 'required|date_format:Y-m-d\TH:i',
+                'event-end-date' => 'required|date_format:Y-m-d\TH:i',
+                'preparation-start-date' => 'required|date_format:Y-m-d\TH:i',
+                'preparation-end-date' => 'required|date_format:Y-m-d\TH:i',
+                'cleanup-start-date' => 'required|date_format:Y-m-d\TH:i',
+                'cleanup-end-date' => 'required|date_format:Y-m-d\TH:i',
+                'reserveeName' => 'required',
+                'email' => 'required|email',
+                'person_in_charge_event' => 'required',
+                'contact_details' => 'required',
+                'unit_department_company' => 'required',
+                'date_of_filing' => 'required|date',
+                'endorsed_by' => 'nullable',
+                'endorser_email' => 'nullable|email',
+                'attachments.*' => 'nullable|file'
+            ]);
 
-        $eventStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-start-date'])->format('Y-m-d H:i:s');
-        $eventEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-end-date'])->format('Y-m-d H:i:s');
-        $prepStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-start-date'])->format('Y-m-d H:i:s');
-        $prepEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-end-date'])->format('Y-m-d H:i:s');
-        $cleanStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-start-date'])->format('Y-m-d H:i:s');
-        $cleanEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-end-date'])->format('Y-m-d H:i:s');
+            if (connection_aborted()) {
+                throw new \Exception("Client connection aborted");
+            }
 
-        $lastReservation = ReservationDetails::latest('reservedetailsID')->first();
-        $lastNumericPart = $lastReservation ? (int) $lastReservation->reservedetailsID : 10000;
-        $nextNumericPart = $lastNumericPart + 1;
-        $reserveeID = 'LSUFRS' . time();
+            $eventStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-start-date'])->format('Y-m-d H:i:s');
+            $eventEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-end-date'])->format('Y-m-d H:i:s');
+            $prepStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-start-date'])->format('Y-m-d H:i:s');
+            $prepEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-end-date'])->format('Y-m-d H:i:s');
+            $cleanStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-start-date'])->format('Y-m-d H:i:s');
+            $cleanEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-end-date'])->format('Y-m-d H:i:s');
 
+            $lastReservation = ReservationDetails::latest('reservedetailsID')->first();
+            $lastNumericPart = $lastReservation ? (int) $lastReservation->reservedetailsID : 10000;
+            $nextNumericPart = $lastNumericPart + 1;
+            $reserveeID = 'LSUFRS' . time();
 
-        $reservationDetails = ReservationDetails::create([
-            'reservedetailsID' => $nextNumericPart,
-            'event_name' => $validatedData['nameofevent'],
-            'max_attendees' => $validatedData['max-attendees'],
-            'event_start_date' => $eventStartDate,
-            'event_end_date' => $eventEndDate,
-            'preparation_start_date' => $prepStartDate,
-            'preparation_end_date_time' => $prepEndDate,
-            'cleanup_start_date_time' => $cleanStartDate,
-            'cleanup_end_date_time' => $cleanEndDate,
-        ]);
+            $reservationDetails = ReservationDetails::create([
+                'reservedetailsID' => $nextNumericPart,
+                'event_name' => $validatedData['nameofevent'],
+                'max_attendees' => $validatedData['max-attendees'],
+                'event_start_date' => $eventStartDate,
+                'event_end_date' => $eventEndDate,
+                'preparation_start_date' => $prepStartDate,
+                'preparation_end_date_time' => $prepEndDate,
+                'cleanup_start_date_time' => $cleanStartDate,
+                'cleanup_end_date_time' => $cleanEndDate,
+            ]);
 
-        $personnelData = [];
-        if ($request->has('personnel')) {
-            $personnelNames = $request->input('personnel', []);
-            $personnelQuantities = $request->input('personnel_no', []);
+            if (connection_aborted()) {
+                throw new \Exception("Client connection aborted");
+            }
 
-            foreach ($personnelNames as $index => $pname) {
-                if (!empty($pname) && !empty($personnelQuantities[$index])) {
+            $personnelData = [];
+            if ($request->has('personnel')) {
+                $personnelNames = $request->input('personnel', []);
+                $personnelQuantities = $request->input('personnel_no', []);
+                foreach ($personnelNames as $index => $pname) {
+                    if (!empty($pname) && !empty($personnelQuantities[$index])) {
+                        $personnelData[] = [
+                            'reservedetailsID' => $nextNumericPart,
+                            'pname' => $pname,
+                            'ptotal_no' => $personnelQuantities[$index],
+                        ];
+                    }
+                }
+            }
+            if ($request->has('other_personnel_name') && $request->has('other_personnel_no')) {
+                $potherName = $request->input('other_personnel_name');
+                $potherQuantity = $request->input('other_personnel_no');
+                if (!empty($potherName) && !empty($potherQuantity)) {
                     $personnelData[] = [
                         'reservedetailsID' => $nextNumericPart,
-                        'pname' => $pname,
-                        'ptotal_no' => $personnelQuantities[$index],
+                        'pname' => $potherName,
+                        'ptotal_no' => $potherQuantity,
                     ];
                 }
             }
-        }
-
-        if ($request->has('other_personnel_name') && $request->has('other_personnel_no')) {
-            $potherName = $request->input('other_personnel_name');
-            $potherQuantity = $request->input('other_personnel_no');
-        
-            if (!empty($potherName) && !empty($potherQuantity)) {
-                $personnelData[] = [
-                    'reservedetailsID' => $nextNumericPart,
-                    'pname' => $potherName,
-                    'ptotal_no' => $potherQuantity,
-                ];
+            if (!empty($personnelData)) {
+                SupportPersonnels::insert($personnelData);
             }
-        }
-        
 
-        if (!empty($personnelData)) {
-            SupportPersonnels::insert($personnelData);
-        }
-
-        $equipmentData = [];
-        if ($request->has('equipment')) {
-            $equipmentNames = $request->input('equipment', []);
-            $equipmentQuantities = $request->input('equipment_no', []);
-
-            foreach ($equipmentNames as $index => $name) {
-                if (!empty($name) && !empty($equipmentQuantities[$index])) {
+            $equipmentData = [];
+            if ($request->has('equipment')) {
+                $equipmentNames = $request->input('equipment', []);
+                $equipmentQuantities = $request->input('equipment_no', []);
+                foreach ($equipmentNames as $index => $name) {
+                    if (!empty($name) && !empty($equipmentQuantities[$index])) {
+                        $equipmentData[] = [
+                            'reservedetailsID' => $nextNumericPart,
+                            'ename' => $name,
+                            'etotal_no' => $equipmentQuantities[$index],
+                        ];
+                    }
+                }
+            }
+            if ($request->has('other_equipment_name') && $request->has('other_equipment_no')) {
+                $otherName = $request->input('other_equipment_name');
+                $otherQuantity = $request->input('other_equipment_no');
+                if (!empty($otherName) && !empty($otherQuantity)) {
                     $equipmentData[] = [
                         'reservedetailsID' => $nextNumericPart,
-                        'ename' => $name,
-                        'etotal_no' => $equipmentQuantities[$index],
+                        'ename' => $otherName,
+                        'etotal_no' => $otherQuantity,
                     ];
                 }
             }
-        }
-
-        if ($request->has('other_equipment_name') && $request->has('other_equipment_no')) {
-            $otherName = $request->input('other_equipment_name');
-            $otherQuantity = $request->input('other_equipment_no');
-
-            if (!empty($otherName) && !empty($otherQuantity)) {
-                $equipmentData[] = [
-                    'reservedetailsID' => $nextNumericPart,
-                    'ename' => $otherName,
-                    'etotal_no' => $otherQuantity,
-                ];
+            if (!empty($equipmentData)) {
+                Equipment::insert($equipmentData);
             }
-        }
 
-
-        if (!empty($equipmentData)) {
-            Equipment::insert($equipmentData);
-        }
-
-        if ($request->has('facility_checkbox')) {
-            $facilityIDs = array_keys($request->input('facility_checkbox'));
-        
-            foreach ($facilityIDs as $facilityID) {
-                SelectedFacilities::create([
-                    'reservedetailsID' => $nextNumericPart,
-                    'facilityID' => $facilityID,
-                ]);
+            if ($request->has('facility_checkbox')) {
+                $facilityIDs = array_keys($request->input('facility_checkbox'));
+                foreach ($facilityIDs as $facilityID) {
+                    SelectedFacilities::create([
+                        'reservedetailsID' => $nextNumericPart,
+                        'facilityID' => $facilityID,
+                    ]);
+                }
+                $facilityNames = Facilities::whereIn('facilityID', $facilityIDs)->pluck('facilityName')->toArray();
+                $chosenFacilityList = implode(', ', $facilityNames);
             }
-        
-            $facilityNames = Facilities::whereIn('facilityID', $facilityIDs)->pluck('facilityName')->toArray();
-        
-            $chosenFacilityList = implode(', ', $facilityNames);
-        }
-        
-        if ($request->hasFile('attachments')) {
-            $files = $request->file('attachments');
-            $filePaths = [];
-        
-            foreach ($files as $file) {
-                $fileName = $file->getClientOriginalName();
-                $file->move(public_path('uploads/attachments'), $fileName);
-                $filePaths[] = 'uploads/attachments/' . $fileName;
+
+            if ($request->hasFile('attachments')) {
+                $files = $request->file('attachments');
+                foreach ($files as $file) {
+                    $fileName = $file->getClientOriginalName();
+                    $file->move(public_path('uploads/attachments'), $fileName);
+                    Attachment::create([
+                        'reservedetailsID' => $nextNumericPart,
+                        'file' => 'uploads/attachments/' . $fileName,
+                    ]);
+                }
             }
-        
-            $validatedData['attachments'] = $filePaths;
-        
-            foreach ($validatedData['attachments'] as $attachmentPath) {
-                Attachment::create([
-                    'reservedetailsID' => $nextNumericPart,
-                    'file' => $attachmentPath,
-                ]);
-            }
-        }
 
-
-        $reservee = Reservee::create([
-            'reserveeID' => $reserveeID,
-            'reserveeName' => $validatedData['reserveeName'],
-            'reservedetailsID' => $nextNumericPart,
-            'person_in_charge_event' => $validatedData['person_in_charge_event'],
-            'email' => $validatedData['email'],
-            'contact_details' => $validatedData['contact_details'],
-            'unit_department_company' => $validatedData['unit_department_company'],
-            'date_of_filing' => $validatedData['date_of_filing'],
-        ]);
-
-
-    
-
-        $approval = ReservationApprovals::create([
-            'reserveeID' => $reserveeID,
-            'final_status' => 'Pending',
-        ]);
-        
-
-
-        if (!empty($validatedData['endorsed_by']) && !empty($validatedData['endorser_email'])) {
-            $confirmationToken = Str::random(32);
-            $endorser = Endorser::create([
+            $reservee = Reservee::create([
                 'reserveeID' => $reserveeID,
-                'name' => $validatedData['endorsed_by'],
-                'email' => $validatedData['endorser_email'],
-                'confirmation' => false,
-                'confirmation_token' => $confirmationToken,
+                'reserveeName' => $validatedData['reserveeName'],
+                'reservedetailsID' => $nextNumericPart,
+                'person_in_charge_event' => $validatedData['person_in_charge_event'],
+                'email' => $validatedData['email'],
+                'contact_details' => $validatedData['contact_details'],
+                'unit_department_company' => $validatedData['unit_department_company'],
+                'date_of_filing' => $validatedData['date_of_filing'],
             ]);
-    
-            Mail::to($validatedData['endorser_email'])->send(new EndorserNotificationMail(
-                $validatedData['endorsed_by'],
-                $validatedData['reserveeName'],
-                $eventStartDate,
-                $validatedData['nameofevent'],
-                $chosenFacilityList ?? '',
-                $confirmationToken
-            ));
+
+            ReservationApprovals::create([
+                'reserveeID' => $reserveeID,
+                'final_status' => 'Pending',
+            ]);
+
+            if (!empty($validatedData['endorsed_by']) && !empty($validatedData['endorser_email'])) {
+                $confirmationToken = Str::random(32);
+                Endorser::create([
+                    'reserveeID' => $reserveeID,
+                    'name' => $validatedData['endorsed_by'],
+                    'email' => $validatedData['endorser_email'],
+                    'confirmation' => false,
+                    'confirmation_token' => $confirmationToken,
+                ]);
+                Mail::to($validatedData['endorser_email'])->send(new EndorserNotificationMail(
+                    $validatedData['endorsed_by'],
+                    $validatedData['reserveeName'],
+                    $eventStartDate,
+                    $validatedData['nameofevent'],
+                    $chosenFacilityList ?? '',
+                    $confirmationToken
+                ));
+            }
+
+            DB::commit();
+
+            Mail::to($validatedData['email'])->send(new ReservationCodeMail($reserveeID));
+
+            return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Failed to save reservation', 'error' => $e->getMessage()], 500);
         }
-
-
-        Mail::to($validatedData['email'])->send(new ReservationCodeMail($reserveeID));
-
-        return response()->json(['message' => 'Reservation saved successfully', 'reservationCode' => $reserveeID]);
     }
+
     
 
 
@@ -296,68 +281,49 @@ class ReservationController extends Controller
     }
 
 
-    public function listReservations($role_id)
+    public function listReservations($role_id, $isArchived = false)
     {
         if (Auth::check()) {
             $data = $this->getReservationDetails();
             $user = Auth::user();
 
-            if ($role_id == 2 || $role_id == 3)  {
-                return view('dashboard.gso&cisso.reservationmgmt', [
-                    'reservationDetails' => $data['reservationDetails'],
-                    'user' => $user,
-                    'attachments' => $data['attachments'],
-                ]);
-            } elseif ($role_id == 1) {
-                return view('dashboard.aa.reservationmgmt', [
-                    'reservationDetails' => $data['reservationDetails'],
-                    'user' => $user,
-                    'attachments' => $data['attachments'],
-                ]);
+            $isArchived = filter_var($isArchived, FILTER_VALIDATE_BOOLEAN);
+
+            if ($isArchived) {
+                $view = 'dashboard.aa.archive_reservationmgmt';
             } else {
-                return redirect()->route('admin.reservation', ['role_id' => $user->role_id])->with('error', 'Invalid role specified');
+                if ($role_id == 2 || $role_id == 3) {
+                    $view = 'dashboard.gso&cisso.reservationmgmt';
+                } elseif ($role_id == 1) {
+                    $view = 'dashboard.aa.reservationmgmt';
+                } else {
+                    return redirect()->route('admin.reservation', ['role_id' => $user->role_id])->with('error', 'Invalid role specified');
+                }
             }
+
+            return view($view, [
+                'reservationDetails' => $data['reservationDetails'],
+                'user' => $user,
+                'attachments' => $data['attachments'],
+            ]);
         }
 
-        return redirect()->route('login'); 
+        return redirect()->route('login');
     }
 
 
-    public function listArchiveReservations($role_id)
-    {
-        if (Auth::check()) {
-            $data = $this->getReservationDetails();
-            $user = Auth::user();
-
-            if ($role_id == 2 || $role_id == 3)  {
-                return view('dashboard.gso&cisso.archive_reservationmgmt', [
-                    'reservationDetails' => $data['reservationDetails'],
-                    'user' => $user,
-                    'attachments' => $data['attachments'],
-                ]);
-            } elseif ($role_id == 1) {
-                return view('dashboard.aa.archive_reservationmgmt', [
-                    'reservationDetails' => $data['reservationDetails'],
-                    'user' => $user,
-                    'attachments' => $data['attachments'],
-                ]);
-            } else {
-                return redirect()->route('admin.archive_reservation', ['role_id' => $user->role_id])->with('error', 'Invalid role specified');
-            }
-        }
-
-        return redirect()->route('login'); 
-    }
-    
     public function fetchStatus($reserveeID)
     {
         $reservationApproval = ReservationApprovals::where('reserveeID', $reserveeID)->first();
 
         if ($reservationApproval) {
-            $adminRoles = AdminRoles::all();
+            $reservee = $reservationApproval->reservee;
 
+            $reservationDetail = $reservee ? $reservee->reservationDetails : null;
+
+            $adminRoles = AdminRoles::all();
             $adminApprovals = AdminApprovals::where('reservation_approval_id', $reservationApproval->approvalID)
-                ->with('admin.role') 
+                ->with('admin.role')
                 ->get();
 
             $adminStatuses = $adminRoles->map(function ($role) use ($adminApprovals) {
@@ -369,14 +335,23 @@ class ReservationController extends Controller
                 ];
             });
 
+            $chosenFacilities = $reservationDetail ? $reservationDetail->facilities->map(function ($facility) {
+                return $facility->facilityName;
+            }) : [];
+
             return response()->json([
+                'eventName' => $reservationDetail->event_name ?? 'No event name available',
+                'eventStartDate' => $reservationDetail->event_start_date ?? 'No start date available',
+                'eventEndDate' => $reservationDetail->event_end_date ?? 'No end date available',
                 'reservationStatus' => $reservationApproval->final_status,
-                'adminStatuses' => $adminStatuses
+                'adminStatuses' => $adminStatuses,
+                'chosenFacilities' => $chosenFacilities
             ]);
         }
 
         return response()->json(['error' => 'No approval data found for this Reservee'], 404);
     }
+
 
 }
 

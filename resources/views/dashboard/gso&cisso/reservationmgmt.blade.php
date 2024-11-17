@@ -89,7 +89,7 @@
     </aside>
     <main class="p-8 max-h-screen overflow-auto">
         <div class="max-h-screen shadow-md w-full">
-            <div class=" mx-auto">
+            <div class=" mx-auto w-full">
                 <div class="bg-white rounded  p-8 mb-5">
                     <div class="row">
                         <div class="col-md-12">  
@@ -97,7 +97,7 @@
                 <div>
                 <div class="mb-3">
                     <div class="relative flex justify-between items-center mt-2 mb-2 w-full">
-                        <a href = "archive-reservation"class="flex gap-2 p-2 px-3 bg-white rounded border-solid border-2 border-gray-300 " aria-label="Archive">
+                        <a href = "{{ route('admin.reservation', ['role_id' => $user->role_id, 'isArchived' => true]) }}" class="flex gap-2 p-2 px-3 bg-white rounded border-solid border-2 border-gray-300 " aria-label="Archive">
                             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/002265686784543f1653a3744b2bedab124eb9aad785ad545f64dfd889a255bc?placeholderIfAbsent=true&apiKey=a25d9352c0e24748b58ba2c7e0217b4a" class="object-contain shrink-0 aspect-square w-[14px]" alt="Archive icon" />
                             <span class="my-auto text-xs font-bold">ARCHIVE</span>
                         </a>
