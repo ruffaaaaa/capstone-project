@@ -60,6 +60,8 @@ return [
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::ATTR_TIMEOUT => 300, // Set timeout for DB queries (300 seconds)
+
             ]) : [],
             'timezone' => '+08:00', // for Asia/Manila
 

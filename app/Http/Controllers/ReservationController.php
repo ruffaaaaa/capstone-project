@@ -46,10 +46,10 @@ class ReservationController extends Controller
                 'max-attendees' => 'required|numeric',
                 'event-start-date' => 'required|date_format:Y-m-d\TH:i',
                 'event-end-date' => 'required|date_format:Y-m-d\TH:i',
-                'preparation-start-date' => 'required|date_format:Y-m-d\TH:i',
-                'preparation-end-date' => 'required|date_format:Y-m-d\TH:i',
-                'cleanup-start-date' => 'required|date_format:Y-m-d\TH:i',
-                'cleanup-end-date' => 'required|date_format:Y-m-d\TH:i',
+                'preparation-start-date' => 'nullable|date_format:Y-m-d\TH:i',
+                'preparation-end-date' => 'nullable|date_format:Y-m-d\TH:i',
+                'cleanup-start-date' => 'nullable|date_format:Y-m-d\TH:i',
+                'cleanup-end-date' => 'nullable|date_format:Y-m-d\TH:i',
                 'reserveeName' => 'required',
                 'email' => 'required|email',
                 'person_in_charge_event' => 'required',
@@ -58,8 +58,9 @@ class ReservationController extends Controller
                 'date_of_filing' => 'required|date',
                 'endorsed_by' => 'nullable',
                 'endorser_email' => 'nullable|email',
-                'attachments.*' => 'nullable|file'
+                'attachments.*' => 'nullable|file',
             ]);
+            
 
             if (connection_aborted()) {
                 throw new \Exception("Client connection aborted");
@@ -67,10 +68,22 @@ class ReservationController extends Controller
 
             $eventStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-start-date'])->format('Y-m-d H:i:s');
             $eventEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['event-end-date'])->format('Y-m-d H:i:s');
-            $prepStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-start-date'])->format('Y-m-d H:i:s');
-            $prepEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-end-date'])->format('Y-m-d H:i:s');
-            $cleanStartDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-start-date'])->format('Y-m-d H:i:s');
-            $cleanEndDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-end-date'])->format('Y-m-d H:i:s');
+            $prepStartDate = $validatedData['preparation-start-date'] 
+                ? \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-start-date'])->format('Y-m-d H:i:s') 
+                : null;
+
+            $prepEndDate = $validatedData['preparation-end-date'] 
+                ? \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['preparation-end-date'])->format('Y-m-d H:i:s') 
+                : null;
+
+            $cleanStartDate = $validatedData['cleanup-start-date'] 
+                ? \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-start-date'])->format('Y-m-d H:i:s') 
+                : null;
+
+            $cleanEndDate = $validatedData['cleanup-end-date'] 
+                ? \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $validatedData['cleanup-end-date'])->format('Y-m-d H:i:s') 
+                : null;
+
 
             $lastReservation = ReservationDetails::latest('reservedetailsID')->first();
             $lastNumericPart = $lastReservation ? (int) $lastReservation->reservedetailsID : 10000;

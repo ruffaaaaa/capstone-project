@@ -216,5 +216,6 @@ return [
 
     'timezone' => 'Asia/Manila',
 
+    'timeout' => 300, // In seconds
 
 ];

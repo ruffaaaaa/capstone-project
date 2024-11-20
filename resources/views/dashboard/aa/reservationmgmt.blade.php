@@ -206,7 +206,7 @@
                                         $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
                                     @endphp
 
-                                    @if($east && $east->approval_status === 'Denied' || $detailsGroup->first()->final_status === 'Cancelled')
+                                    @if($east && $east->approval_status === 'Denied' || $detailsGroup->first()->final_status === 'Cancelled' || $detailsGroup->first()->final_status === '')
                                         @continue {{-- Skip this entry if conditions are met --}}
                                     @endif
 
@@ -223,7 +223,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
-                                        <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
+                                            <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
                                                 onclick="openModal(
                                                     '{{ $detailsGroup->first()->reserveeID }}', 
                                                     '{{ addslashes($detailsGroup->first()->reserveeName) }}', 
@@ -244,9 +244,9 @@
                                                     '{{ addslashes($detailsGroup->first()->event_name) }}', 
                                                     '{{ $detailsGroup->first()->max_attendees }}', 
                                                     '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
-                                                    '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->toArray()) }}', 
                                                     '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
-                                                    '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('etotal_no')->toArray()) }}', 
                                                     '{{ $east->approval_status ?? '' }}', 
                                                     '{{ $cisso->approval_status ?? '' }}', 
                                                     '{{ $gso->approval_status ?? '' }}', 

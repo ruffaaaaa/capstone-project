@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Updating review on step 2...");
                 updateReview();
         }
+        
     });
 
     prevButton.addEventListener('click', function(event) {
@@ -129,16 +130,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-
     function updateReview() {
         const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
-            .map(checkbox => checkbox.value) // Get facilityID from the value attribute
+            .map(checkbox => checkbox.value)
             .join(', ');
     
         console.log("Selected Facilities IDs:", selectedFacilities);
     }
     
-
     function updateReview() {
         const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
             .map(checkbox => checkbox.value) 
@@ -220,12 +219,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
         loadingSpinner.classList.remove('hidden');
     
-        // Set a timeout to abort the fetch request if it takes too long
         const timeout = setTimeout(() => {
-            controller.abort(); // Abort the fetch request
+            controller.abort(); 
             loadingSpinner.classList.add('hidden');
             alert('The request took too long. Please try again.');
-        }, 15000); // Timeout set to 15 seconds
+        }, 1000); 
     
         fetch(storeReservationForm.action, {
             method: 'POST',
@@ -263,7 +261,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-    
 
     function validateForm() {
         let valid = true;
@@ -297,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                 break;
     
-            case 2:
+            case 2: // Step 2: Validate reservation details
                 inputs = reservationDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])');
                 if (inputs.length && !validateInputs(inputs)) {
                     equipmentAlert.classList.remove('hidden');
@@ -306,20 +303,25 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                 break;
     
-            case 3:
+            case 3: // Step 3: Validate customer details
                 inputs = Array.from(customerDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])'))
                     .filter(input => input.name !== 'endorsed_by' && input.name !== 'endorser_email');
-                
+    
                 if (inputs.length && !validateInputs(inputs)) {
                     customerDetailsAlert.classList.remove('hidden');
                     valid = false;
                     inputs.forEach(input => addAlertListeners(input, customerDetailsAlert));
                 }
     
-                const isStudent = document.getElementById('studentRadio').checked;
-                const endorserInput = document.getElementById('email');
+                // Validate userType radio buttons
+                const isUserNeedingEndorser =
+                    document.getElementById('studentRadio').checked ||
+                    document.getElementById('facultyRadio').checked ||
+                    document.getElementById('staffRadio').checked;
+    
+                const endorserInput = document.getElementById('endorsed_by');
                 const endorserEmailInput = document.getElementById('endorser_email');
-
+    
                 const radioErrorText = document.getElementById('radioErrorText');
                 if (!document.querySelector('input[name="userType"]:checked')) {
                     radioErrorText.classList.remove('hidden');
@@ -328,7 +330,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     radioErrorText.classList.add('hidden');
                 }
     
-                if (isStudent) {
+                if (isUserNeedingEndorser) {
+                    // Validate endorser fields
                     if (!endorserInput.value.trim()) {
                         endorserError.classList.remove('hidden');
                         valid = false;
@@ -341,13 +344,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         addAlertListeners(endorserEmailInput, endorserEmailError);
                     }
     
-                    if (endorserInput.value.trim() === endorserEmailInput.value.trim()) {
-                        alert("Endorser email cannot be the same as your email.");
-                        endorserEmailError.classList.remove('hidden');
-                        valid = false;
+                    if (!validateEmails()) {
+                        valid = false; // Duplicate email validation
                     }
                 }
     
+                // Validate CAPTCHA
                 if (grecaptcha.getResponse().length === 0) {
                     captchaErrorText.classList.remove('hidden');
                     valid = false;
@@ -355,13 +357,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
                 break;
     
-            default:
+            default: // Default: No validation needed
                 inputs = [];
         }
     
         return valid;
     }
-    
     
     
     function validateInputs(inputs) {
@@ -409,13 +410,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function updateEndorserFields() {
-        const isStudent = document.getElementById('studentRadio').checked;
+        const isUserNeedingEndorser = 
+            document.getElementById('studentRadio').checked || 
+            document.getElementById('facultyRadio').checked || 
+            document.getElementById('staffRadio').checked;
+    
         const endorserFields = document.getElementById('endorserFields');
         const endorserEmailField = document.getElementById('endorserEmailField');
         const endorserInput = document.getElementById('endorsed_by');
         const endorserEmailInput = document.getElementById('endorser_email');
     
-        if (isStudent) {
+        if (isUserNeedingEndorser) {
             endorserFields.classList.remove('hidden');
             endorserEmailField.classList.remove('hidden');
             endorserInput.setAttribute('required', 'required');
@@ -509,18 +514,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function validateEmails() {
+    const emailInput = document.getElementById('email');
+    const endorserEmailInput = document.getElementById('endorser_email');
+
     const emailValue = emailInput.value.trim();
     const endorserEmailValue = endorserEmailInput.value.trim();
-    let valid = true;
 
     if (emailValue && endorserEmailValue && emailValue === endorserEmailValue) {
-        valid = false;
         alert("Email and Endorser Email must be different.");
+        endorserEmailInput.classList.add('border-red-500'); // Highlight the field
+        return false;
     }
 
-    return valid;
+    endorserEmailInput.classList.remove('border-red-500'); // Remove highlight if valid
+    return true;
 }
-
 
 document.querySelectorAll('.equipment-checkbox').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {

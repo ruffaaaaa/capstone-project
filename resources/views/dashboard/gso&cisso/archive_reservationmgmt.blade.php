@@ -315,12 +315,12 @@
                                         <tr>
                                             <td colspan="2" class="large-col border border-black  px-2 py-2 text-sm ">
                                                 <div>
-                                                    <span id="ename"></span> 
+                                                    <ul id="ename"></ul> 
                                                 </div>
                                             </td>
                                             <td colspan="2" class=" border border-black  px-2 py-2 text-sm">
                                                 <div>
-                                                    <span id="pname"><br></span>
+                                                    <ul id="pname"><br></ul>
                                                 </div>
                                             </td>
                                         </tr>

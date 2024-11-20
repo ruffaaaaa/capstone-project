@@ -62,15 +62,48 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return new Intl.DateTimeFormat('en-US', options).format(date);
         }
-        const pnames = pname.split(', ');
+        
+        const pnames = pname.split(', '); 
         const ptotalNos = ptotal_no.split(', ');
-        let personnelOutput = pnames.map((pname, index) => `${pname.trim()} - ${ptotalNos[index].trim()}`).join(', ');
-        document.getElementById('pname').innerText = personnelOutput;
+
+
+        const personnelList = document.getElementById('pname');
+        personnelList.innerHTML = ''; // Clear existing content
+
+        if (pnames.length !== ptotalNos.length) {
+            console.warn("Mismatch in personnel data: Check pname and ptotal_no inputs.");
+        }
+
+        pnames.forEach((pname, index) => {
+            if (pname.trim()) { // Ensure pname is not empty
+                const totalNo = ptotalNos[index] && ptotalNos[index].trim();
+                const listItem = document.createElement('li');
+                listItem.textContent = totalNo ? `${pname.trim()} - ${totalNo}` : pname.trim();
+                personnelList.appendChild(listItem);
+            }
+        });
 
         const enames = ename.split(', ');
         const etotalNos = etotal_no.split(', ');
-        let equipmentOutput = enames.map((ename, index) => `${ename.trim()} - ${etotalNos[index].trim()}`).join(', ');
-        document.getElementById('ename').innerText = equipmentOutput;
+
+        const equipmentList = document.getElementById('ename');
+        equipmentList.innerHTML = ''; // Clear existing content
+
+        if (enames.length !== etotalNos.length) {
+            console.warn("Mismatch in equipment data: Check ename and etotal_no inputs.");
+        }
+
+        enames.forEach((ename, index) => {
+            if (ename.trim()) { // Ensure ename is not empty
+                const totalNo = etotalNos[index] && etotalNos[index].trim();
+                const listItem = document.createElement('li');
+                listItem.textContent = totalNo ? `${ename.trim()} - ${totalNo}` : ename.trim();
+                equipmentList.appendChild(listItem);
+            }
+        });
+
+
+
 
         const formattedStartDate = new Date(event_start_date);
         const startDateString = formattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -83,27 +116,39 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
         document.getElementById('eventDate').innerText = `${startDateString} - ${endDateString}`;
         document.getElementById('eventTime').innerText = `${startTimeString} - ${endTimeString}`;
 
-        const pformattedStartDate = new Date(preparation_start_date);
-        const pstartDateString = pformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-        const pstartTimeString = pformattedStartDate.toLocaleTimeString('en-US');
+        if (preparation_start_date && preparation_end_date_time) {
+            const pformattedStartDate = new Date(preparation_start_date);
+            const pstartDateString = pformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const pstartTimeString = pformattedStartDate.toLocaleTimeString('en-US');
+        
+            const pformattedEndDate = new Date(preparation_end_date_time);
+            const pendDateString = pformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const pendTimeString = pformattedEndDate.toLocaleTimeString('en-US');
+        
+            document.getElementById('preparationDate').innerText = `${pstartDateString} - ${pendDateString}`;
+            document.getElementById('preparationTime').innerText = `${pstartTimeString} - ${pendTimeString}`;
+        } else {
+            document.getElementById('preparationDate').innerText = '';
+            document.getElementById('preparationTime').innerText = '';
+        }
+        
 
-        const pformattedEndDate = new Date(preparation_end_date_time);
-        const pendDateString = pformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-        const pendTimeString = pformattedEndDate.toLocaleTimeString('en-US');
-
-        document.getElementById('preparationDate').innerText = `${pstartDateString} - ${pendDateString}`;
-        document.getElementById('preparationTime').innerText = `${pstartTimeString} - ${pendTimeString}`;
-
-        const cformattedStartDate = new Date(cleanup_start_date_time);
-        const cstartDateString = cformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-        const cstartTimeString = cformattedStartDate.toLocaleTimeString('en-US');
-
-        const cformattedEndDate = new Date(cleanup_end_date_time);
-        const cendDateString = cformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-        const cendTimeString = cformattedEndDate.toLocaleTimeString('en-US');
-
-        document.getElementById('cleanupDate').innerText = `${cstartDateString} - ${cendDateString}`;
-        document.getElementById('cleanupTime').innerText = `${cstartTimeString} - ${cendTimeString}`;
+        if (cleanup_start_date_time && cleanup_end_date_time) {
+            const cformattedStartDate = new Date(cleanup_start_date_time);
+            const cstartDateString = cformattedStartDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const cstartTimeString = cformattedStartDate.toLocaleTimeString('en-US');
+        
+            const cformattedEndDate = new Date(cleanup_end_date_time);
+            const cendDateString = cformattedEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const cendTimeString = cformattedEndDate.toLocaleTimeString('en-US');
+        
+            document.getElementById('cleanupDate').innerText = `${cstartDateString} - ${cendDateString}`;
+            document.getElementById('cleanupTime').innerText = `${cstartTimeString} - ${cendTimeString}`;
+        } else {
+            document.getElementById('cleanupDate').innerText = '';
+            document.getElementById('cleanupTime').innerText = '';
+        }
+        
 
 
         modal.style.display = 'block';

@@ -140,7 +140,6 @@ function validateCleanupDates() {
     }
 }
 
-
 document.getElementById('event-start-date').addEventListener('change', function() {
     const eventStartDateTime = this.value;
     updateEventEndDateMin(eventStartDateTime);
@@ -171,23 +170,23 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('date_of_filing').value = formattedDate;
 });
 
-function checkEventFields() {
-    const eventStartDate = document.getElementById('event-start-date').value;
-    const eventEndDate = document.getElementById('event-end-date').value;
-
-    if (eventStartDate && eventEndDate) {
-        document.getElementById('preparation-fields').classList.remove('hidden');
-        document.getElementById('cleanup-fields').classList.remove('hidden');
+document.getElementById('preparation-required').addEventListener('change', function () {
+    const preparationFields = document.getElementById('preparation-fields');
+    if (this.checked) {
+        preparationFields.classList.remove('hidden');
     } else {
-        document.getElementById('preparation-fields').classList.add('hidden');
-        document.getElementById('cleanup-fields').classList.add('hidden');
+        preparationFields.classList.add('hidden');
     }
-}
+});
 
-document.getElementById('event-start-date').addEventListener('input', checkEventFields);
-document.getElementById('event-end-date').addEventListener('input', checkEventFields);
-
-checkEventFields();
+document.getElementById('cleanup-required').addEventListener('change', function () {
+    const cleanupFields = document.getElementById('cleanup-fields');
+    if (this.checked) {
+        cleanupFields.classList.remove('hidden');
+    } else {
+        cleanupFields.classList.add('hidden');
+    }
+});
 
 function areSameDateTime(dateTime1, dateTime2) {
     return new Date(dateTime1).getTime() === new Date(dateTime2).getTime();

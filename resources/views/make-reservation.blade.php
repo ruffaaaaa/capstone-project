@@ -115,43 +115,52 @@
                             </div>
                         </div>
 
-                        <div id="preparation-fields" class="hidden">
-                            <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="preparation-start-date">Start and End Date-Time for Event Preparation</label>
-                            <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
-                                <div class="mb-2 md:mb-0 md:mr-2 w-full">
-                                    <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="preparation-start-date-label" for="preparation-start-date">Start Date-Time for Event Preparation:</label>
-                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local" required>
-                                </div>
-                                <div class="hidden md:block mr-4 ml-4">
-                                    <h1>-</h1>
-                                </div>
-                                <div class="mb-2 md:mb-0 md:ml-2 w-full">
-                                    <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="preparation-end-date-label" for="preparation-end-date">End Date-Time for Event Preparation:</label>
-                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local" required>
+                        <div id="preparation-section">
+                            <div class="flex items-center mb-2 mt-2 ml-4 mr-4">
+                                <input type="checkbox" id="preparation-required" class="form-checkbox">
+                                <label for="preparation-required" class="ml-2 text-gray-700 text-sm font-bold">Check if Preparation is Required</label>
+                            </div>
+                            <div id="preparation-fields" class="hidden">
+                                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="preparation-start-date">Start and End Date-Time for Event Preparation</label>
+                                <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
+                                    <div class="mb-2 md:mb-0 md:mr-2 w-full">
+                                        <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" for="preparation-start-date">Start Date-Time for Event Preparation:</label>
+                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-start-date" name="preparation-start-date" type="datetime-local">
+                                    </div>
+                                    <div class="hidden md:block mr-4 ml-4">
+                                        <h1>-</h1>
+                                    </div>
+                                    <div class="mb-2 md:mb-0 md:ml-2 w-full">
+                                        <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" for="preparation-end-date">End Date-Time for Event Preparation:</label>
+                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="preparation-end-date" name="preparation-end-date" type="datetime-local">
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="cleanup-fields" class="hidden">
-                            <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="cleanup-start-date">Start and End Date-Time for Cleanup</label>
-                            <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
-                                <div class="mb-2 md:mb-0 md:mr-2 w-full">
-                                    <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" id="cleanup-start-date-label" for="cleanup-start-date">Start Date-Time of Cleanup:</label>
-                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local" required>
-                                </div>
-                                <div class="hidden md:block mr-4 ml-4">
-                                    <h1>-</h1>
-                                </div>
-                                <div class="mb-2 md:mb-0 md:ml-2 w-full">
-                                    <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" id="cleanup-end-date-label" for="cleanup-end-date">End Date-Time of Cleanup:</label>
-                                    <span class="required-text text-red-600 text-sm hidden">(Required)</span>
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date" type="datetime-local" required>
+                        <div id="cleanup-section">
+                            <div class="flex items-center mb-2 mt-2 ml-4 mr-4">
+                                <input type="checkbox" id="cleanup-required" class="form-checkbox">
+                                <label for="cleanup-required" class="ml-2 text-gray-700 text-sm font-bold">Check is Cleanup is Required</label>
+                            </div>
+                            <div id="cleanup-fields" class="hidden">
+                                <label class="text-gray-700 text-sm font-bold mb-2 ml-4 mr-4 hidden md:block" for="cleanup-start-date">Start and End Date-Time for Cleanup</label>
+                                <div class="flex flex-col md:flex-row items-center mb-5 mt-5 ml-4 mr-4">
+                                    <div class="mb-2 md:mb-0 md:mr-2 w-full">
+                                        <label class="text-gray-700 text-sm font-bold mb-4 md:hidden" for="cleanup-start-date">Start Date-Time of Cleanup:</label>
+                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-start-date" name="cleanup-start-date" type="datetime-local">
+                                    </div>
+                                    <div class="hidden md:block mr-4 ml-4">
+                                        <h1>-</h1>
+                                    </div>
+                                    <div class="mb-2 md:mb-0 md:ml-2 w-full">
+                                        <label class="text-gray-700 text-sm font-bold mb-2 md:hidden" for="cleanup-end-date">End Date-Time of Cleanup:</label>
+                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cleanup-end-date" name="cleanup-end-date" type="datetime-local">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="flex flex-col lg:flex-row">
                             <div class="w-full lg:w-1/2 pt-2 pl-2 pr-2 ">
