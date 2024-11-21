@@ -21,7 +21,6 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\RequestTimeoutMiddleware::class,
 
     ];
 
@@ -71,7 +70,6 @@ class Kernel extends HttpKernel
         // other middleware
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'check.role.id' => \App\Http\Middleware\CheckRoleId::class,
-        'request.timeout' => \App\Http\Middleware\RequestTimeoutMiddleware::class,
 
 
     ];
