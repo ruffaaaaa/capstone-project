@@ -6,10 +6,8 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationMgmtController;
-
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
-
 use App\Models\Facilities;
 use App\Models\User;
 use App\Models\AdminSignature;
@@ -17,7 +15,6 @@ use App\Models\AdminSignature;
 
 
 Route::get('/', [HomeController::class, 'homepage']);
-
 
 
 Route::middleware(['auth'])->group(function () {

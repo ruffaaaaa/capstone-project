@@ -52,7 +52,7 @@ $(document).ready(function() {
                     var events = [];
                     $(data).each(function() {
                         var facilities = this.facilities ? this.facilities.map(f => f.facilityName).join(', ') : '';
-                        var eventStatus = this.status; // Assuming status is provided in the API response
+                        var eventStatus = this.status; 
                         events.push({
                             id: this.id,
                             title: this.title,

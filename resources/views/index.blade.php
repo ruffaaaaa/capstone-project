@@ -281,7 +281,7 @@
 
             <div class="my-8">
                 </p>
-                <p class="mb-2">1. Prepare the following documents for reserving the Art Center and attached it to the form:</p>
+                <p class="mb-2">1. Prepare the following documents for reserving the <strong> Art Center </strong> and attached it to the form:</p>
                 <ul class="list-disc ml-10">
                     <li>Floor Plan or Venue Layout</li>
                     <li>
