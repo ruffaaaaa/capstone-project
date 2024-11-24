@@ -253,9 +253,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mr-3 h-5 w-5">
                             <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd" />
                         </svg>
-                        + 01 234 567 88
+                        + 63 912 7883 811
                     </p>
-
                 </div>
             </div>
         </div>
@@ -281,10 +280,8 @@
             </div>
 
             <div class="my-8">
-                <p class="mb-2 flex">1. Fill out the<a href="https://docs.google.com/forms/d/e/1FAIpQLSffrijml-jpMiRm4Bm0NVwmnLbIF3Ow6CPTdUv38FDt3oMmdg/viewform" target="_blank" class="font-bold underline underline-offset-4 text-green-900 ml-1"> Institutional LSU Waste Management Form.</a>
-                <img src="images/vector.png" class="mt-2 w-3 h-4"alt="">
                 </p>
-                <p class="mb-2">2. Prepare the following documents for reserving the Art Center:</p>
+                <p class="mb-2">1. Prepare the following documents for reserving the Art Center and attached it to the form:</p>
                 <ul class="list-disc ml-10">
                     <li>Floor Plan or Venue Layout</li>
                     <li>
@@ -294,10 +291,16 @@
                         </p>
                     </li>
                 </ul>
+                <div class="mt-4 border-2 p-2">
+                    <p class="text-red-700 text-center text-lg font-bold">REMINDER</p>
+                    <p>Facility reservations must be made at least 3 days before the activity date.</p>
+                    </p>
+                </div>
+                
             </div>
 
-            <a href="make-reservation" class="block mt-4 px-5 text-base font-medium text-center text-black rounded-md border-2 border-solid border-black border-opacity-10 transition-transform duration-300 hover:scale-105">
-                <div class="p-3 bg-white rounded max-md:px-5">RESERVE NOW</div>
+            <a href="make-reservation" class="block  px-5 text-base font-medium text-center text-black bg-green-700 rounded-md  transition-transform duration-300 hover:scale-105">
+                <div class="p-3 text-white rounded max-md:px-5">CLICK HERE TO PROCEED</div>
             </a>
         </div>
     </div>

@@ -270,7 +270,7 @@ class ReservationController extends Controller
                 'admin_roles.name as role_name',
                 'reservation_attachments.file as attachment_path'
             )
-            ->orderBy('admin_approvals.admin_id', 'asc')
+            ->orderBy('admin_approvals.admin_id', 'desc')
             ->get()
             ->groupBy('reserveeID'); 
 

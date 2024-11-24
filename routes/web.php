@@ -46,7 +46,7 @@ Route::get('/reservationsQuery', [CalendarController::class, 'getReservationsByR
 Route::post('/admin/send-reservee-email', [ReservationMgmtController::class, 'sendReserveeEmail'])->name('admin.sendReserveeEmail');
 
 
-Route::get('/cancel-reservation/{reserveeID}', [ReservationController::class, 'cancelReservation'])->name('cancel.reservation');
+Route::get('/cancel-reservation/{reserveeID}', [ReservationMgmtController::class, 'cancelReservation'])->name('cancel.reservation');
 Route::post('/update-status', [ReservationController::class, 'updateStatus'])->name('update.status');
 
 

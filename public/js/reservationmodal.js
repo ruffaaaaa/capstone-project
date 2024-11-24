@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
             controller.abort(); 
             loadingSpinner.classList.add('hidden');
             alert('The request took too long. Please try again.');
-        }, 1000); 
+        }, 20000); 
     
         fetch(storeReservationForm.action, {
             method: 'POST',

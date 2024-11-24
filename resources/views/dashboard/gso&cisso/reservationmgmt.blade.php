@@ -194,7 +194,7 @@
                                         $gso = $sortedDetailsGroup->where('role_name', 'GSO')->first();
                                     @endphp
 
-                                    @if($east && $east->approval_status === 'Denied' || $detailsGroup->first()->final_status === 'Cancelled')
+                                    @if($east && $east->approval_status === 'Denied' || $detailsGroup->first()->final_status === 'Cancelled' || $detailsGroup->first()->final_status === '')
                                         @continue {{-- Skip this entry if conditions are met --}}
                                     @endif
 
@@ -205,43 +205,48 @@
                                             {{ $detailsGroup->pluck('facilityName')->unique()->implode(', ') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            @foreach($sortedDetailsGroup as $detail)
-                                                {{ $detail->role_name }} - {{ $detail->approval_status }}<br>
+                                            @foreach($customOrder as $role) 
+                                                @php
+                                                    $roleDetail = $sortedDetailsGroup->firstWhere('role_name', $role);
+                                                @endphp
+                                                {{ $role }} - {{ $roleDetail->approval_status ?? 'Pending' }}<br>
                                             @endforeach
                                         </td>
+
+
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
-                                        <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
-                                            onclick="openModal(
-                                                '{{ $detailsGroup->first()->reserveeID }}', 
-                                                '{{ addslashes($detailsGroup->first()->reserveeName) }}', 
-                                                '{{ addslashes($detailsGroup->first()->person_in_charge_event) }}', 
-                                                '{{ addslashes($detailsGroup->first()->contact_details) }}', 
-                                                '{{ addslashes($detailsGroup->first()->unit_department_company) }}', 
-                                                '{{ $detailsGroup->first()->date_of_filing }}', 
-                                                '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', 
-                                                '{{ addslashes($detailsGroup->first()->endorser_name) }}', 
-                                                '{{ addslashes($detailsGroup->first()->final_status) }}', 
-                                                '{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
-                                                '{{ $detailsGroup->first()->event_start_date }}', 
-                                                '{{ $detailsGroup->first()->event_end_date }}', 
-                                                '{{ $detailsGroup->first()->preparation_start_date }}', 
-                                                '{{ $detailsGroup->first()->preparation_end_date_time }}', 
-                                                '{{ $detailsGroup->first()->cleanup_start_date_time }}', 
-                                                '{{ $detailsGroup->first()->cleanup_end_date_time }}',
-                                                '{{ addslashes($detailsGroup->first()->event_name) }}', 
-                                                '{{ $detailsGroup->first()->max_attendees }}', 
-                                                '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
-                                                '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', 
-                                                '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
-                                                '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}', 
-                                                '{{ $east->approval_status ?? '' }}', 
-                                                '{{ $cisso->approval_status ?? '' }}', 
-                                                '{{ $gso->approval_status ?? '' }}', 
-                                                '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}'
-                                            )">
-                                            View
-                                        </button>
+                                            <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
+                                                onclick="openModal(
+                                                    '{{ $detailsGroup->first()->reserveeID }}', 
+                                                    '{{ addslashes($detailsGroup->first()->reserveeName) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->person_in_charge_event) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->contact_details) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->unit_department_company) }}', 
+                                                    '{{ $detailsGroup->first()->date_of_filing }}', 
+                                                    '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', 
+                                                    '{{ addslashes($detailsGroup->first()->endorser_name) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->final_status) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
+                                                    '{{ $detailsGroup->first()->event_start_date }}', 
+                                                    '{{ $detailsGroup->first()->event_end_date }}', 
+                                                    '{{ $detailsGroup->first()->preparation_start_date }}', 
+                                                    '{{ $detailsGroup->first()->preparation_end_date_time }}', 
+                                                    '{{ $detailsGroup->first()->cleanup_start_date_time }}', 
+                                                    '{{ $detailsGroup->first()->cleanup_end_date_time }}',
+                                                    '{{ addslashes($detailsGroup->first()->event_name) }}', 
+                                                    '{{ $detailsGroup->first()->max_attendees }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('etotal_no')->toArray()) }}', 
+                                                    '{{ $east->approval_status ?? '' }}', 
+                                                    '{{ $cisso->approval_status ?? '' }}', 
+                                                    '{{ $gso->approval_status ?? '' }}', 
+                                                    '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}'
+                                                )">
+                                                View
+                                            </button>
 
 
                                             <button class="border-solid border-1 border-gray-500 text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
@@ -249,6 +254,14 @@
                                                     onclick="openStatus(this)">
                                                 Update
                                             </button>
+
+                                            <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
+                                                    Delete
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

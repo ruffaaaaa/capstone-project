@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var editFacilityIDField = document.getElementById('editFacilityID');
     var editFacilityNameField = document.getElementById('editFacilityName');
-    var editStatusField = document.getElementById('editStatus')
+    var editStatusField = document.getElementById('editStatus');
+    var editImageField = document.getElementById('editImage'); // Add this for handling image input
 
     editButtons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -13,9 +14,14 @@ document.addEventListener("DOMContentLoaded", function() {
             var facilityID = row.querySelector('td:nth-child(1)').textContent;
             var facilityName = row.querySelector('td:nth-child(2)').textContent;
             var status = row.querySelector('td:nth-child(4)').textContent;
+            var imageSrc = row.querySelector('td:nth-child(3) img').src;
 
             editFacilityIDField.value = facilityID;
             editFacilityNameField.value = facilityName;
+
+            // Prepopulate the image input (optional, display current image)
+            editImageField.value = '';  // Clear the current image field if a new one is selected
+            document.getElementById('currentImage').src = imageSrc; // Optionally show the current image in the modal
 
             editForm.action = '/facilities/' + facilityID; 
 
@@ -31,12 +37,13 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.classList.remove('hidden');
         });
     });
+
     var closeModalButton = document.getElementById('closeModal');
     closeModalButton.addEventListener('click', function() {
-    modal.classList.add('hidden');
+        modal.classList.add('hidden');
     });
-
 });
+
 
 
 document.getElementById('openModalBtn').addEventListener('click', function () {

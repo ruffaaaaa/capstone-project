@@ -238,7 +238,7 @@
                             </div>
                             <div class="mb-2">
                                 <label for="image" class="block text-gray-700 font-bold  text-left ">Image</label>
-                                <input type="file" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="image" name="image" accept="image/*">
+                                <input type="file" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="image" name="image" accept=".jpg, .jpeg, .png">
                             </div>
                             <div class="mb-2">
                                 <label for="status" class="block text-gray-700 font-bold  text-left ">Status</label>
@@ -268,22 +268,37 @@
                                     <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
                                 </button>
                             </div>
-                            <form id="editForm" method="POST" >
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" id="editFacilityID" name="facilityID">
-                                <div class="mt-2">
-                                    <label for="editFacilityName" class="block text-gray-600 text-left font-bold ">Facility Name</label>
-                                    <input type="text" id="editFacilityName" name="facilityName" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
+                            <form id="editForm" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" id="editFacilityID" name="facilityID">
+                            
+                            <div class="mt-2">
+                                <label for="editFacilityName" class="block text-gray-600 text-left font-medium">Facility Name</label>
+                                <input type="text" id="editFacilityName" name="facilityName" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
+                            </div>
+
+                            <div class="mt-2">
+                                <label for="editStatus" class="block text-gray-600 text-left font-medium">Status</label>
+                                <select id="editStatus" name="status" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
+                                    <option value="Available">Available</option>
+                                    <option value="Unavailable">Unavailable</option>
+                                </select>
+                            </div>
+
+                            <div class="mt-2">
+                                <label class="block text-gray-600 text-left font-medium">Current Image</label>
+                                <div class="flex items-center justify-center ">
+                                    <img id="currentImage" class="mt-2 w-32 max-w-full max-h-48" src="">
                                 </div>
-                                <div class="mt-2">
-                                    <label for="editStatus" class="block text-gray-600 text-left font-bold">Status</label>
-                                    <select id="editStatus" name="status" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
-                                        <option value="Available">Available</option>
-                                        <option value="Unavailable">Unavailable</option>
-                                    </select>
-                                </div>
-                            </form>
+                                <label for="editImage" class="block text-gray-600 text-left font-medium">Facility Image (Leave empty if you do not want to change it)</label>
+                                <input type="file" id="editImage" name="image" accept=".jpg, .jpeg, .png" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
+
+                            </div>
+
+
+                        </form>
+
                         </div>
                     </div>
                 </div>

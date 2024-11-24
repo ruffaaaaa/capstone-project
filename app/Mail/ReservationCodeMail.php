@@ -22,7 +22,7 @@ class ReservationCodeMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Your Reservation Code')
+        return $this->subject('Your Facility Reservation Code')
                     ->view('emails.reservation_code')
                     ->with(['reservationCode' => $this->reservationCode]);
     }

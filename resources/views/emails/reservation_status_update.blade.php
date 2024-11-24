@@ -78,7 +78,7 @@
                         <td class="content">
                             <p>Hello,</p>
                             
-                            <p>Your facility reservation status for the {{$eventName}} activity has been updated to <strong>'{{$approval_status}}'</strong> by
+                            <p>Your facility reservation status for the <strong>{{$eventName}}</strong> activity has been updated to <strong>'{{$approval_status}}'</strong> by
                                 @if($admin->role_id == 1)
                                     Ms. Jamaica Quezon (AA)
                                 @elseif($admin->role_id == 2)
@@ -91,10 +91,16 @@
                             </p>
 
                             @if($admin->role_id == 1)
-                                <p style="color: black;">
+                                <p>
                                     Please fill up the <a href="https://docs.google.com/forms/d/e/1FAIpQLScq23zRafcN9MrYX6dzfWmdrtnrxfLIFK5hW_F8kfOmJ5y4FA/viewform">LSU CAMPUS ACCESS PERMIT</a> if your event or activity is scheduled outside regular class or office hours to receive reservation approval from Engr. Esmael Larubis. Encode the names in MS Excel through the <a href="https://docs.google.com/spreadsheets/d/1l6WkiU_uATBL6z8e4Se481okwwdLQYYC6hWuMM0Pj64/edit?usp=drivesdk">link.</a>
                                 </p>
                             @endif
+
+                            @if($admin->role_id == 3)
+                                <p>
+                                    With the GSO's approval, your facility reservation is now complete and confirmed.
+                                </p>
+                            @endif 
 
                             <p>You can <a href="{{ url('/') }}">track your reservation status here</a>, just click the button next to "Reserve Now". </p>
                             <p>Thank you so much!</p>

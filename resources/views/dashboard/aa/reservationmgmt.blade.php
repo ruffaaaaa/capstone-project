@@ -217,10 +217,15 @@
                                             {{ $detailsGroup->pluck('facilityName')->unique()->implode(', ') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            @foreach($sortedDetailsGroup as $detail)
-                                                {{ $detail->role_name }} - {{ $detail->approval_status }}<br>
+                                            @foreach($customOrder as $role) 
+                                                @php
+                                                    $roleDetail = $sortedDetailsGroup->firstWhere('role_name', $role);
+                                                @endphp
+                                                {{ $role }} - {{ $roleDetail->approval_status ?? 'Pending' }}<br>
                                             @endforeach
                                         </td>
+
+
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
                                             <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"

@@ -56,18 +56,36 @@ class FacilitiesController extends Controller
         $request->validate([
             'facilityName' => 'required|string|max:255',
             'status' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048', // Validation for image
         ]);
 
         $facility = Facilities::findOrFail($facilityID);
         $facility->facilityName = $request->input('facilityName');
         $facility->facilityStatus = $request->input('status');
+
+        // Check if a new image is uploaded
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($facility->image && file_exists(public_path('uploads/facilities/' . $facility->image))) {
+                unlink(public_path('uploads/facilities/' . $facility->image));
+            }
+
+            // Handle the new image upload
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+
+            $image = Image::make($image)->resize(2048, 1365);
+            $image->save(public_path('uploads/facilities/' . $filename));
+
+            $facility->image = $filename;
+        }
+
         $facility->save();
 
         $user = Auth::user();
-
-
         return redirect()->route('admin.facilities', ['role_id' => $user->role_id])->with('success', 'Facility updated successfully');
     }
+
 
     public function deleteFacility($facilityID)
     {

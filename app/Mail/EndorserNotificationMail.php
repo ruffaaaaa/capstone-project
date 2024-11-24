@@ -34,7 +34,7 @@ class EndorserNotificationMail extends Mailable
     public function build()
     {
         return $this->view('emails.endorser_notification')
-                    ->subject('Reservation Endorsement Notification')
+                    ->subject('Facility Reservation Endorsement')
                     ->with([
                         'endorsedBy' => $this->endorsedBy,
                         'reserveeName' => $this->reserveeName,
