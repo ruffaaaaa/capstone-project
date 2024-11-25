@@ -43,7 +43,6 @@ function updatePreparationEndMin(preparationStartDateTime) {
     document.getElementById('preparation-end-date').setAttribute('min', formatDate(preparationStart));
 }
 
-// Event listeners for changes to preparation dates
 document.getElementById('preparation-start-date').addEventListener('change', function() {
     const preparationStartDateTime = this.value;
     updatePreparationEndMin(preparationStartDateTime); 

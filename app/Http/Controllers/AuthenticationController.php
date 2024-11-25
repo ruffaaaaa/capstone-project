@@ -56,12 +56,12 @@ class AuthenticationController extends Controller
 
         switch ($role_id) {
             case 1:
-                return view('dashboard.aa.index', $data); // Load AA dashboard for role 1
+                return view('dashboard.aa.index', $data);
             case 2:
             case 3:
-                return view('dashboard.gso&cisso.index', $data); // Load GSO/CISSO dashboard for roles 2 and 3
+                return view('dashboard.gso&cisso.index', $data); 
             default:
-                return view('dashboard.default'); // Load a default dashboard if needed
+                return view('dashboard.default'); 
         }
     }
 

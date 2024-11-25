@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 class ReservationMgmtController extends Controller
 
 {
-    //delete
     public function deleteReservation($role_id, $reservedetailsID)
     {
         $reservation = ReservationDetails::find($reservedetailsID);
@@ -35,7 +34,6 @@ class ReservationMgmtController extends Controller
         return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('success', 'Reservation deleted successfully');
     }
 
-    //updatestatus
     private function handleApproval(Request $request, $role_id)
     {
         $request->validate([

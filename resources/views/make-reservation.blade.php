@@ -12,13 +12,9 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-
 </head>
 
 <body class="bg-[#E5EFE8]">
