@@ -10,7 +10,27 @@ function formatDate(date) {
 function setMinEventDate() {
     const today = new Date();
     today.setDate(today.getDate() + 3); 
-    document.getElementById('event-start-date').setAttribute('min', formatDate(today));
+    const eventStartDateInput = document.getElementById('event-start-date');
+    eventStartDateInput.setAttribute('min', formatDate(today));
+
+    eventStartDateInput.addEventListener('keydown', function(e) {
+        e.preventDefault(); 
+    });
+    document.getElementById('event-end-date').addEventListener('keydown', function(e) {
+        e.preventDefault();
+    });
+    document.getElementById('preparation-start-date').addEventListener('keydown', function(e) {
+        e.preventDefault(); 
+    });
+    document.getElementById('preparation-end-date').addEventListener('keydown', function(e) {
+        e.preventDefault();
+    });
+    document.getElementById('cleanup-start-date').addEventListener('keydown', function(e) {
+        e.preventDefault();
+    });
+    document.getElementById('cleanup-end-date').addEventListener('keydown', function(e) {
+        e.preventDefault();
+    });
 }
 
 function updateEventEndDateMin(eventStartDateTime) {
@@ -37,7 +57,6 @@ function updatePreparationConstraints(eventStartDateTime) {
     document.getElementById('preparation-end-date').setAttribute('max', maxPreparationDateTime);
 }
 
-
 function updatePreparationEndMin(preparationStartDateTime) {
     const preparationStart = new Date(preparationStartDateTime);
     document.getElementById('preparation-end-date').setAttribute('min', formatDate(preparationStart));
@@ -48,7 +67,6 @@ document.getElementById('preparation-start-date').addEventListener('change', fun
     updatePreparationEndMin(preparationStartDateTime); 
     validatePreparationDates();
 });
-
 
 function updateCleanupConstraints(eventEndDateTime) {
     const eventEnd = new Date(eventEndDateTime);
@@ -69,7 +87,6 @@ function updateCleanupConstraints(eventEndDateTime) {
     validateCleanupDates();
 }
 
-
 function validateEventEndDate() {
     const startDateInput = document.getElementById('event-start-date');
     const endDateInput = document.getElementById('event-end-date');
@@ -81,7 +98,6 @@ function validateEventEndDate() {
         endDateInput.value = startDateInput.value;
     }
 }
-
 
 function validatePreparationDates() {
     const startDateInput = document.getElementById('event-start-date');
@@ -111,7 +127,6 @@ function validatePreparationDates() {
     }
 }
 
-
 function validateCleanupDates() {
     const endDateInput = document.getElementById('event-end-date');
     const cleanupStartInput = document.getElementById('cleanup-start-date');
@@ -134,7 +149,7 @@ function validateCleanupDates() {
     const maxCleanupEndDate = new Date(eventEndDate);
     maxCleanupEndDate.setDate(maxCleanupEndDate.getDate() + 3); 
     if (cleanupEndDate > maxCleanupEndDate) {
-        alert("The cleanup end time must be within 2 days after the event end time. Please choose a valid cleanup end time.");
+        alert("The cleanup end time must be within 3 days after the event end time. Please choose a valid cleanup end time.");
         cleanupEndInput.value = formatDate(maxCleanupEndDate);
     }
 }
@@ -157,8 +172,9 @@ document.getElementById('preparation-end-date').addEventListener('change', valid
 document.getElementById('cleanup-start-date').addEventListener('change', validateCleanupDates);
 document.getElementById('cleanup-end-date').addEventListener('change', validateCleanupDates);
 
-window.onload = setMinEventDate;
-
+window.onload = function() {
+    setMinEventDate();
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     const today = new Date();

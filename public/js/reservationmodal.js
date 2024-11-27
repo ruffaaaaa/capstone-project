@@ -146,54 +146,87 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Selected Facilities IDs:", selectedFacilities);
     }
     
-    let unavailableDatetimes = [];
-
-    function updateDatePicker() {
-        flatpickr("#date-input", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            disable: unavailableDatetimes.map(dateTime => new Date(dateTime)), 
-            time_24hr: true, 
-        });
-    }
-
     function fetchUnavailableDates() {
         const selectedFacilities = Array.from(document.querySelectorAll('.form-checkbox:checked'))
             .map(checkbox => checkbox.value)
             .join(',');
         const eventStartDate = document.getElementById('event-start-date').value;
         const eventEndDate = document.getElementById('event-end-date').value;
-
-
-        if (selectedFacilities && eventStartDate && eventEndDate) {
-            fetch(`/api/unavailable-dates?facilityIds=${selectedFacilities}&eventStartDate=${eventStartDate}&eventEndDate=${eventEndDate}`)
+        const preparationStartDate = document.getElementById('preparation-start-date')?.value;
+        const preparationEndDate = document.getElementById('preparation-end-date')?.value;
+        const cleanupStartDate = document.getElementById('cleanup-start-date')?.value;
+        const cleanupEndDate = document.getElementById('cleanup-end-date')?.value;
+    
+        if (selectedFacilities && (eventStartDate || preparationStartDate || cleanupStartDate)) {
+            fetch(`/api/unavailable-dates?facilityIds=${selectedFacilities}&eventStartDate=${eventStartDate}&eventEndDate=${eventEndDate}&preparationStartDate=${preparationStartDate}&preparationEndDate=${preparationEndDate}&cleanupStartDate=${cleanupStartDate}&cleanupEndDate=${cleanupEndDate}`)
                 .then(response => response.json())
                 .then(data => {
-                    unavailableDatetimes = data.unavailableDatetimes;
-                    updateDatePicker();
-
-                    const selectedStartDateObj = new Date(eventStartDate + "Z");
-                    const selectedEndDateObj = new Date(eventEndDate + "Z");
-                    const unavailableDateTimeObjects = unavailableDatetimes.map(dateTime => new Date(dateTime));
-
-                    const isDateTimeRangeUnavailable = unavailableDateTimeObjects.some(unavailableDateTime =>
-                        unavailableDateTime >= selectedStartDateObj && unavailableDateTime <= selectedEndDateObj
-                    );
-
+                    const unavailableDatetimes = data.unavailableDatetimes || [];
+                    const unavailableTimes = unavailableDatetimes.map(item => ({
+                        startDate: new Date(item.reservation_detail.event_start_date),
+                        endDate: new Date(item.reservation_detail.event_end_date),
+                        preparationStartDate: item.reservation_detail.preparation_start_date ? new Date(item.reservation_detail.preparation_start_date) : null,
+                        preparationEndDate: item.reservation_detail.preparation_end_date_time ? new Date(item.reservation_detail.preparation_end_date_time) : null,
+                        cleanupStartDate: item.reservation_detail.cleanup_start_date_time ? new Date(item.reservation_detail.cleanup_start_date_time) : null,
+                        cleanupEndDate: item.reservation_detail.cleanup_end_date_time ? new Date(item.reservation_detail.cleanup_end_date_time) : null,
+                    }));
+    
+                    const selectedStartDateObj = eventStartDate ? new Date(eventStartDate) : null;
+                    const selectedEndDateObj = eventEndDate ? new Date(eventEndDate) : null;
+    
+                    const isDateTimeRangeUnavailable = unavailableTimes.some(unavailable => (
+                        // Event overlaps
+                        (selectedStartDateObj && selectedEndDateObj &&
+                            ((selectedStartDateObj.getTime() >= unavailable.startDate.getTime() && selectedStartDateObj.getTime() <= unavailable.endDate.getTime()) ||
+                            (selectedEndDateObj.getTime() >= unavailable.startDate.getTime() && selectedEndDateObj.getTime() <= unavailable.endDate.getTime()) ||
+                            (selectedStartDateObj.getTime() <= unavailable.startDate.getTime() && selectedEndDateObj.getTime() >= unavailable.endDate.getTime()))) ||
+    
+                        // Preparation overlaps
+                        (preparationStartDate && preparationEndDate &&
+                            unavailable.preparationStartDate && unavailable.preparationEndDate &&
+                            ((new Date(preparationStartDate).getTime() >= unavailable.preparationStartDate.getTime() && new Date(preparationStartDate).getTime() <= unavailable.preparationEndDate.getTime()) ||
+                            (new Date(preparationEndDate).getTime() >= unavailable.preparationStartDate.getTime() && new Date(preparationEndDate).getTime() <= unavailable.preparationEndDate.getTime()))) ||
+    
+                        // Cleanup overlaps
+                        (cleanupStartDate && cleanupEndDate &&
+                            unavailable.cleanupStartDate && unavailable.cleanupEndDate &&
+                            ((new Date(cleanupStartDate).getTime() >= unavailable.cleanupStartDate.getTime() && new Date(cleanupStartDate).getTime() <= unavailable.cleanupEndDate.getTime()) ||
+                            (new Date(cleanupEndDate).getTime() >= unavailable.cleanupStartDate.getTime() && new Date(cleanupEndDate).getTime() <= unavailable.cleanupEndDate.getTime())))
+                    ));
+    
                     if (isDateTimeRangeUnavailable) {
-                        alert('Sorry, this date and time range is unavailable for the selected facility. Please select another range.');
-                        document.getElementById('event-start-date').value = '';
-                        document.getElementById('event-end-date').value = '';
-                    } else {
-
+                        alert('Sorry, this date and time range is unavailable. Please select another range.');
+                        resetFields();
                     }
                 })
                 .catch(error => {
-                    console.error('Error fetching unavailable datetimes:', error);
-                    document.getElementById('date-error').textContent = 'An error occurred while fetching dates. Please try again later.';
-                    document.getElementById('date-error').style.display = 'block';
+                    console.error('Error fetching unavailable dates:', error);
+                    const dateErrorElement = document.getElementById('date-error');
+                    if (dateErrorElement) {
+                        dateErrorElement.textContent = 'An error occurred while fetching dates. Please try again later.';
+                        dateErrorElement.style.display = 'block';
+                    }
+                    resetFields();
                 });
         }
+    }
+    
+    function resetFields() {
+        const fieldsToReset = [
+            'event-start-date',
+            'event-end-date',
+            'preparation-start-date',
+            'preparation-end-date',
+            'cleanup-start-date',
+            'cleanup-end-date',
+        ];
+    
+        fieldsToReset.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.value = '';
+            }
+        });
     }
 
     document.querySelectorAll('.form-checkbox').forEach(checkbox => {
@@ -202,16 +235,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById('event-start-date').addEventListener('change', fetchUnavailableDates);
     document.getElementById('event-end-date').addEventListener('change', fetchUnavailableDates);
-
+    document.getElementById('preparation-start-date')?.addEventListener('change', fetchUnavailableDates);
+    document.getElementById('preparation-end-date')?.addEventListener('change', fetchUnavailableDates);
+    document.getElementById('cleanup-start-date')?.addEventListener('change', fetchUnavailableDates);
+    document.getElementById('cleanup-end-date')?.addEventListener('change', fetchUnavailableDates);
     
-    document.querySelectorAll('.form-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', fetchUnavailableDates);
-    });
-    
-    document.getElementById('event-start-date').addEventListener('change', fetchUnavailableDates);
-    document.getElementById('event-end-date').addEventListener('change', fetchUnavailableDates);
-    
-
     function handleSubmit() {
         const formData = new FormData(storeReservationForm);
         const controller = new AbortController();
@@ -222,8 +250,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const timeout = setTimeout(() => {
             controller.abort(); 
             loadingSpinner.classList.add('hidden');
-            alert('The request took too long. Please try again.');
-        }, 20000); 
+            alert('The request took too long. Please check your email for your reservation code instead.');
+            window.location.href = '/';
+        }, 30000); 
     
         fetch(storeReservationForm.action, {
             method: 'POST',
@@ -262,10 +291,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    let isArtCenterSelected = false;
+
     function validateForm() {
         let valid = true;
         let inputs;
-    
+
         facilitiesAlert.classList.add('hidden');
         equipmentAlert.classList.add('hidden');
         customerDetailsAlert.classList.add('hidden');
@@ -273,7 +304,8 @@ document.addEventListener("DOMContentLoaded", function() {
         captchaErrorText.classList.add('hidden');
         endorserError.classList.add('hidden');
         endorserEmailError.classList.add('hidden');
-    
+        attachmentErrorText.classList.add('hidden');  
+
         function addAlertListeners(input, alertElement) {
             input.addEventListener('focus', () => alertElement.classList.remove('hidden'));
             input.addEventListener('input', () => {
@@ -282,9 +314,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
         }
-    
+
         switch (currentStep) {
-            case 1:
+            case 1:  
+                
+                const artCenterCheckbox = document.querySelector('input[data-name="Art Center"]:checked');
+                isArtCenterSelected = !!artCenterCheckbox;  
+                console.log('Art Center Selected:', isArtCenterSelected);  
+
                 inputs = facilitiesForm.querySelectorAll('input[required]');
                 if (!validateCheckboxes(facilitiesForm)) {
                     facilitiesAlert.classList.remove('hidden');
@@ -293,35 +330,53 @@ document.addEventListener("DOMContentLoaded", function() {
                     facilitiesAlert.classList.add('hidden');
                 }
                 break;
-    
-            case 2: // Step 2: Validate reservation details
+
+            case 2:  
                 inputs = reservationDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])');
+                
+                if (isArtCenterSelected) {
+                    const fileList = document.getElementById('fileList');
+                    
+                    const files = document.getElementById('attachments').files;
+                    console.log('Files Selected:', files.length);  
+
+                    if (files.length === 0) {  
+                        attachmentErrorText.classList.remove('hidden');
+                        valid = false;
+                    } else {
+                        attachmentErrorText.classList.add('hidden');
+                    }
+                } else {
+                  
+                    attachmentErrorText.classList.add('hidden');
+                }
+
                 if (inputs.length && !validateInputs(inputs)) {
                     equipmentAlert.classList.remove('hidden');
                     valid = false;
                     inputs.forEach(input => addAlertListeners(input, equipmentAlert));
                 }
                 break;
-    
-            case 3: // Step 3: Validate customer details
+
+            case 3:  
                 inputs = Array.from(customerDetailsForm.querySelectorAll('input[required]:not([type="checkbox"])'))
                     .filter(input => input.name !== 'endorsed_by' && input.name !== 'endorser_email');
-    
+
                 if (inputs.length && !validateInputs(inputs)) {
                     customerDetailsAlert.classList.remove('hidden');
                     valid = false;
                     inputs.forEach(input => addAlertListeners(input, customerDetailsAlert));
                 }
-    
-                // Validate userType radio buttons
+
+
                 const isUserNeedingEndorser =
                     document.getElementById('studentRadio').checked ||
                     document.getElementById('facultyRadio').checked ||
                     document.getElementById('staffRadio').checked;
-    
+
                 const endorserInput = document.getElementById('endorsed_by');
                 const endorserEmailInput = document.getElementById('endorser_email');
-    
+
                 const radioErrorText = document.getElementById('radioErrorText');
                 if (!document.querySelector('input[name="userType"]:checked')) {
                     radioErrorText.classList.remove('hidden');
@@ -329,42 +384,41 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     radioErrorText.classList.add('hidden');
                 }
-    
+
                 if (isUserNeedingEndorser) {
-                    // Validate endorser fields
+
                     if (!endorserInput.value.trim()) {
                         endorserError.classList.remove('hidden');
                         valid = false;
                         addAlertListeners(endorserInput, endorserError);
                     }
-    
+
                     if (!endorserEmailInput.value.trim()) {
                         endorserEmailError.classList.remove('hidden');
                         valid = false;
                         addAlertListeners(endorserEmailInput, endorserEmailError);
                     }
-    
+
                     if (!validateEmails()) {
-                        valid = false; // Duplicate email validation
+                        valid = false; 
                     }
                 }
-    
-                // Validate CAPTCHA
+
+      
                 if (grecaptcha.getResponse().length === 0) {
                     captchaErrorText.classList.remove('hidden');
                     valid = false;
                 }
-    
+
                 break;
-    
-            default: // Default: No validation needed
+
+            default: 
                 inputs = [];
         }
-    
+
         return valid;
     }
-    
-    
+
     function validateInputs(inputs) {
         let allValid = true;
     
@@ -522,11 +576,11 @@ function validateEmails() {
 
     if (emailValue && endorserEmailValue && emailValue === endorserEmailValue) {
         alert("Email and Endorser Email must be different.");
-        endorserEmailInput.classList.add('border-red-500'); // Highlight the field
+        endorserEmailInput.classList.add('border-red-500');
         return false;
     }
 
-    endorserEmailInput.classList.remove('border-red-500'); // Remove highlight if valid
+    endorserEmailInput.classList.remove('border-red-500');
     return true;
 }
 

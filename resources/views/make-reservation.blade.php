@@ -59,10 +59,16 @@
                         @foreach ($facilities as $facility)
                             <div class="facility-item mb-2 sm:col-span-1 md:col-span-1 p-3">
                                 <div class="flex items-center space-x-2">
-                                    <input type="checkbox" name="facility_checkbox[{{ $facility->facilityID }}]" id="facility-{{ $facility->facilityID }}" value="{{ $facility->facilityID }}" class="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                                    <label class="text-l font-bold text-gray-700">{{ $facility->facilityName }}</label>
+                                    <input type="checkbox" name="facility_checkbox[{{ $facility->facilityID }}]" id="facility-{{ $facility->facilityID }}" 
+                                        value="{{ $facility->facilityID }}" 
+                                        data-name="{{ $facility->facilityName }}"
+                                        class="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                    <label for="facility-{{ $facility->facilityID }}" class="text-l font-bold text-gray-700">
+                                        {{ $facility->facilityName }}
+                                    </label>                                
                                 </div>
                             </div>
+
                         @endforeach
                     </div>
                     <div id="noFacilitiesAlert" class="text-center text-red-500 mb-4 hidden">No facilities found.</div>
@@ -268,6 +274,7 @@
                             <div class="bg-[#076334] p-2">
                                 <span class="text-l font-bold text-white pl-4">B5. ATTACHMENTS <p class="text-xs font-normal ml-4 max-md:text-[9px]">(Venue Layout, Letter of Request, Signed Activity Proposal for Art Center)</p></span>
                             </div>
+                            
                             <div class="flex pt-5">
                             <input type="file" id="attachments" name="attachments[]" accept=".png, application/pdf" multiple class="hidden" onchange="displayFiles()">
                             <label for="attachments" class="inline-block bg-green-100 text-green-700 rounded-full w-10 h-10 text-center cursor-pointer m-2">
@@ -276,6 +283,9 @@
                                 </svg>
                             </label>
                             <div id="fileList" class="text-black" style="margin: 15px;"></div>
+                            <div id="attachmentErrorText" class="hidden text-red-500 text-sm">
+                                Attachments are required for the Art Center facility.
+                            </div>
                         </div>
 
                         </div>
@@ -354,7 +364,7 @@
                     
                     <div id="endorserFields" class="items-center mb-5 mt-5 ml-4 mr-4 hidden">
                         <label class="w-32 text-gray-700 text-sm font-bold">Endorsed by:</label>
-                        <span id="endorserError" class="text-red-600 text-sm hidden">(Required).</span> <!-- Error message -->
+                        <span id="endorserError" class="text-red-600 text-sm hidden">(Required).</span>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endorsed_by" name="endorsed_by" autocomplete="new-endorsed_by" type="text" disabled>
                     </div>
                     <div class="items-center mb-5 mt-5 ml-4 mr-4 hidden" id="endorserEmailField">

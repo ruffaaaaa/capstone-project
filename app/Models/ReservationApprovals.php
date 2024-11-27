@@ -21,7 +21,6 @@ class ReservationApprovals extends Model
         'final_status' => 'Pending',
     ];
 
-    // In ReservationApprovals Model
     public function adminRole()
     {
         return $this->belongsTo(AdminRoles::class, 'admin_id', 'id');

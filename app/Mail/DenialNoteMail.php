@@ -19,7 +19,7 @@ class DenialNoteMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Your Facility Reservation Status Has Been Updated')
+        return $this->subject('Your Facility Reservation Has Been Denied')
                     ->view('emails.denialNote')
                     ->with(['note' => $this->note]);
     }

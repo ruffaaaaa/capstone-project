@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ReservationDetails;
 use App\Models\Facilities;
+use App\Models\SelectedFacilities;
 use Illuminate\Support\Facades\Auth;
 
 class CalendarController extends Controller
@@ -91,40 +92,58 @@ class CalendarController extends Controller
         return response()->json($this->fetchFacilities());
     }
 
-
     public function getUnavailableDates(Request $request)
     {
-        $facilityIds = explode(',', $request->query('facilityIds'));
-        $eventStartDate = \Carbon\Carbon::parse($request->query('eventStartDate'))->setTimezone('UTC');
-        $eventEndDate = \Carbon\Carbon::parse($request->query('eventEndDate'))->setTimezone('UTC');
+        $request->validate([
+            'facilityIds' => 'required|string',
+            'eventStartDate' => 'nullable|date',
+            'eventEndDate' => 'nullable|date|after_or_equal:eventStartDate',
+            'preparationStartDate' => 'nullable|date',
+            'preparationEndDate' => 'nullable|date|after_or_equal:preparationStartDate',
+            'cleanupStartDate' => 'nullable|date',
+            'cleanupEndDate' => 'nullable|date|after_or_equal:cleanupStartDate',
+        ]);
 
-        $unavailableReservations = ReservationDetails::whereHas('facilities', function ($query) use ($facilityIds) {
-                $query->whereIn('facilities.facilityID', $facilityIds);
+        $facilityIds = explode(',', $request->facilityIds);
+        $eventStartDate = $request->eventStartDate;
+        $eventEndDate = $request->eventEndDate;
+        $preparationStartDate = $request->preparationStartDate;
+        $preparationEndDate = $request->preparationEndDate;
+        $cleanupStartDate = $request->cleanupStartDate;
+        $cleanupEndDate = $request->cleanupEndDate;
+
+        $unavailableDates = SelectedFacilities::whereIn('facilityID', $facilityIds)
+            ->whereHas('reservationDetail', function ($query) use ($eventStartDate, $eventEndDate, $preparationStartDate, $preparationEndDate, $cleanupStartDate, $cleanupEndDate) {
+                if ($eventStartDate && $eventEndDate) {
+                    $query->whereBetween('event_start_date', [$eventStartDate, $eventEndDate])
+                        ->orWhereBetween('event_end_date', [$eventStartDate, $eventEndDate]);
+                }
+
+                if ($preparationStartDate && $preparationEndDate) {
+                    $query->orWhereBetween('preparation_start_date', [$preparationStartDate, $preparationEndDate])
+                        ->orWhereBetween('preparation_end_date_time', [$preparationStartDate, $preparationEndDate]);
+                }
+
+                if ($cleanupStartDate && $cleanupEndDate) {
+                    $query->orWhereBetween('cleanup_start_date_time', [$cleanupStartDate, $cleanupEndDate])
+                        ->orWhereBetween('cleanup_end_date_time', [$cleanupStartDate, $cleanupEndDate]);
+                }
             })
-            ->whereHas('reservee.reservationApproval', function ($query) {
+            ->whereHas('reservationDetail.reservee.reservationApproval', function ($query) {
                 $query->where('final_status', 'Approved');
             })
-            ->where(function ($query) use ($eventStartDate, $eventEndDate) {
-                $query->whereBetween('reservation_details.event_start_date', [$eventStartDate, $eventEndDate])
-                    ->orWhereBetween('reservation_details.event_end_date', [$eventStartDate, $eventEndDate])
-                    ->orWhere(function ($q) use ($eventStartDate, $eventEndDate) {
-                        $q->where('reservation_details.event_start_date', '<', $eventStartDate)
-                            ->where('reservation_details.event_end_date', '>', $eventEndDate);
-                    });
-            })
-            ->get(['event_start_date', 'event_end_date']);
+            ->with(['reservationDetail' => function ($query) {
+                $query->select('reservedetailsID', 'event_start_date', 'event_end_date', 'preparation_start_date', 'preparation_end_date_time', 'cleanup_start_date_time', 'cleanup_end_date_time');
+            }])
+            ->get();
 
-        $unavailableDatetimes = [];
-        foreach ($unavailableReservations as $reservation) {
-            $start = \Carbon\Carbon::parse($reservation->event_start_date);
-            $end = \Carbon\Carbon::parse($reservation->event_end_date);
+        \Log::info('Unavailable Dates Retrieved', [
+            'facilityIds' => $facilityIds,
+            'count' => $unavailableDates->count(),
+        ]);
 
-            while ($start <= $end) {
-                $unavailableDatetimes[] = $start->toISOString();
-                $start->addMinutes(30);
-            }
-        }
-
-        return response()->json(['unavailableDatetimes' => $unavailableDatetimes]);
+        return response()->json(['unavailableDatetimes' => $unavailableDates]);
     }
+
+    
 }

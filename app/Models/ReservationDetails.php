@@ -36,9 +36,12 @@ class ReservationDetails extends Model
         return $this->hasOne(Reservee::class, 'reservedetailsID', 'reservedetailsID'); 
     }
 
+    public function selectedFacilities()
+    {
+        return $this->hasMany(SelectedFacilities::class, 'reservedetailsID', 'reservedetailsID');
+    }
 
     
-
     
 }
 

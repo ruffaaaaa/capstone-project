@@ -43,7 +43,7 @@ class ReservationStatusUpdateMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Your Facility Reservation Has Been Updated')
+        return $this->subject('Your Facility Reservation Status Has Been Updated')
                     ->view('emails.reservation_status_update')
                     ->with([
                         'reservationApproval' => $this->reservationApproval,
