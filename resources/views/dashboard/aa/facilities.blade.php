@@ -151,7 +151,8 @@
                                     <form method="POST" action="{{ route('facilities.destroy', ['role_id' => $user->role_id, $facility->facilityID] ) }}" class="inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="border-solid border-1 border-gray-500 font-semibold text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white ml-2">
+                                        <button type="submit" class="border-solid border-1 border-gray-500 font-semibold text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white ml-2
+                                                    "onclick = "return confirm ('Are you sure you want to delete this facility? This facility cannot be undone.')">
                                             Delete
                                         </button>
                                     </form>                          

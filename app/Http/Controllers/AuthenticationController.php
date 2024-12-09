@@ -17,6 +17,15 @@ class AuthenticationController extends Controller
     
     public function DisplayLoginForm()
     {
+        // Check if the user is already authenticated
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            // Redirect the user to the correct dashboard based on their role
+            return redirect()->route('dashboard', ['role_id' => $user->role_id]);
+        }
+
+        // If the user is not logged in, show the login form
         return view('auth.login');
     }
 

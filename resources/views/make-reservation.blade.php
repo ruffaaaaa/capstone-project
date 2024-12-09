@@ -284,7 +284,7 @@
                             </label>
                             <div id="fileList" class="text-black" style="margin: 15px;"></div>
                             <div id="attachmentErrorText" class="hidden text-red-500 text-sm">
-                                Attachments are required for the Art Center facility.
+                                (Required)
                             </div>
                         </div>
 

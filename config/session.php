@@ -31,9 +31,10 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 120),
-
-    'expire_on_close' => false,
+    // config/session.php
+    'driver' => env('SESSION_DRIVER', 'cookie'), // Make sure the driver is 'cookie'
+    'lifetime' => 120, // Adjust the session lifetime if needed
+    'expire_on_close' => false, // Optional: Set to false to keep session active after browser close
 
     /*
     |--------------------------------------------------------------------------

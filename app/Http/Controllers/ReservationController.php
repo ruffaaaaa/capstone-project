@@ -131,6 +131,8 @@ class ReservationController extends Controller
                     ];
                 }
             }
+
+            
             if (!empty($personnelData)) {
                 SupportPersonnels::insert($personnelData);
             }
@@ -160,6 +162,8 @@ class ReservationController extends Controller
                     ];
                 }
             }
+
+            
             if (!empty($equipmentData)) {
                 Equipment::insert($equipmentData);
             }
@@ -235,8 +239,6 @@ class ReservationController extends Controller
         }
     }
 
-    
-
 
     private function getReservationDetails()
     {
@@ -262,6 +264,7 @@ class ReservationController extends Controller
                 'equipment.ename',
                 'equipment.etotal_no',
                 'endorser.name as endorser_name',
+                'endorser.email as endorser_email',
                 'endorser.confirmation',
                 'reservation_approvals.approvalID',
                 'reservation_approvals.final_status',
@@ -276,7 +279,7 @@ class ReservationController extends Controller
 
         $reservationDetailsCollection = $reservationDetails->values();
         $currentPage = request()->get('page', 1); 
-        $perPage = 10; 
+        $perPage = 20; 
 
         $pagedData = $reservationDetailsCollection->forPage($currentPage, $perPage)->values(); 
         $reservationDetailsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
@@ -287,7 +290,6 @@ class ReservationController extends Controller
             ['path' => request()->url(), 'query' => request()->query()]
         );
 
- 
         $attachments = $pagedData->pluck('attachment_path')->filter()->unique()->toArray();
 
         return ['reservationDetails' => $reservationDetailsPaginated, 'attachments' => $attachments];

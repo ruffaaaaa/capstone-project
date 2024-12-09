@@ -1,11 +1,13 @@
 function openModal(reserveeID, reserveeName, person_in_charge_event, contact_details, unit_department_company, date_of_filing, confirmation, endorser_name, final_status, facilityNames, event_start_date, event_end_date,
-    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, event_name, max_attendees, pname, ptotal_no, ename, etotal_no, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus, attachmentObjects
+    preparation_start_date, preparation_end_date_time, cleanup_start_date_time, cleanup_end_date_time, email, endorser_email, event_name, max_attendees, pname, ptotal_no, ename, etotal_no, eastApprovalStatus, cissoApprovalStatus, gsoApprovalStatus, attachmentObjects
 ) {
     
     const modal = document.getElementById('viewModal');
 
     document.getElementById('reserveeID').innerText = reserveeID;
     document.getElementById('reserveeName').innerText = reserveeName;
+    document.getElementById('reserveeEmail').innerText = email;
+
     document.getElementById('person').innerText = person_in_charge_event;
     document.getElementById('contact').innerText = contact_details;
     document.getElementById('unit').innerText = unit_department_company;
@@ -15,14 +17,11 @@ function openModal(reserveeID, reserveeName, person_in_charge_event, contact_det
     document.getElementById('max').innerText = max_attendees;
     document.getElementById('facilityNames').innerText = facilityNames;
     document.getElementById('confirmation').innerText = (confirmation === '1') ? '(Confirmed)' : '';
-
     document.getElementById('endorser_name').innerText = endorser_name || '';
-
+    document.getElementById('endorser_email').innerText = endorser_email;
     document.getElementById('eastSignatureStatus').innerText = eastApprovalStatus === 'Approved' ? '(Approved)' : '';
     document.getElementById('cissoSignatureStatus').innerText = cissoApprovalStatus === 'Approved' ? '(Approved)' : '';
     document.getElementById('gsoSignatureStatus').innerText = gsoApprovalStatus === 'Approved' ? '(Approved)' : '';
-
-
 
 
     let attachments = JSON.parse(attachmentObjects);

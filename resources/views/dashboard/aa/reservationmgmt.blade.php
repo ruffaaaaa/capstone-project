@@ -246,6 +246,8 @@
                                                     '{{ $detailsGroup->first()->preparation_end_date_time }}', 
                                                     '{{ $detailsGroup->first()->cleanup_start_date_time }}', 
                                                     '{{ $detailsGroup->first()->cleanup_end_date_time }}',
+                                                    '{{ $detailsGroup->first()->email }}',
+                                                    '{{ $detailsGroup->first()->endorser_email}}',
                                                     '{{ addslashes($detailsGroup->first()->event_name) }}', 
                                                     '{{ $detailsGroup->first()->max_attendees }}', 
                                                     '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
@@ -270,7 +272,8 @@
                                             <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
+                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2"
+                                                    onclick="return confirm('Are you sure you want to delete this reservation? This action cannot be undone.')">
                                                     Delete
                                                 </button>
                                             </form>
@@ -405,6 +408,7 @@
 
                                             <td colspan="2" class=" border border-black bg-gray-100 px-3 py-1 font-bold text-sm">B.4 Support Personnel</td>
                                         </tr>
+                                        
                                         <tr>
                                             <td colspan="2" class="large-col border border-black  px-2 py-2 text-sm ">
                                                 <div>
@@ -444,9 +448,10 @@
                                             </div>
                                         </td>
                                     </tr>
+
                                     <tr>
-                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
-                                        <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="person"></span></td>
+                                        <td colspan="2" class="w-[20%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">Email</td>
+                                        <td colspan="2" class="w-[30%] border border-black px-2 py-2"><span id="reserveeEmail"></span></td>
                                         <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
                                         <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
@@ -454,6 +459,7 @@
                                                 <p>Engr. ESMAEL LARUBIS</p>
                                             </div>
                                         </td>
+
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Contact Details</td>
@@ -465,6 +471,11 @@
                                                 <p>Ms. LEONILA DOLOR</p>
                                             </div>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
+                                        <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="person"></span></td>
+                                        
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Unit/Department/Company</td>
@@ -482,6 +493,11 @@
                                                 <span class="uppercase" id="endorser_name"></span>
                                             </div>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="w-[20%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">Email</td>
+                                        <td colspan="2" class="w-[30%] border border-black px-2 py-2"><span id="endorser_email"></span></td>
+
                                     </tr>
                                     </thead>
                                 </table>

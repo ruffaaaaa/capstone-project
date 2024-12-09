@@ -28,7 +28,7 @@
                 <div class="mb-3">
                     <div class="relative flex justify-between items-center mt-2 mb-2 w-full">
                         <div class="flex gap-1.5 ">
-                            <a href="admin-reservation" class="mt-1.5">
+                        <a href="{{ route('admin.reservation', ['role_id' => $user->role_id, 'isArchived' => false]) }}" class="mt-1.5">
                                 <svg width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000">
 
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"/>
@@ -145,26 +145,39 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
                                             <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
-                                                    onclick="openModal('{{ $detailsGroup->first()->reserveeID }}', '{{ $detailsGroup->first()->reserveeName }}', 
-                                                        '{{ $detailsGroup->first()->person_in_charge_event }}', '{{ $detailsGroup->first()->contact_details }}', 
-                                                        '{{ $detailsGroup->first()->unit_department_company }}', '{{ $detailsGroup->first()->date_of_filing }}', 
-                                                        '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', '{{ $detailsGroup->first()->endorser_name }}', 
-                                                        '{{ $detailsGroup->first()->final_status }}','{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
-                                                        '{{ $detailsGroup->first()->event_start_date }}', '{{ $detailsGroup->first()->event_end_date }}', 
-                                                        '{{ $detailsGroup->first()->preparation_start_date }}', '{{ $detailsGroup->first()->preparation_end_date_time }}', 
-                                                        '{{ $detailsGroup->first()->cleanup_start_date_time }}', '{{ $detailsGroup->first()->cleanup_end_date_time }}',
-                                                        '{{ $detailsGroup->first()->event_name }}', '{{ $detailsGroup->first()->max_attendees }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->unique()->toArray()) }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
-                                                        '{{ implode(', ', $detailsGroup->pluck('etotal_no')->unique()->toArray()) }}',
-                                                        '{{ $east->approval_status ?? '' }}',
-                                                        '{{ $cisso->approval_status ?? '' }}',
-                                                        '{{ $gso->approval_status ?? '' }}',
-                                                        '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}'
-                                                    )">
+                                                onclick="openModal(
+                                                    '{{ $detailsGroup->first()->reserveeID }}', 
+                                                    '{{ addslashes($detailsGroup->first()->reserveeName) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->person_in_charge_event) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->contact_details) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->unit_department_company) }}', 
+                                                    '{{ $detailsGroup->first()->date_of_filing }}', 
+                                                    '{{ $detailsGroup->first()->confirmation ? '1' : '0' }}', 
+                                                    '{{ addslashes($detailsGroup->first()->endorser_name) }}', 
+                                                    '{{ addslashes($detailsGroup->first()->final_status) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('facilityName')->unique()->toArray()) }}', 
+                                                    '{{ $detailsGroup->first()->event_start_date }}', 
+                                                    '{{ $detailsGroup->first()->event_end_date }}', 
+                                                    '{{ $detailsGroup->first()->preparation_start_date }}', 
+                                                    '{{ $detailsGroup->first()->preparation_end_date_time }}', 
+                                                    '{{ $detailsGroup->first()->cleanup_start_date_time }}', 
+                                                    '{{ $detailsGroup->first()->cleanup_end_date_time }}',
+                                                    '{{ $detailsGroup->first()->email }}',
+                                                    '{{ $detailsGroup->first()->endorser_email}}',
+                                                    '{{ addslashes($detailsGroup->first()->event_name) }}', 
+                                                    '{{ $detailsGroup->first()->max_attendees }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('ptotal_no')->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('ename')->unique()->toArray()) }}', 
+                                                    '{{ implode(', ', $detailsGroup->pluck('etotal_no')->toArray()) }}', 
+                                                    '{{ $east->approval_status ?? '' }}', 
+                                                    '{{ $cisso->approval_status ?? '' }}', 
+                                                    '{{ $gso->approval_status ?? '' }}', 
+                                                    '{{ json_encode($detailsGroup->map(function($item) { return ['url' => $item->attachment_path, 'name' => basename($item->attachment_path)]; })->toArray()) }}'
+                                                )">
                                                 View
                                             </button>
+
 
                                             <button class="border-solid border-1 border-gray-500 text-green-500 px-3 py-1 font-semibold rounded hover:bg-green-500 hover:text-white ml-2 editButton"
                                                     data-approval-id="{{ $detailsGroup->first()->approvalID }}" data-reservee-id="{{ $detailsGroup->first()->reserveeID }}"
@@ -175,7 +188,8 @@
                                             <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
+                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2"
+                                                    onclick="return confirm('Are you sure you want to delete this reservation? This action cannot be undone.')">
                                                     Delete
                                                 </button>
                                             </form>
@@ -242,9 +256,7 @@
                         @endif
                     </div>
 
-                    
                     <div id="viewModal" class="modal overflow-auto  items-center bg-gray-900 bg-opacity-50 hidden">
-                        
                         <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow max-lg: w-full ">
                             <div class=" ">
                                 <table class="w-full border border-black mb-1">
@@ -312,15 +324,16 @@
 
                                             <td colspan="2" class=" border border-black bg-gray-100 px-3 py-1 font-bold text-sm">B.4 Support Personnel</td>
                                         </tr>
+                                        
                                         <tr>
                                             <td colspan="2" class="large-col border border-black  px-2 py-2 text-sm ">
                                                 <div>
-                                                    <ul id="ename"></ul> 
+                                                    <span id="ename"></span> 
                                                 </div>
                                             </td>
                                             <td colspan="2" class=" border border-black  px-2 py-2 text-sm">
                                                 <div>
-                                                    <ul id="pname"><br></ul>
+                                                    <span id="pname"><br></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -351,9 +364,10 @@
                                             </div>
                                         </td>
                                     </tr>
+
                                     <tr>
-                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
-                                        <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="person"></span></td>
+                                        <td colspan="2" class="w-[20%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">Email</td>
+                                        <td colspan="2" class="w-[30%] border border-black px-2 py-2"><span id="reserveeEmail"></span></td>
                                         <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
                                         <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
@@ -361,6 +375,7 @@
                                                 <p>Engr. ESMAEL LARUBIS</p>
                                             </div>
                                         </td>
+
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Contact Details</td>
@@ -372,6 +387,11 @@
                                                 <p>Ms. LEONILA DOLOR</p>
                                             </div>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
+                                        <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="person"></span></td>
+                                        
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Unit/Department/Company</td>
@@ -390,6 +410,11 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td colspan="2" class="w-[20%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">Email</td>
+                                        <td colspan="2" class="w-[30%] border border-black px-2 py-2"><span id="endorser_email"></span></td>
+
+                                    </tr>
                                     </thead>
                                 </table>
                                 
@@ -403,6 +428,7 @@
                             </div>
                         </div>
                     </div>
+                    
 
                     <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white p-6 rounded shadow-md w-1/3 text-center">
@@ -454,6 +480,8 @@
     
     <script src="/js/reservationmgmt.js"></script>
     <script src="/js/profile.js"></script>
+    <script src="/js/search.js"></script>
+
     <script>
         function toggleNoteField() {
         const status = document.getElementById('approval_status').value;

@@ -607,45 +607,30 @@ document.querySelectorAll('.personnel-checkbox').forEach(function(checkbox) {
 });
 
 document.getElementById('other-equipment').addEventListener('change', function() {
-    var nameInput = document.getElementById('other-equipment-name');
-    var numberInput = document.getElementById('other-equipment-number');
+    const otherEquipmentNameInput = document.getElementById('other-equipment-name');
+    const otherEquipmentNumberInput = document.getElementById('other-equipment-number');
     if (this.checked) {
-        nameInput.style.display = 'inline-block';
-        numberInput.style.display = 'inline-block';
+        otherEquipmentNameInput.style.display = 'block';
+        otherEquipmentNumberInput.style.display = 'block';
     } else {
-        nameInput.style.display = 'none';
-        numberInput.style.display = 'none';
-    }
-});
-document.getElementById('other-equipment').addEventListener('change', function () {
-    const otherEquipmentName = document.getElementById('other-equipment-name');
-    const otherEquipmentNumber = document.getElementById('other-equipment-number');
-
-    if (this.checked) {
-        otherEquipmentName.style.display = 'block';
-        otherEquipmentNumber.style.display = 'block';
-    } else {
-        otherEquipmentName.style.display = 'none';
-        otherEquipmentNumber.style.display = 'none';
-        otherEquipmentName.value = '';
-        otherEquipmentNumber.value = ''; 
+        otherEquipmentNameInput.style.display = 'none';
+        otherEquipmentNumberInput.style.display = 'none';
     }
 });
 
-document.getElementById('other-personnel').addEventListener('change', function () {
-    const otherPersonnelName = document.getElementById('other-personnel-name');
-    const otherPersonnelNumber = document.getElementById('other-personnel-number');
-
+document.getElementById('other-personnel').addEventListener('change', function() {
+    const otherPersonnelNameInput = document.getElementById('other-personnel-name');
+    const otherPersonnelNumberInput = document.getElementById('other-personnel-number');
     if (this.checked) {
-        otherPersonnelName.style.display = 'block';
-        otherPersonnelNumber.style.display = 'block';
+        otherPersonnelNameInput.style.display = 'block';
+        otherPersonnelNumberInput.style.display = 'block';
     } else {
-        otherPersonnelName.style.display = 'none';
-        otherPersonnelNumber.style.display = 'none';
-        otherPersonnelName.value = '';
-        otherPersonnelNumber.value = ''; 
+        otherPersonnelNameInput.style.display = 'none';
+        otherPersonnelNumberInput.style.display = 'none';
     }
 });
+
+
 
 function displayFiles() {
     const input = document.getElementById('attachments');

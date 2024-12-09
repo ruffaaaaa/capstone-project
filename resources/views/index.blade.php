@@ -81,15 +81,21 @@
                 </div>
             </div>
             <div class="flex z-0 gap-6 justify-center items-center self-stretch min-h-[373px] min-w-[240px] w-[485px] max-md:w-full max-md:order-2 max-md:flex-col max-md:items-center">
-    
-                @if ($facilities->count() > 0)
-                    @foreach ($facilities->random(min(2, $facilities->count())) as $facility)
-                        <div class="flex overflow-hidden flex-col rounded-md border border-solid border-black border-opacity-10 min-h-[305px] min-w-[240px] w-[242px] max-md:w-full ">
+                @php
+                    $facilitiesWithImages = $facilities->filter(fn($facility) => $facility->image);
+                    $randomFacilities = $facilitiesWithImages->count() > 2 
+                        ? $facilitiesWithImages->random(2) 
+                        : $facilitiesWithImages;
+                @endphp
+
+                @if ($randomFacilities->count() > 0)
+                    @foreach ($randomFacilities as $facility)
+                        <div class="flex overflow-hidden flex-col rounded-md border border-solid border-black border-opacity-10 min-h-[305px] min-w-[240px] w-[242px] max-md:w-full">
                             
                             <div class="flex overflow-hidden w-full min-h-[240px] max-md:mr-5">
                                 <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-[250px] w-full object-cover object-center inset-0" />
                             </div>
-                            
+
                             <div class="flex flex-col p-3 w-full text-black">
                                 <div class="text-base font-bold">{{ $facility->facilityName }}</div>
                                 <div class="mt-1 text-sm leading-none">{{ $facility->facilityStatus }}</div>
