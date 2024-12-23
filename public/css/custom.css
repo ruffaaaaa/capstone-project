@@ -20,13 +20,12 @@
 #sidebar {
     width: 100px; 
     overflow: hidden;
-    background-color: #f0f0f0; /* Optional: Add background color for visibility */
 }
 
 main {
     transition: all 0.1s ease-in-out;
-    margin-left: 100px; /* Align next to the sidebar */
-    transition: none; /* Disable transition on load */
+    margin-left: 100px;
+    transition: none; 
     flex-grow: 1;
 }
 

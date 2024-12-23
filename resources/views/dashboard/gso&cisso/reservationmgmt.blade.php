@@ -89,7 +89,7 @@
     </aside>
     <main class="p-8 max-h-screen overflow-auto">
         <div class="max-h-screen shadow-md w-full">
-            <div class=" mx-auto w-full">
+            <div class=" mx-auto">
                 <div class="bg-white rounded  p-8 mb-5">
                     <div class="row">
                         <div class="col-md-12">  
@@ -103,14 +103,21 @@
                         </a>
                         <div class="relative inline-block flex justify-end">
                             <div class="mr-2 relative">
-                                <input type="search" id="searchInput" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" placeholder="Search..." />
-                                <div class="absolute inset-y-0 right-2 flex items-center pl-3 pointer-events-none">
-                                    <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.8029 11.7612L9.53693 9.31367C10.268 8.30465 10.6647 7.05865 10.6632 5.77592C10.6632 4.63355 10.3505 3.51684 9.76469 2.56699C9.17885 1.61715 8.34616 0.876833 7.37194 0.439668C6.39771 0.0025026 5.3257 -0.11188 4.29147 0.110985C3.25724 0.33385 2.30724 0.883953 1.5616 1.69173C0.815957 2.49951 0.308169 3.52868 0.102448 4.64909C-0.103274 5.76951 0.00231009 6.93086 0.405847 7.98627C0.809385 9.04168 1.49275 9.94375 2.36953 10.5784C3.24631 11.2131 4.27712 11.5518 5.33162 11.5518C6.51567 11.5534 7.66583 11.1237 8.59723 10.3317L10.8565 12.7864C10.9185 12.8541 10.9922 12.9078 11.0734 12.9445C11.1546 12.9811 11.2417 13 11.3297 13C11.4177 13 11.5048 12.9811 11.586 12.9445C11.6672 12.9078 11.7409 12.8541 11.8029 12.7864C11.8653 12.7193 11.9149 12.6395 11.9487 12.5515C11.9826 12.4635 12 12.3691 12 12.2738C12 12.1785 11.9826 12.0841 11.9487 11.9962C11.9149 11.9082 11.8653 11.8283 11.8029 11.7612ZM1.33291 5.77592C1.33291 4.91914 1.56743 4.08161 2.00681 3.36922C2.44619 2.65684 3.07071 2.1016 3.80138 1.77373C4.53205 1.44586 5.33605 1.36007 6.11173 1.52722C6.8874 1.69437 7.5999 2.10694 8.15913 2.71278C8.71836 3.31861 9.0992 4.09049 9.25349 4.9308C9.40779 5.77111 9.3286 6.64212 9.02594 7.43368C8.72329 8.22524 8.21077 8.90179 7.55318 9.37779C6.8956 9.85379 6.12249 10.1079 5.33162 10.1079C4.27109 10.1079 3.25401 9.65146 2.5041 8.83906C1.7542 8.02666 1.33291 6.92482 1.33291 5.77592Z" fill="black"/>
-                                    </svg>
-                                </div>
+                                <form method="GET" action="{{ url()->current() }}">
+                                    <div class="relative inline-block flex justify-end">
+                                        <div class="flex items-center">
+                                            <input type="search" name="search" id="searchInput" value="{{ request('search') }}" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border-gray-300 rounded-md focus:border-green-500 focus:outline-none focus:ring" placeholder="Search by event name, facility or status..." />
+                                            <button type="submit" class="ml-2 bg-green-700 text-white font-semibold px-2.5 py-2.5 rounded-md focus:outline-none">
+                                                <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M11.8029 11.7612L9.53693 9.31367C10.268 8.30465 10.6647 7.05865 10.6632 5.77592C10.6632 4.63355 10.3505 3.51684 9.76469 2.56699C9.17885 1.61715 8.34616 0.876833 7.37194 0.439668C6.39771 0.0025026 5.3257 -0.11188 4.29147 0.110985C3.25724 0.33385 2.30724 0.883953 1.5616 1.69173C0.815957 2.49951 0.308169 3.52868 0.102448 4.64909C-0.103274 5.76951 0.00231009 6.93086 0.405847 7.98627C0.809385 9.04168 1.49275 9.94375 2.36953 10.5784C3.24631 11.2131 4.27712 11.5518 5.33162 11.5518C6.51567 11.5534 7.66583 11.1237 8.59723 10.3317L10.8565 12.7864C10.9185 12.8541 10.9922 12.9078 11.0734 12.9445C11.1546 12.9811 11.2417 13 11.3297 13C11.4177 13 11.5048 12.9811 11.586 12.9445C11.6672 12.9078 11.7409 12.8541 11.8029 12.7864C11.8653 12.7193 11.9149 12.6395 11.9487 12.5515C11.9826 12.4635 12 12.3691 12 12.2738C12 12.1785 11.9826 12.0841 11.9487 11.9962C11.9149 11.9082 11.8653 11.8283 11.8029 11.7612ZM1.33291 5.77592C1.33291 4.91914 1.56743 4.08161 2.00681 3.36922C2.44619 2.65684 3.07071 2.1016 3.80138 1.77373C4.53205 1.44586 5.33605 1.36007 6.11173 1.52722C6.8874 1.69437 7.5999 2.10694 8.15913 2.71278C8.71836 3.31861 9.0992 4.09049 9.25349 4.9308C9.40779 5.77111 9.3286 6.64212 9.02594 7.43368C8.72329 8.22524 8.21077 8.90179 7.55318 9.37779C6.8956 9.85379 6.12249 10.1079 5.33162 10.1079C4.27109 10.1079 3.25401 9.65146 2.5041 8.83906C1.7542 8.02666 1.33291 6.92482 1.33291 5.77592Z" fill="white"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+
                     </div>
 
 
@@ -152,7 +159,9 @@
                                                 <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                             </div>
                                             <div class="mt-2 modal-message border boder-green-600 bg-green-50 px-4" style="display: none;">
+
                                             </div>
+            
                                         </form>
                                     </div>
                                     </div>
@@ -166,7 +175,7 @@
                     </div>
                     
 
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table  id="reservationTable" class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">ID</th>
@@ -174,7 +183,6 @@
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Facility</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Status</th>
 
-                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Final Status</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
@@ -205,16 +213,25 @@
                                             {{ $detailsGroup->pluck('facilityName')->unique()->implode(', ') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            @foreach($customOrder as $role) 
+                                            @foreach($customOrder as $role)
                                                 @php
                                                     $roleDetail = $sortedDetailsGroup->firstWhere('role_name', $role);
                                                 @endphp
                                                 {{ $role }} - {{ $roleDetail->approval_status ?? 'Pending' }}<br>
                                             @endforeach
+                                            <p>
+                                                
+                                                @if($detailsGroup->first()->final_status === 'Pending')
+                                                    <span class="text-red-500 font-bold">Final Status: Pending</span>
+                                                @elseif($detailsGroup->first()->final_status === 'Approved')
+                                                    <span class="text-green-500 font-bold">Final Status: Approved</span>
+                                                @else
+                                                    <span class="text-gray-500">Unknown</span>
+                                                @endif
+                                            </p>
                                         </td>
 
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
                                             <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
                                                 onclick="openModal(
@@ -234,6 +251,8 @@
                                                     '{{ $detailsGroup->first()->preparation_end_date_time }}', 
                                                     '{{ $detailsGroup->first()->cleanup_start_date_time }}', 
                                                     '{{ $detailsGroup->first()->cleanup_end_date_time }}',
+                                                    '{{ $detailsGroup->first()->email }}',
+                                                    '{{ $detailsGroup->first()->endorser_email}}',
                                                     '{{ addslashes($detailsGroup->first()->event_name) }}', 
                                                     '{{ $detailsGroup->first()->max_attendees }}', 
                                                     '{{ implode(', ', $detailsGroup->pluck('pname')->unique()->toArray()) }}', 
@@ -255,20 +274,12 @@
                                                 Update
                                             </button>
 
-                                            <form method="POST" action="{{ route('reservation.destroy', ['role_id' => $user->role_id, 'reservedetailsID' => $detailsGroup->first()->reservedetailsID]) }}" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="border-solid border-1 border-gray-500 text-red-500 px-3 py-1 font-semibold rounded hover:bg-red-500 hover:text-white ml-2">
-                                                    Delete
-                                                </button>
-                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
                     </table>
-
                     <div class="mt-4 flex justify-center space-x-2">
                         {{-- Previous Button --}}
                         @if ($reservationDetails->onFirstPage())
@@ -280,15 +291,13 @@
                         @endif
 
                         {{-- Page Number Buttons --}}
-                        @for ($page = 1; $page <= $reservationDetails->lastPage(); $page++)
-                            @if ($page == $reservationDetails->currentPage())
-                                <button class="px-2 py-1 text-sm text-white bg-green-700 rounded">{{ $page }}</button>
-                            @else
-                                <a href="{{ $reservationDetails->url($page) }}">
-                                    <button class="px-2 py-1 text-sm text-black bg-gray-200 hover:bg-green-200 rounded">{{ $page }}</button>
-                                </a>
-                            @endif
-                        @endfor
+                        @foreach ($reservationDetails->getUrlRange(1, $reservationDetails->lastPage()) as $page => $url)
+                            <a href="{{ $url }}">
+                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == $page ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">
+                                    {{ $page }}
+                                </button>
+                            </a>
+                        @endforeach
 
                         {{-- Next Button --}}
                         @if ($reservationDetails->hasMorePages())
@@ -299,6 +308,9 @@
                             <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded">></button>
                         @endif
                     </div>
+
+
+                     
 
                     
                     <div id="viewModal" class="modal overflow-auto  items-center bg-gray-900 bg-opacity-50 hidden">
@@ -370,15 +382,16 @@
 
                                             <td colspan="2" class=" border border-black bg-gray-100 px-3 py-1 font-bold text-sm">B.4 Support Personnel</td>
                                         </tr>
+                                        
                                         <tr>
                                             <td colspan="2" class="large-col border border-black  px-2 py-2 text-sm ">
                                                 <div>
-                                                    <ul id="ename"></ul> 
+                                                    <span id="ename"></span> 
                                                 </div>
                                             </td>
                                             <td colspan="2" class=" border border-black  px-2 py-2 text-sm">
                                                 <div>
-                                                    <ul id="pname"><br></ul>
+                                                    <span id="pname"><br></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -409,9 +422,10 @@
                                             </div>
                                         </td>
                                     </tr>
+
                                     <tr>
-                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
-                                        <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="person"></span></td>
+                                        <td colspan="2" class="w-[20%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">Email</td>
+                                        <td colspan="2" class="w-[30%] border border-black px-2 py-2"><span id="reserveeEmail"></span></td>
                                         <td colspan="2" class="w-[15%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">CISSO</td>
                                         <td colspan="2" class="w-[35%] border border-black px-2 py-2">
                                             <div class="text-center">
@@ -419,6 +433,7 @@
                                                 <p>Engr. ESMAEL LARUBIS</p>
                                             </div>
                                         </td>
+
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Contact Details</td>
@@ -430,6 +445,11 @@
                                                 <p>Ms. LEONILA DOLOR</p>
                                             </div>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Person-in-Charge of Event</td>
+                                        <td colspan="2" class="border border-black px-2 py-2"><span class="uppercase" id="person"></span></td>
+                                        
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="small-col border border-black bg-gray-100 px-2 py-1 font-bold">Unit/Department/Company</td>
@@ -447,6 +467,11 @@
                                                 <span class="uppercase" id="endorser_name"></span>
                                             </div>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="w-[20%] small-col border border-black bg-gray-100 px-2 py-1 font-bold">Email</td>
+                                        <td colspan="2" class="w-[30%] border border-black px-2 py-2"><span id="endorser_email"></span></td>
+
                                     </tr>
                                     </thead>
                                 </table>
@@ -478,11 +503,13 @@
                                 <input type="hidden" name="approval_id" id="approval_id">
                                 <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
 
+                                <!-- Reservee ID Display -->
                                 <label class="block text-gray-700 font-bold text-left mt-3">Reservee ID</label>
                                 <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay">
                                     {{ $reservee->reserveeID ?? '' }}
                                 </h1> 
 
+                                <!-- Status Dropdown -->
                                 <div class="mb-4">
                                     <label class="block text-gray-700 font-bold text-left">Status</label>
                                     <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2" onchange="toggleNoteField()">
@@ -491,11 +518,13 @@
                                     </select>
                                 </div>
 
+                                <!-- Note Field, hidden by default -->
                                 <div id="noteField" class="mb-4 hidden">
                                     <label class="block text-gray-700 font-bold text-left">Note</label>
                                     <textarea name="note" id="note" class="block w-full border border-gray-300 rounded p-2"></textarea>
                                 </div>
 
+                                <!-- Submit Button -->
                                 <div class="flex justify-center text-center">
                                     <button type="submit" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                 </div>
@@ -511,7 +540,8 @@
     
     <script src="/js/reservationmgmt.js"></script>
     <script src="/js/profile.js"></script>
-    <script src="/js/reservationmodal.js"></script>
+    <script src="/js/search.js"></script>
+
     <script>
         function toggleNoteField() {
         const status = document.getElementById('approval_status').value;

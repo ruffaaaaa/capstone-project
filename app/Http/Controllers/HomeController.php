@@ -13,7 +13,7 @@ class HomeController extends Controller
     
     public function homepage()
     {
-        $facilities = Facilities::where('facilityStatus', 'Available')->get();
+        $facilities = Facilities::where('active', 1)->get();
         $reservations = ReservationDetails::with(['facilities', 'reservee.reservationApproval'])
             ->join('reservee', 'reservation_details.reservedetailsID', '=', 'reservee.reservedetailsID')
             ->select('reservation_details.*', 'reservee.*')

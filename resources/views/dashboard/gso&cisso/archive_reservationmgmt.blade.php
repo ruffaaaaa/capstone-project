@@ -201,8 +201,7 @@
                             @endif
                         </tbody>
                     </table>
-
-                     <div class="mt-4 flex justify-center space-x-2">
+                    <div class="mt-4 flex justify-center space-x-2">
                         {{-- Previous Button --}}
                         @if ($reservationDetails->onFirstPage())
                             <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded"><</button>
@@ -213,38 +212,13 @@
                         @endif
 
                         {{-- Page Number Buttons --}}
-                        @if ($reservationDetails->lastPage() > 1)
-                            {{-- Show first page --}}
-                            <a href="{{ $reservationDetails->url(1) }}">
-                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == 1 ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">1</button>
+                        @foreach ($reservationDetails->getUrlRange(1, $reservationDetails->lastPage()) as $page => $url)
+                            <a href="{{ $url }}">
+                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == $page ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">
+                                    {{ $page }}
+                                </button>
                             </a>
-
-                            {{-- Show ellipsis if needed --}}
-                            @if ($reservationDetails->currentPage() > 4)
-                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
-                            @endif
-
-                            {{-- Show pages around the current page --}}
-                            @for ($page = max(2, $reservationDetails->currentPage() - 2); $page <= min($reservationDetails->lastPage() - 1, $reservationDetails->currentPage() + 2); $page++)
-                                @if ($page == $reservationDetails->currentPage())
-                                    <button class="px-2 py-1 text-sm text-white bg-green-700 rounded">{{ $page }}</button>
-                                @else
-                                    <a href="{{ $reservationDetails->url($page) }}">
-                                        <button class="px-2 py-1 text-sm text-black bg-gray-200 hover:bg-green-200 rounded">{{ $page }}</button>
-                                    </a>
-                                @endif
-                            @endfor
-
-                            {{-- Show ellipsis if needed --}}
-                            @if ($reservationDetails->currentPage() < $reservationDetails->lastPage() - 3)
-                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
-                            @endif
-
-                            {{-- Show last page --}}
-                            <a href="{{ $reservationDetails->url($reservationDetails->lastPage()) }}">
-                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == $reservationDetails->lastPage() ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">{{ $reservationDetails->lastPage() }}</button>
-                            </a>
-                        @endif
+                        @endforeach
 
                         {{-- Next Button --}}
                         @if ($reservationDetails->hasMorePages())
@@ -255,6 +229,7 @@
                             <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded">></button>
                         @endif
                     </div>
+                    
 
                     <div id="viewModal" class="modal overflow-auto  items-center bg-gray-900 bg-opacity-50 hidden">
                         <div class="modal-content my-6  w-a4-width  max-w-4xl rounded bg-white p-6 shadow max-lg: w-full ">

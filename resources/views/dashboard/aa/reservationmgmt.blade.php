@@ -69,6 +69,15 @@
                                 <span class="text ml-3 hidden">Facilities</span>
                             </a>
                         </li>
+                         <li>
+                            <a href="{{ route('admin.adminmgmt', ['role_id' => $user->role_id]) }}" title="Admin Management" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                                <span class="icon">
+                                    <svg class="w-6 h-6" viewBox="0 0 30 23" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M24.875 8.125H22.375V5.625C22.375 5.28125 22.0938 5 21.75 5H20.5C20.1562 5 19.875 5.28125 19.875 5.625V8.125H17.375C17.0312 8.125 16.75 8.40625 16.75 8.75V10C16.75 10.3438 17.0312 10.625 17.375 10.625H19.875V13.125C19.875 13.4688 20.1562 13.75 20.5 13.75H21.75C22.0938 13.75 22.375 13.4688 22.375 13.125V10.625H24.875C25.2188 10.625 25.5 10.3438 25.5 10V8.75C25.5 8.40625 25.2188 8.125 24.875 8.125ZM9.25 10C12.0117 10 14.25 7.76172 14.25 5C14.25 2.23828 12.0117 0 9.25 0C6.48828 0 4.25 2.23828 4.25 5C4.25 7.76172 6.48828 10 9.25 10ZM12.75 11.25H12.0977C11.2305 11.6484 10.2656 11.875 9.25 11.875C8.23438 11.875 7.27344 11.6484 6.40234 11.25H5.75C2.85156 11.25 0.5 13.6016 0.5 16.5V18.125C0.5 19.1602 1.33984 20 2.375 20H16.125C17.1602 20 18 19.1602 18 18.125V16.5C18 13.6016 15.6484 11.25 12.75 11.25Z" fill="#292D32"/>
+                                    </svg>
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -113,14 +122,21 @@
                         </a>
                         <div class="relative inline-block flex justify-end">
                             <div class="mr-2 relative">
-                                <input type="search" id="searchInput" onkeyup="searchTable()" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" placeholder="Search..." />
-                                <div class="absolute inset-y-0 right-2 flex items-center pl-3 pointer-events-none">
-                                    <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="..." fill="black"/>
-                                    </svg>
-                                </div>
+                                <form method="GET" action="{{ url()->current() }}">
+                                    <div class="relative inline-block flex justify-end">
+                                        <div class="flex items-center">
+                                            <input type="search" name="search" id="searchInput" value="{{ request('search') }}" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border-gray-300 rounded-md focus:border-green-500 focus:outline-none focus:ring" placeholder="Search by event name, facility or status..." />
+                                            <button type="submit" class="ml-2 bg-green-700 text-white font-semibold px-2.5 py-2.5 rounded-md focus:outline-none">
+                                                <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M11.8029 11.7612L9.53693 9.31367C10.268 8.30465 10.6647 7.05865 10.6632 5.77592C10.6632 4.63355 10.3505 3.51684 9.76469 2.56699C9.17885 1.61715 8.34616 0.876833 7.37194 0.439668C6.39771 0.0025026 5.3257 -0.11188 4.29147 0.110985C3.25724 0.33385 2.30724 0.883953 1.5616 1.69173C0.815957 2.49951 0.308169 3.52868 0.102448 4.64909C-0.103274 5.76951 0.00231009 6.93086 0.405847 7.98627C0.809385 9.04168 1.49275 9.94375 2.36953 10.5784C3.24631 11.2131 4.27712 11.5518 5.33162 11.5518C6.51567 11.5534 7.66583 11.1237 8.59723 10.3317L10.8565 12.7864C10.9185 12.8541 10.9922 12.9078 11.0734 12.9445C11.1546 12.9811 11.2417 13 11.3297 13C11.4177 13 11.5048 12.9811 11.586 12.9445C11.6672 12.9078 11.7409 12.8541 11.8029 12.7864C11.8653 12.7193 11.9149 12.6395 11.9487 12.5515C11.9826 12.4635 12 12.3691 12 12.2738C12 12.1785 11.9826 12.0841 11.9487 11.9962C11.9149 11.9082 11.8653 11.8283 11.8029 11.7612ZM1.33291 5.77592C1.33291 4.91914 1.56743 4.08161 2.00681 3.36922C2.44619 2.65684 3.07071 2.1016 3.80138 1.77373C4.53205 1.44586 5.33605 1.36007 6.11173 1.52722C6.8874 1.69437 7.5999 2.10694 8.15913 2.71278C8.71836 3.31861 9.0992 4.09049 9.25349 4.9308C9.40779 5.77111 9.3286 6.64212 9.02594 7.43368C8.72329 8.22524 8.21077 8.90179 7.55318 9.37779C6.8956 9.85379 6.12249 10.1079 5.33162 10.1079C4.27109 10.1079 3.25401 9.65146 2.5041 8.83906C1.7542 8.02666 1.33291 6.92482 1.33291 5.77592Z" fill="white"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+
                     </div>
 
 
@@ -186,7 +202,6 @@
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Facility</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Status</th>
 
-                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Final Status</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
@@ -217,16 +232,25 @@
                                             {{ $detailsGroup->pluck('facilityName')->unique()->implode(', ') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            @foreach($customOrder as $role) 
+                                            @foreach($customOrder as $role)
                                                 @php
                                                     $roleDetail = $sortedDetailsGroup->firstWhere('role_name', $role);
                                                 @endphp
                                                 {{ $role }} - {{ $roleDetail->approval_status ?? 'Pending' }}<br>
                                             @endforeach
+                                            <p>
+                                                
+                                                @if($detailsGroup->first()->final_status === 'Pending')
+                                                    <span class="text-red-500 font-bold">Final Status: Pending</span>
+                                                @elseif($detailsGroup->first()->final_status === 'Approved')
+                                                    <span class="text-green-500 font-bold">Final Status: Approved</span>
+                                                @else
+                                                    <span class="text-gray-500">Unknown</span>
+                                                @endif
+                                            </p>
                                         </td>
 
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">{{ $detailsGroup->first()->final_status }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center font-semibold">
                                             <button class="border-solid border-1 border-gray-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-500 hover:text-white ml-2 viewButton"
                                                 onclick="openModal(
@@ -283,8 +307,7 @@
                             @endif
                         </tbody>
                     </table>
-
-                     <div class="mt-4 flex justify-center space-x-2">
+                    <div class="mt-4 flex justify-center space-x-2">
                         {{-- Previous Button --}}
                         @if ($reservationDetails->onFirstPage())
                             <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded"><</button>
@@ -295,38 +318,13 @@
                         @endif
 
                         {{-- Page Number Buttons --}}
-                        @if ($reservationDetails->lastPage() > 1)
-                            {{-- Show first page --}}
-                            <a href="{{ $reservationDetails->url(1) }}">
-                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == 1 ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">1</button>
+                        @foreach ($reservationDetails->getUrlRange(1, $reservationDetails->lastPage()) as $page => $url)
+                            <a href="{{ $url }}">
+                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == $page ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">
+                                    {{ $page }}
+                                </button>
                             </a>
-
-                            {{-- Show ellipsis if needed --}}
-                            @if ($reservationDetails->currentPage() > 4)
-                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
-                            @endif
-
-                            {{-- Show pages around the current page --}}
-                            @for ($page = max(2, $reservationDetails->currentPage() - 2); $page <= min($reservationDetails->lastPage() - 1, $reservationDetails->currentPage() + 2); $page++)
-                                @if ($page == $reservationDetails->currentPage())
-                                    <button class="px-2 py-1 text-sm text-white bg-green-700 rounded">{{ $page }}</button>
-                                @else
-                                    <a href="{{ $reservationDetails->url($page) }}">
-                                        <button class="px-2 py-1 text-sm text-black bg-gray-200 hover:bg-green-200 rounded">{{ $page }}</button>
-                                    </a>
-                                @endif
-                            @endfor
-
-                            {{-- Show ellipsis if needed --}}
-                            @if ($reservationDetails->currentPage() < $reservationDetails->lastPage() - 3)
-                                <span class="px-2 py-1 text-sm text-gray-500">...</span>
-                            @endif
-
-                            {{-- Show last page --}}
-                            <a href="{{ $reservationDetails->url($reservationDetails->lastPage()) }}">
-                                <button class="px-2 py-1 text-sm {{ $reservationDetails->currentPage() == $reservationDetails->lastPage() ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">{{ $reservationDetails->lastPage() }}</button>
-                            </a>
-                        @endif
+                        @endforeach
 
                         {{-- Next Button --}}
                         @if ($reservationDetails->hasMorePages())
@@ -337,6 +335,9 @@
                             <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded">></button>
                         @endif
                     </div>
+
+
+                     
 
                     
                     <div id="viewModal" class="modal overflow-auto  items-center bg-gray-900 bg-opacity-50 hidden">

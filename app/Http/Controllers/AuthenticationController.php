@@ -17,15 +17,12 @@ class AuthenticationController extends Controller
     
     public function DisplayLoginForm()
     {
-        // Check if the user is already authenticated
         if (Auth::check()) {
             $user = Auth::user();
             
-            // Redirect the user to the correct dashboard based on their role
             return redirect()->route('dashboard', ['role_id' => $user->role_id]);
         }
 
-        // If the user is not logged in, show the login form
         return view('auth.login');
     }
 
@@ -43,14 +40,21 @@ class AuthenticationController extends Controller
             ? ['email' => $loginField, 'password' => $password]
             : ['username' => $loginField, 'password' => $password];
 
+        // Attempt to log in the user
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+
+            if (!$user->active) {
+                Auth::logout(); 
+                return back()->withErrors(['login' => 'Your account is inactive.']);
+            }
 
             return redirect()->route('dashboard', ['role_id' => $user->role_id]);
         }
 
         return back()->withErrors(['login' => 'Invalid login credentials']);
     }
+
 
 
     public function dashboard($role_id)
@@ -89,18 +93,6 @@ class AuthenticationController extends Controller
         return compact('pendingRequestsCount', 'reservations', 'user');
     }
 
-
-    public function insertAdmin(Request $request)
-    {
-        $admin = new User();
-        $admin->username = 'GSO';
-        $admin->email = 'cisso@example.com';
-        $admin->password = bcrypt('12345cisso');
-        $admin->role_id= 2;
-        $admin->save();
-
-        return 'Admin user created successfully';
-    }
 
     protected $redirectTo = '/dashboard'; 
 

@@ -62,20 +62,20 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.facilities', ['role_id' => $user->role_id]) }}" title="Facilities" class="flex items-center bg-[#087830] rounded-xl font-bold text-sm text-white py-2 px-4">
+                                <a href="{{ route('admin.facilities', ['role_id' => $user->role_id]) }}" title="Facilities" class="flex items-center hover:bg-green-300  rounded-xl font-bold text-sm text-white py-2 px-4">
                                     <span class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 27" fill="currentColor" class="w-5 h-5">
-                                            <path d="M26.4045 8.5105L16.704 0.889061C15.2062 -0.294051 12.7845 -0.294051 11.3008 0.875304L1.60023 8.5105C0.508396 9.36345 -0.191498 11.1656 0.0464656 12.5138L1.90818 23.4644C2.24413 25.4179 4.14784 27 6.16354 27H21.8412C23.8429 27 25.7606 25.4042 26.0965 23.4644L27.9582 12.5138C28.1822 11.1656 27.4823 9.36345 26.4045 8.5105ZM14.0024 18.3193C12.0707 18.3193 10.5029 16.7785 10.5029 14.88C10.5029 12.9815 12.0707 11.4407 14.0024 11.4407C15.9341 11.4407 17.5018 12.9815 17.5018 14.88C17.5018 16.7785 15.9341 18.3193 14.0024 18.3193Z" fill="#FFFFFF"/>
+                                            <path d="M26.4045 8.5105L16.704 0.889061C15.2062 -0.294051 12.7845 -0.294051 11.3008 0.875304L1.60023 8.5105C0.508396 9.36345 -0.191498 11.1656 0.0464656 12.5138L1.90818 23.4644C2.24413 25.4179 4.14784 27 6.16354 27H21.8412C23.8429 27 25.7606 25.4042 26.0965 23.4644L27.9582 12.5138C28.1822 11.1656 27.4823 9.36345 26.4045 8.5105ZM14.0024 18.3193C12.0707 18.3193 10.5029 16.7785 10.5029 14.88C10.5029 12.9815 12.0707 11.4407 14.0024 11.4407C15.9341 11.4407 17.5018 12.9815 17.5018 14.88C17.5018 16.7785 15.9341 18.3193 14.0024 18.3193Z" fill="#292D32"/>
                                         </svg>
                                     </span>
                                     <span class="text hidden">Facilities</span>
                                 </a>
                             </li>
-                             <li>
-                                <a href="{{ route('admin.adminmgmt', ['role_id' => $user->role_id]) }}" title="Admin Management" class="flex  hover:bg-green-300  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
+                            <li>
+                                <a href="{{ route('admin.adminmgmt', ['role_id' => $user->role_id]) }}" title="Admin Management" class="flex  bg-[#087830]  rounded-xl font-bold text-sm text-gray-900 py-2 px-4">
                                     <span class="icon">
                                         <svg class="w-6 h-6" viewBox="0 0 30 23" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M24.875 8.125H22.375V5.625C22.375 5.28125 22.0938 5 21.75 5H20.5C20.1562 5 19.875 5.28125 19.875 5.625V8.125H17.375C17.0312 8.125 16.75 8.40625 16.75 8.75V10C16.75 10.3438 17.0312 10.625 17.375 10.625H19.875V13.125C19.875 13.4688 20.1562 13.75 20.5 13.75H21.75C22.0938 13.75 22.375 13.4688 22.375 13.125V10.625H24.875C25.2188 10.625 25.5 10.3438 25.5 10V8.75C25.5 8.40625 25.2188 8.125 24.875 8.125ZM9.25 10C12.0117 10 14.25 7.76172 14.25 5C14.25 2.23828 12.0117 0 9.25 0C6.48828 0 4.25 2.23828 4.25 5C4.25 7.76172 6.48828 10 9.25 10ZM12.75 11.25H12.0977C11.2305 11.6484 10.2656 11.875 9.25 11.875C8.23438 11.875 7.27344 11.6484 6.40234 11.25H5.75C2.85156 11.25 0.5 13.6016 0.5 16.5V18.125C0.5 19.1602 1.33984 20 2.375 20H16.125C17.1602 20 18 19.1602 18 18.125V16.5C18 13.6016 15.6484 11.25 12.75 11.25Z" fill="#292D32"/>
+                                            <path d="M24.875 8.125H22.375V5.625C22.375 5.28125 22.0938 5 21.75 5H20.5C20.1562 5 19.875 5.28125 19.875 5.625V8.125H17.375C17.0312 8.125 16.75 8.40625 16.75 8.75V10C16.75 10.3438 17.0312 10.625 17.375 10.625H19.875V13.125C19.875 13.4688 20.1562 13.75 20.5 13.75H21.75C22.0938 13.75 22.375 13.4688 22.375 13.125V10.625H24.875C25.2188 10.625 25.5 10.3438 25.5 10V8.75C25.5 8.40625 25.2188 8.125 24.875 8.125ZM9.25 10C12.0117 10 14.25 7.76172 14.25 5C14.25 2.23828 12.0117 0 9.25 0C6.48828 0 4.25 2.23828 4.25 5C4.25 7.76172 6.48828 10 9.25 10ZM12.75 11.25H12.0977C11.2305 11.6484 10.2656 11.875 9.25 11.875C8.23438 11.875 7.27344 11.6484 6.40234 11.25H5.75C2.85156 11.25 0.5 13.6016 0.5 16.5V18.125C0.5 19.1602 1.33984 20 2.375 20H16.125C17.1602 20 18 19.1602 18 18.125V16.5C18 13.6016 15.6484 11.25 12.75 11.25Z" fill="#FFFFFF"/>
                                         </svg>
                                     </span>
                                 </a>
@@ -117,14 +117,14 @@
                 <div class="bg-white rounded shadow-md p-8 mb-5">
                     <div class="relative flex justify-between items-center mt-2 mb-2 w-full">
                         <button type="button" class="bg-green-700 mb-3 text-white font-bold py-2 px-4 rounded" id="openModalBtn">
-                            Add Facility
+                            Add Admin
                         </button>
                         <div class="relative inline-block flex justify-end">
                             <div class="mr-2 relative">
                                 <form method="GET" action="{{ url()->current() }}">
                                     <div class="relative inline-block flex justify-end">
                                         <div class="flex items-center">
-                                            <input type="search" name="search" id="searchInput" value="{{ request('search') }}" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border-gray-300 rounded-md focus:border-green-500 focus:outline-none focus:ring" placeholder="Search by name or status.." />
+                                            <input type="search" name="search" id="searchInput" value="{{ request('search') }}" class="w-[300px] text-xs px-3 py-2 text-gray-700 bg-white border-2 border-gray-300 rounded-md focus:border-green-500 focus:outline-none focus:ring" placeholder="Search by username, email, or role..." />
                                             <button type="submit" class="ml-2 bg-green-700 text-white font-semibold px-2.5 py-2.5 rounded-md focus:outline-none">
                                                 <svg width="12" height="12" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M11.8029 11.7612L9.53693 9.31367C10.268 8.30465 10.6647 7.05865 10.6632 5.77592C10.6632 4.63355 10.3505 3.51684 9.76469 2.56699C9.17885 1.61715 8.34616 0.876833 7.37194 0.439668C6.39771 0.0025026 5.3257 -0.11188 4.29147 0.110985C3.25724 0.33385 2.30724 0.883953 1.5616 1.69173C0.815957 2.49951 0.308169 3.52868 0.102448 4.64909C-0.103274 5.76951 0.00231009 6.93086 0.405847 7.98627C0.809385 9.04168 1.49275 9.94375 2.36953 10.5784C3.24631 11.2131 4.27712 11.5518 5.33162 11.5518C6.51567 11.5534 7.66583 11.1237 8.59723 10.3317L10.8565 12.7864C10.9185 12.8541 10.9922 12.9078 11.0734 12.9445C11.1546 12.9811 11.2417 13 11.3297 13C11.4177 13 11.5048 12.9811 11.586 12.9445C11.6672 12.9078 11.7409 12.8541 11.8029 12.7864C11.8653 12.7193 11.9149 12.6395 11.9487 12.5515C11.9826 12.4635 12 12.3691 12 12.2738C12 12.1785 11.9826 12.0841 11.9487 11.9962C11.9149 11.9082 11.8653 11.8283 11.8029 11.7612ZM1.33291 5.77592C1.33291 4.91914 1.56743 4.08161 2.00681 3.36922C2.44619 2.65684 3.07071 2.1016 3.80138 1.77373C4.53205 1.44586 5.33605 1.36007 6.11173 1.52722C6.8874 1.69437 7.5999 2.10694 8.15913 2.71278C8.71836 3.31861 9.0992 4.09049 9.25349 4.9308C9.40779 5.77111 9.3286 6.64212 9.02594 7.43368C8.72329 8.22524 8.21077 8.90179 7.55318 9.37779C6.8956 9.85379 6.12249 10.1079 5.33162 10.1079C4.27109 10.1079 3.25401 9.65146 2.5041 8.83906C1.7542 8.02666 1.33291 6.92482 1.33291 5.77592Z" fill="white"/>
@@ -142,23 +142,24 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Facility Name</th>
-                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Role</th>
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Status</th>
 
                                 <th scope="col" class="px-6 py-3 text-center text-sm  font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($facilities as $facility)
+                            @foreach ($listofAdmins as $admin)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{  $facility->facilityID}}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $facility->facilityName }}</td>
-                                    <td class="flex px-6 py-4 whitespace-nowrap text-center">
-                                        <img src="{{ asset('uploads/facilities/' . $facility->image) }}" alt="Facility Image" class="h-8 w-15 mx-auto">
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{  $admin->id}}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $admin->username}}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $admin->email}}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $admin->role->name ?? 'N/A' }}</td>
                                     <td  class="px-6 py-4 whitespace-nowrap text-center font-bold">
-                                        @if($facility->active)
+                                        @if($admin->active)
                                             <span class="text-green-500">Active</span>
                                         @else
                                             <span class="text-red-500">Inactive</span>
@@ -167,36 +168,37 @@
 
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <button class="border-solid border-1 border-gray-500 font-semibold text-blue-500 px-4 py-1 rounded  hover:bg-blue-500 hover:text-white ml-2 editButton">
-                                        Edit
+                                        Update
                                     </button>
-                                                 
+                                                        
                                     </td>
                                 </tr>
 
-                                <p class = "hidden">{{ $facility->facilityID }}</p>
                             @endforeach
                         </tbody>
                     </table>
+                    
+
                     <div class="mt-4 flex justify-center space-x-2">
                         {{-- Previous Button --}}
-                        @if ($facilities->onFirstPage())
+                        @if ($listofAdmins->onFirstPage())
                             <button class="px-2 py-1 text-sm text-gray-500 bg-gray-200 cursor-not-allowed rounded"><</button>
                         @else
-                            <a href="{{ $facilities->appends(request()->query())->previousPageUrl() }}">
+                            <a href="{{ $listofAdmins->appends(request()->query())->previousPageUrl() }}">
                                 <button class="px-2 py-1 bg-gray-200 hover:text-white text-sm hover:bg-green-600 rounded"><</button>
                             </a>
                         @endif
 
                         {{-- Page Number Buttons --}}
-                        @for ($page = 1; $page <= $facilities->lastPage(); $page++)
-                            <a href="{{ $facilities->appends(request()->query())->url($page) }}">
-                                <button class="px-2 py-1 text-sm {{ $facilities->currentPage() == $page ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">{{ $page }}</button>
+                        @for ($page = 1; $page <= $listofAdmins->lastPage(); $page++)
+                            <a href="{{ $listofAdmins->appends(request()->query())->url($page) }}">
+                                <button class="px-2 py-1 text-sm {{ $listofAdmins->currentPage() == $page ? 'text-white bg-green-700' : 'text-black bg-gray-200 hover:bg-green-200' }} rounded">{{ $page }}</button>
                             </a>
                         @endfor
 
                         {{-- Next Button --}}
-                        @if ($facilities->hasMorePages())
-                            <a href="{{ $facilities->appends(request()->query())->nextPageUrl() }}">
+                        @if ($listofAdmins->hasMorePages())
+                            <a href="{{ $listofAdmins->appends(request()->query())->nextPageUrl() }}">
                                 <button class="px-2 py-1 text-sm bg-gray-200 hover:text-white hover:bg-green-600 rounded">></button>
                             </a>
                         @else
@@ -204,94 +206,133 @@
                         @endif
                     </div>
 
+
+
                 </div>
             </div>  
         </div>
-        <div id="addModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
+       <!-- Add Admin Modal -->
+       <div id="addModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div class="bg-white px-2 py-2 rounded-lg shadow-lg w-1/3 max-md:w-full">
                 <div class="sm:flex sm:items-start">
-                    <div class="mt-3 text-center  w-full ">
+                    <div class="mt-3  w-full ">
                         <div class="flex gap-2 px-3 justify-between items-center font-bold mb-4 ">
                             <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
-                                <span class="text-3xl tracking-tighter">ADD FACILITY</span>
+                                <span class="text-3xl tracking-tighter">ADD ADMIN</span>
                             </div>
                             <button id="closeModalBtn" class="text-lg tracking-tighter text-white">
                                 <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
                             </button>
                         </div>
-                        <form id="addForm" action="{{ route('facility.save') }}" method="POST" enctype="multipart/form-data" class="px-3">
+
+                        <form id="addForm" action="{{ route('admin.save') }}" method="POST" enctype="multipart/form-data" class="px-4">
                             @csrf
+
                             <div class="mb-2">
-                                <label for="facilityName" class="block text-gray-700 font-bold  text-left ">Facility Name</label>
-                                <input type="text" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="facilityName" name="facilityName" required>
+                                <label for="username" class="block text-gray-700 font-bold">Username</label>
+                                <input type="text" id="username" name="username" required
+                                    class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" autocomplete="new-username">
                             </div>
+
                             <div class="mb-2">
-                                <label for="image" class="block text-gray-700 font-bold  text-left ">Image</label>
-                                <input type="file" class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" id="image" name="image" accept=".jpg, .jpeg, .png">
+                                <label for="email" class="block text-gray-700 font-bold">Email</label>
+                                <input type="email" id="email" name="email" required
+                                    class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" autocomplete="new-email">
                             </div>
-                          
+
+                            <div class="mb-2">
+                                <label for="password" class="block text-gray-700 font-bold">Password</label>
+                                <input type="password" id="password" name="password" required class="rounded-l py-2 px-3 form-input w-full border border-solid border-gray-300" autocomplete="new-password">
+                                    <span id="passwordError" class="text-red-500 text-sm hidden">Password must be at least 5 characters long.</span>
+
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="role_id" class="block text-gray-700 font-bold">Role</label>
+                                <select id="role_id" name="role_id" required class="form-select w-full border-gray-300 rounded py-2 px-3" >
+                                    <option value="">Select Role</option> 
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span id="roleError" class="text-red-500 text-sm hidden">Please select a valid role.</span>
+                            </div>
+
+
                             <div class="mb-2 flex items-center">
                                 <input type="checkbox" id="activeCheckbox" name="active" class="ml-2 text-green-700 rounded">
-                                <span class="text-gray-600 ml-2">Check to activate the facility</span>
+                                <span class="text-gray-600 ml-2">Check to activate the admin</span>
+                            </div>
+
+
+                            <div class=" py-3 flex text-center justify-center">
+                                <button type="submit" form="addForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2.5 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class=" py-3 flex text-center justify-center">
-                    <button type="submit" form="addForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2.5 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
-                </div>
             </div>
         </div>
+
         <div id="editModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div class="inline-block align-bottom bg-white rounded-lg w-1/3   max-md:w-full text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-white rounded-lg w-1/3 max-md:w-full text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 py-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="justify text-center sm:mt-0 sm:text-left w-full">
                             <div class="flex gap-2 justify-between items-center font-bold mb-4 ">
                                 <div class="pt-2 pb-1 text-2xl font-bold tracking-tighter leading-4 text-green-700 max-w-[282px]">
-                                    <span class="text-2xl tracking-tighter">UPDATE FACILITY</span>
+                                    <span class="text-2xl tracking-tighter">UPDATE ADMIN ROLE</span>
                                 </div>
-                                <button id="closeModal"class="text-lg tracking-tighter text-white">
+                                <button id="closeModal" class="text-lg tracking-tighter text-white">
                                     <div class="px-4 py-2 bg-green-700 rounded-md max-md:px-5">x</div>
                                 </button>
                             </div>
                             <form id="editForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" id="editFacilityID" name="facilityID">
-                            
-                            <div class="mt-2">
-                                <label for="editFacilityName" class="block text-gray-600 text-left font-medium">Facility Name</label>
-                                <input type="text" id="editFacilityName" name="facilityName" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
-                            </div>
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" id="editAdminID" name="adminID">
 
-                            <div class="mt-2">
-                                <label class="block text-gray-600 text-left font-medium">Current Image</label>
-                                <div class="flex items-center justify-center ">
-                                    <img id="currentImage" class="mt-2 w-32 max-w-full max-h-48" src="">
+                                <div class="mt-2">
+                                    <label for="editUsername" class="block text-gray-600 text-left font-medium">Username</label>
+                                    <input type="text" id="editUsername" name="username" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
                                 </div>
-                                <label for="editImage" class="mt-2 block text-gray-600 text-left font-medium">Image (Leave empty if you do not want to change it)</label>
-                                <input type="file" id="editImage" name="image" accept=".jpg, .jpeg, .png" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
-                            </div>
 
-                            <div class="mt-3 -mb-6 flex text-center justify-center">
-                                <div class="flex items-center gap-2"> 
-                                    <input type="hidden" name="active" value="0"/>
-                                    <input type="checkbox" id="editStatus" name="active" value="1" class="form-checkbox text-green-600 border border-solid border-gray-300 rounded" />
-                                    <span id="statusText" class="text-gray-700">Active</span>
+                                <div class="mt-2">
+                                    <label for="editEmail" class="block text-gray-600 text-left font-medium">Email</label>
+                                    <input type="email" id="editEmail" name="email" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
                                 </div>
-                            </div>
+                                
 
-                        </form>
+                                <div class="mt-2">
+                                    <label for="editRole" class="block text-gray-600 text-left font-medium">Role</label>
+                                    <select id="editRole" name="role_id" class="rounded py-2 px-3 form-input w-full border border-solid border-gray-300">
+                                        <option value="">Select Role</option>
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
 
+                                </div>
+   
+                                <div class="mt-3 flex text-center justify-center">
+                                    <div class="flex items-center gap-2"> 
+                                        <input type="hidden" name="active" value="0"/>
+                                        <input type="checkbox" id="editStatus" name="active" value="1" class="form-checkbox text-green-600 border border-solid border-gray-300 rounded" />
+                                        <span id="statusText" class="text-gray-700">Active</span>
+                                    </div>
+                                </div>
+
+
+                                <div class=" py-3 flex text-center justify-center">
+                                    <button type="submit" form="editForm" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2.5 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class=" px-4 py-4 flex text-center justify-center">
-                    <button type="submit" form="editForm" class="inline-flex justify-center w-full  border rounded-md border-transparent px-4 py-2.5 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
-                </div>
             </div>
         </div>
+
         <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-600 bg-opacity-50">
             <div class="flex items-center justify-center min-h-screen">
                 <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
@@ -344,10 +385,11 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     </main>
     <script src="/js/profile.js"></script>
-    <script src="/js/facilities.js"></script>
+    <script src="/js/admin.js"></script>
 
 </body>
 </html>

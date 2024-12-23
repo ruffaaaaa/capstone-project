@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var row = button.closest('tr');
             var facilityID = row.querySelector('td:nth-child(1)').textContent;
             var facilityName = row.querySelector('td:nth-child(2)').textContent;
-            var status = row.querySelector('td:nth-child(4)').textContent;
+            var status = row.querySelector('td:nth-child(4) span').textContent.trim(); // Assuming status is in the fifth column
             var imageSrc = row.querySelector('td:nth-child(3) img').src;
 
             editFacilityIDField.value = facilityID;
@@ -25,14 +25,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             editForm.action = '/facilities/' + facilityID; 
 
-            var options = editStatusField.options;
-            for (var i = 0; i < options.length; i++) {
-                if (options[i].value === status) {
-                    options[i].selected = true;
-                } else {
-                    options[i].selected = false;
-                }
-            }
+
+            editStatusField.checked = (status === "Active");
+            statusText.textContent = status;
 
             modal.classList.remove('hidden');
         });
@@ -54,18 +49,18 @@ document.getElementById('closeModalBtn').addEventListener('click', function () {
     document.getElementById('addModal').classList.add('hidden'); 
 });
 
-document.getElementById('searchInput').addEventListener('keyup', function() {
-    const searchQuery = this.value.toLowerCase();
-    const tableRows = document.querySelectorAll('tbody tr');
+// document.getElementById('searchInput').addEventListener('keyup', function() {
+//     const searchQuery = this.value.toLowerCase();
+//     const tableRows = document.querySelectorAll('tbody tr');
 
-    tableRows.forEach(row => {
-        const facilityName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-        const facilityStatus = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+//     tableRows.forEach(row => {
+//         const facilityName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+//         const facilityStatus = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
 
-        if (facilityName.includes(searchQuery) || facilityStatus.includes(searchQuery)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-});
+//         if (facilityName.includes(searchQuery) || facilityStatus.includes(searchQuery)) {
+//             row.style.display = '';
+//         } else {
+//             row.style.display = 'none';
+//         }
+//     });
+// });

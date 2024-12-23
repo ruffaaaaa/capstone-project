@@ -138,6 +138,7 @@
                         <label for="facilityFilter" class="block text-sm font-medium text-gray-700 mb-1">Facility:</label>
                         <select id="facilityFilter" class="block text-xs appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-3 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline" onchange="filterByFacility(this.value)">
                                 <option value="text-xs">All</option>
+                                <!-- Facilities will be populated here -->
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4 mt-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M7 7l3-3 3 3m0 6l-3 3-3-3"></path></svg>
@@ -253,7 +254,6 @@
     </main>
     <script src="/js/profile.js"></script>
     <script src="/js/calendar.js"></script>
-    <script src="/js/index.js"></script>
 
    
 </body>

@@ -25,13 +25,15 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 
 class ReservationController extends Controller
 {
     public function showReservationForm()
     {
-        $facilities = Facilities::where('facilityStatus', 'Available')->get();
+        $facilities = Facilities::where('active', 1)->get();
         return view('make-reservation', compact('facilities'));
     }
 
@@ -240,9 +242,9 @@ class ReservationController extends Controller
     }
 
 
-    private function getReservationDetails()
+    private function getReservationDetails($searchQuery = null)
     {
-        $reservationDetails = DB::table('reservee')
+        $query = DB::table('reservee')
             ->join('reservation_details', 'reservee.reservedetailsID', '=', 'reservation_details.reservedetailsID')
             ->join('selected_facilities', 'selected_facilities.reservedetailsID', '=', 'reservation_details.reservedetailsID')
             ->join('facilities', 'facilities.facilityID', '=', 'selected_facilities.facilityID')
@@ -273,33 +275,48 @@ class ReservationController extends Controller
                 'admin_roles.name as role_name',
                 'reservation_attachments.file as attachment_path'
             )
-            ->orderBy('admin_approvals.admin_id', 'desc')
-            ->get()
-            ->groupBy('reserveeID'); 
+            ->orderBy('admin_approvals.admin_id', 'desc');
 
-        $reservationDetailsCollection = $reservationDetails->values();
-        $currentPage = request()->get('page', 1); 
-        $perPage = 20; 
+        // Apply search filter if the search query is provided
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('reservee.reserveeName', 'like', "%$searchQuery%")
+                ->orWhere('reservee.reserveeID', 'like', "%$searchQuery%")
+                ->orWhere('reservation_details.event_name', 'like', "%$searchQuery%")
+                ->orWhere('facilities.facilityName', 'like', "%$searchQuery%")
+                ->orWhere('reservation_approvals.final_status', 'like', "%$searchQuery%")
+                ->orWhere('admin_roles.name', 'like', "%$searchQuery%");
+            });
+        }
 
-        $pagedData = $reservationDetailsCollection->forPage($currentPage, $perPage)->values(); 
-        $reservationDetailsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
-            $pagedData,
-            $reservationDetailsCollection->count(),
+        // Get all the results first (without pagination)
+        $reservationDetails = $query->get()->groupBy('reserveeID');
+
+        // Paginate the grouped data manually
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = collect($reservationDetails)->forPage($currentPage, $perPage);
+
+        // Create a custom paginator for the grouped data
+        $paginatedData = new LengthAwarePaginator(
+            $currentItems,
+            count($reservationDetails),
             $perPage,
             $currentPage,
-            ['path' => request()->url(), 'query' => request()->query()]
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        $attachments = $pagedData->pluck('attachment_path')->filter()->unique()->toArray();
+        // Extract attachments as before
+        $attachments = $reservationDetails->pluck('attachment_path')->filter()->unique()->toArray();
 
-        return ['reservationDetails' => $reservationDetailsPaginated, 'attachments' => $attachments];
+        return ['reservationDetails' => $paginatedData, 'attachments' => $attachments];
     }
 
 
     public function listReservations($role_id, $isArchived = false)
     {
         if (Auth::check()) {
-            $data = $this->getReservationDetails();
+            $data = $this->getReservationDetails(request('search'));  // Pass the search query
             $user = Auth::user();
 
             $isArchived = filter_var($isArchived, FILTER_VALIDATE_BOOLEAN);

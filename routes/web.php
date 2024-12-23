@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\AdminMgmtController;
 use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationMgmtController;
@@ -27,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'role:1,2,3'])->group(function () {
     Route::get('/{role_id}/admin-facilities', [FacilitiesController::class, 'listFacilities'])->name('admin.facilities');
+    Route::get('/{role_id}/admin-adminmgmt', [AdminMgmtController::class, 'listAdmin'])->name('admin.adminmgmt');
+
     Route::get('/{role_id}/admin-reservation/{isArchived?}', [ReservationController::class, 'listReservations'])
     ->name('admin.reservation');
     Route::delete('/{role_id}/admin-reservation/{reservedetailsID}', [ReservationMgmtController::class, 'deleteReservation'])->name('reservation.destroy');
@@ -39,6 +42,11 @@ Route::post('/facilities/save', [FacilitiesController::class, 'addFacility'])->n
 Route::put('/facilities/{facilityID}', [FacilitiesController::class, 'editFacility'])->name('facilities.update');
 Route::delete('/facilities/{facilityID}', [FacilitiesController::class, 'deleteFacility'])->name('facilities.destroy');
 Route::get('/reservationsQuery', [CalendarController::class, 'getReservationsByRole'])->name('dashboard.reservations');
+
+Route::post('/admin/save', [AdminMgmtController::class, 'addAdmin'])->name('admin.save');
+Route::put('/admin/{id}', [AdminMgmtController::class, 'updateAdmin'])->name('admin.update');
+
+
 
 Route::post('/admin/send-reservee-email', [ReservationMgmtController::class, 'sendReserveeEmail'])->name('admin.sendReserveeEmail');
 

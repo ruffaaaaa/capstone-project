@@ -98,7 +98,6 @@
 
                             <div class="flex flex-col p-3 w-full text-black">
                                 <div class="text-base font-bold">{{ $facility->facilityName }}</div>
-                                <div class="mt-1 text-sm leading-none">{{ $facility->facilityStatus }}</div>
                             </div>
                             
                         </div>
