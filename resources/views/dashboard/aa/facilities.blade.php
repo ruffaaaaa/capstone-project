@@ -167,7 +167,7 @@
 
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <button class="border-solid border-1 border-gray-500 font-semibold text-blue-500 px-4 py-1 rounded  hover:bg-blue-500 hover:text-white ml-2 editButton">
-                                        Edit
+                                        Update
                                     </button>
                                                  
                                     </td>
