@@ -613,6 +613,13 @@
             alert('Failed to send email.');
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check if a conflict was passed from the server
+        @if(session('conflict'))
+            window.alert("There is an existing approved reservation.");
+        @endif
+    });
     </script>
 
 

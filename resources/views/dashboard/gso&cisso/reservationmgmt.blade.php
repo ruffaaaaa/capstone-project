@@ -503,13 +503,11 @@
                                 <input type="hidden" name="approval_id" id="approval_id">
                                 <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
 
-                                <!-- Reservee ID Display -->
                                 <label class="block text-gray-700 font-bold text-left mt-3">Reservee ID</label>
                                 <h1 class="reservee-id-display text-left py-2 px-3 border border-gray-300 rounded bg-gray-100 font-bold" id="reserveeIDDisplay">
                                     {{ $reservee->reserveeID ?? '' }}
                                 </h1> 
 
-                                <!-- Status Dropdown -->
                                 <div class="mb-4">
                                     <label class="block text-gray-700 font-bold text-left">Status</label>
                                     <select name="approval_status" id="approval_status" class="block w-full border border-gray-300 rounded p-2" onchange="toggleNoteField()">
@@ -518,13 +516,11 @@
                                     </select>
                                 </div>
 
-                                <!-- Note Field, hidden by default -->
                                 <div id="noteField" class="mb-4 hidden">
                                     <label class="block text-gray-700 font-bold text-left">Note</label>
                                     <textarea name="note" id="note" class="block w-full border border-gray-300 rounded p-2"></textarea>
                                 </div>
 
-                                <!-- Submit Button -->
                                 <div class="flex justify-center text-center">
                                     <button type="submit" class="inline-flex justify-center w-full border rounded-md border-transparent px-4 py-2 bg-[#087830] text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
                                 </div>
@@ -585,6 +581,11 @@
             alert('Failed to send email.');
         }
     }
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('conflict'))
+            window.alert("There is an existing approved reservation.");
+        @endif
+    });
     </script>
 
 

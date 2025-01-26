@@ -15,6 +15,8 @@ use App\Mail\ReservationStatusUpdateMail;
 use App\Mail\DenialNoteMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
+
 
 
 
@@ -42,6 +44,33 @@ class ReservationMgmtController extends Controller
         'approval_status' => 'required|string|in:Approved,Denied,Pending',
     ]);
 
+    $reservationApproval = ReservationApprovals::find($request->approval_id);
+    if (!$reservationApproval) {
+        return redirect()->back()->withErrors(['error' => 'Reservation details not found.']);
+    }
+
+    $reservationDetails = $reservationApproval->reservee ? $reservationApproval->reservee->reservationDetails : null;
+    if (!$reservationDetails) {
+        return redirect()->back()->withErrors(['error' => 'No reservation details found for this approval.']);
+    }
+
+    $conflictExists = ReservationApprovals::whereHas('reservee.reservationDetails', function ($query) use ($reservationDetails) {
+        $query->where('reservedetailsID', '!=', $reservationDetails->reservedetailsID)
+              ->where(function ($subQuery) use ($reservationDetails) {
+                  $subQuery->where('event_start_date', '<=', $reservationDetails->event_end_date)
+                           ->where('event_end_date', '>=', $reservationDetails->event_start_date);
+              });
+    })
+    ->whereHas('reservee.reservationDetails.selectedFacilities', function ($query) use ($reservationDetails) {
+        $query->whereIn('facilityID', $reservationDetails->facilities->pluck('facilityID')->toArray());
+    })
+    ->where('final_status', 'Approved')
+    ->exists();
+
+    if ($conflictExists && $request->approval_status === 'Approved') {
+        return redirect()->back()->with('conflict', true)->withErrors(['error' => 'There is an existing approved reservation with a conflicting schedule or facility.']);
+    }
+
     $adminApproval = AdminApprovals::firstOrNew([
         'reservation_approval_id' => $request->approval_id,
         'admin_id' => $request->admin_id,
@@ -50,73 +79,63 @@ class ReservationMgmtController extends Controller
     $adminApproval->approval_status = $request->approval_status;
     $adminApproval->save();
 
-    $reservationApproval = ReservationApprovals::find($request->approval_id);
+    $finalStatus = 'Pending';
+    if ($role_id == 1 && $request->approval_status === 'Denied') {
+        $finalStatus = 'Denied';
+    } elseif ($role_id == 3 && $request->approval_status === 'Approved') {
+        $finalStatus = 'Approved';
+    }
+    $reservationApproval->final_status = $finalStatus;
+    $reservationApproval->save();
 
-    if ($reservationApproval) {
-        $finalStatus = 'Pending';
-        if ($role_id == 1 && $request->approval_status === 'Denied') {
-            $finalStatus = 'Denied';
-        } elseif ($role_id == 3 && $request->approval_status === 'Approved') {
-            $finalStatus = 'Approved';
-        }
-        $reservationApproval->final_status = $finalStatus;
-        $reservationApproval->save();
+    // Send email notification if needed
+    if ($request->approval_status === 'Approved') {
+        $reservee = $reservationApproval->reservee;
+        if ($reservee && $reservee->reservationDetails) {
+            $eventName = $reservee->reservationDetails->event_name;
+            $reserveeEmail = $reservee->email;
+            $note = $request->note ?? null;
 
-        if ($role_id == 1 && in_array($request->approval_status, ['Pending', 'Denied'])) {
-            AdminApprovals::where('reservation_approval_id', $request->approval_id)
-                ->whereHas('admin', function ($query) {
-                    $query->whereIn('role_id', [2, 3]); 
-                })
-                ->update(['approval_status' => 'Pending']);
-        }
-        
-        if (!in_array($request->approval_status, ['Denied', 'Pending'])) {
-            $reservee = $reservationApproval->reservee;
-            if ($reservee && $reservee->reservationDetails) {
-                $eventName = $reservee->reservationDetails->event_name;
-                $reserveeEmail = $reservee->email;
-                $note = $request->note ?? null;
+            $roleNames = [
+                1 => ['role' => 'AA', 'name' => 'Ms. Jamaica Quezon'],
+                2 => ['role' => 'CISSO', 'name' => 'Mr. Esmael Larubis'],
+                3 => ['role' => 'GSO', 'name' => 'Ms. Leonila Dolor']
+            ];
 
-                $roleNames = [
-                    1 => ['role' => 'AA', 'name' => 'Ms. Jamaica Quezon'],
-                    2 => ['role' => 'CISSO', 'name' => 'Mr. Esmael Larubis'],
-                    3 => ['role' => 'GSO', 'name' => 'Ms. Leonila Dolor']
+            $approvers = AdminApprovals::where('reservation_approval_id', $request->approval_id)
+                ->with('admin')
+                ->get();
+
+            $adminList = [];
+            foreach ($roleNames as $roleId => $roleDetails) {
+                $approver = $approvers->firstWhere('admin.role_id', $roleId);
+                $status = $approver ? $approver->approval_status : 'Pending';
+
+                $adminList[] = [
+                    'name' => $roleDetails['name'],
+                    'role' => $roleDetails['role'],
+                    'status' => $status,
                 ];
-
-                $approvers = AdminApprovals::where('reservation_approval_id', $request->approval_id)
-                    ->with('admin')
-                    ->get();
-
-                $adminList = [];
-                foreach ($roleNames as $roleId => $roleDetails) {
-                    $approver = $approvers->firstWhere('admin.role_id', $roleId);
-                    $status = $approver ? $approver->approval_status : 'Pending';
-
-                    $adminList[] = [
-                        'name' => $roleDetails['name'],
-                        'role' => $roleDetails['role'],
-                        'status' => $status,
-                    ];
-                }
-
-                $admin = User::find($request->admin_id);
-
-                Mail::to($reserveeEmail)->send(new ReservationStatusUpdateMail(
-                    $reservationApproval,
-                    $request->approval_status,
-                    $eventName,
-                    $note,
-                    $adminList,
-                    $admin
-                ));
             }
-        } else {
-            return redirect()->back()->withErrors(['error' => 'Reservation details or Reservee not found.']);
+
+            $admin = User::find($request->admin_id);
+
+            Mail::to($reserveeEmail)->send(new ReservationStatusUpdateMail(
+                $reservationApproval,
+                $request->approval_status,
+                $eventName,
+                $note,
+                $adminList,
+                $admin
+            ));
         }
     }
 
     return redirect()->route('admin.reservation', ['role_id' => $role_id])->with('status', 'Approval status updated successfully.');
 }
+
+
+
 
     public function updateApproval(Request $request, $role_id)
     {
